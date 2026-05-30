@@ -9,6 +9,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.bolke.keyboard.util.PreferencesManager
 
 /**
@@ -113,24 +114,24 @@ class SetupActivity : AppCompatActivity() {
         if (enabled) {
             btnEnableKeyboard.text = "BolKe Enabled ✓"
             btnEnableKeyboard.setBackgroundResource(R.drawable.btn_rerecord_bg)
-            btnEnableKeyboard.setTextColor(resources.getColor(R.color.text_secondary, theme))
+            btnEnableKeyboard.setTextColor(ContextCompat.getColor(this, R.color.text_secondary))
             btnEnableKeyboard.isEnabled = false
         } else {
             btnEnableKeyboard.text = getString(R.string.setup_step1_btn)
             btnEnableKeyboard.setBackgroundResource(R.drawable.btn_send_bg)
-            btnEnableKeyboard.setTextColor(resources.getColor(R.color.key_text, theme))
+            btnEnableKeyboard.setTextColor(ContextCompat.getColor(this, R.color.key_text))
             btnEnableKeyboard.isEnabled = true
         }
 
         if (selected) {
             btnSelectKeyboard.text = "BolKe Selected ✓"
             btnSelectKeyboard.setBackgroundResource(R.drawable.btn_rerecord_bg)
-            btnSelectKeyboard.setTextColor(resources.getColor(R.color.text_secondary, theme))
+            btnSelectKeyboard.setTextColor(ContextCompat.getColor(this, R.color.text_secondary))
             btnSelectKeyboard.isEnabled = false
         } else {
             btnSelectKeyboard.text = getString(R.string.setup_step2_btn)
             btnSelectKeyboard.setBackgroundResource(R.drawable.btn_send_bg)
-            btnSelectKeyboard.setTextColor(resources.getColor(R.color.key_text, theme))
+            btnSelectKeyboard.setTextColor(ContextCompat.getColor(this, R.color.key_text))
             btnSelectKeyboard.isEnabled = true
         }
 

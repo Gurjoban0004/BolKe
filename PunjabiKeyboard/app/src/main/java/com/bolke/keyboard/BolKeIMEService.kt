@@ -20,6 +20,7 @@ import com.bolke.keyboard.speech.SpeechManager
 import com.bolke.keyboard.translation.TranslationManager
 import com.bolke.keyboard.util.OutputMode
 import com.bolke.keyboard.util.PreferencesManager
+import androidx.core.content.ContextCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -326,8 +327,8 @@ class BolKeIMEService : InputMethodService() {
         }
         val btnShift = keyboardView.findViewById<TextView>(R.id.key_shift)
         btnShift.setTextColor(
-            if (isShifted) resources.getColor(R.color.accent_blue, theme)
-            else resources.getColor(R.color.key_text, theme)
+            if (isShifted) ContextCompat.getColor(this, R.color.accent_blue)
+            else ContextCompat.getColor(this, R.color.key_text)
         )
     }
 
