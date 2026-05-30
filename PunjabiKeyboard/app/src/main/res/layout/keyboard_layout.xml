@@ -128,6 +128,17 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
+        <ImageView
+            android:id="@+id/voice_recording_indicator"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_mic"
+            android:background="@drawable/mic_button_bg"
+            android:padding="14dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="6dp"
+            android:contentDescription="Voice Level Indicator" />
+
         <TextView
             android:id="@+id/partial_text"
             android:layout_width="match_parent"
@@ -244,7 +255,6 @@
             android:text=","
             android:layout_weight="0.8" />
 
-        <!-- ★ THE BIG MIC BUTTON ★ -->
         <FrameLayout
             android:id="@+id/mic_button_container"
             android:layout_width="0dp"
@@ -252,17 +262,41 @@
             android:layout_weight="4"
             android:layout_marginHorizontal="4dp"
             android:clickable="true"
-            android:focusable="true">
+            android:focusable="true"
+            android:background="@drawable/mic_button_bg">
 
+            <!-- Left Space Indicator -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
+                android:layout_marginStart="24dp"
+                android:text="—"
+                android:textColor="@color/key_text"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <!-- Center Mic Icon -->
             <ImageView
                 android:id="@+id/mic_button"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_gravity="center"
                 android:src="@drawable/ic_mic"
-                android:background="@drawable/mic_button_bg"
-                android:padding="10dp"
+                android:paddingHorizontal="16dp"
                 android:scaleType="centerInside"
                 android:contentDescription="Voice Input" />
+
+            <!-- Right Space Indicator -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="24dp"
+                android:text="—"
+                android:textColor="@color/key_text"
+                android:textSize="16sp"
+                android:textStyle="bold" />
         </FrameLayout>
 
         <TextView

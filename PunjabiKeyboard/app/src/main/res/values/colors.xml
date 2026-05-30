@@ -7,6 +7,8 @@
     <color name="key_bg_special">#3A3A45</color>
     <color name="key_text">#FFFFFF</color>
     <color name="key_text_secondary">#9E9EA8</color>
+    <color name="key_border">#353540</color>
+    <color name="key_border_pressed">#5D5D68</color>
 
     <!-- Accent colors -->
     <color name="accent_blue">#4A9EFF</color>

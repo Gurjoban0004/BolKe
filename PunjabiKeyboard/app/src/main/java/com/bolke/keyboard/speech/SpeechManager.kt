@@ -20,6 +20,7 @@ class SpeechManager(private val context: Context) {
         fun onFinalResult(text: String)
         fun onError(errorMessage: String)
         fun onEndOfSpeech()
+        fun onRmsChanged(rmsdB: Float)
     }
 
     private var speechRecognizer: SpeechRecognizer? = null
@@ -84,7 +85,7 @@ class SpeechManager(private val context: Context) {
             }
 
             override fun onRmsChanged(rmsdB: Float) {
-                // Audio level changes — could drive a waveform visualization
+                callback?.onRmsChanged(rmsdB)
             }
 
             override fun onBufferReceived(buffer: ByteArray?) {

@@ -79,6 +79,7 @@ class BolKeIMEService : InputMethodService() {
         modeSelector = keyboardView.findViewById(R.id.mode_selector)
         updateModeSelectorText()
         modeSelector.setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
             val nextMode = when (prefsManager.outputMode) {
                 OutputMode.PUNGLISH -> OutputMode.PUNJABI
                 OutputMode.PUNJABI -> OutputMode.ENGLISH
@@ -91,6 +92,7 @@ class BolKeIMEService : InputMethodService() {
         // Bind voice preview actions
         val btnSend = keyboardView.findViewById<TextView>(R.id.btn_send)
         btnSend.setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
             val connection = currentInputConnection
             if (connection != null && currentInputText.isNotEmpty()) {
                 connection.commitText(currentInputText, 1)
@@ -113,11 +115,13 @@ class BolKeIMEService : InputMethodService() {
 
         val btnRerecord = keyboardView.findViewById<TextView>(R.id.btn_rerecord)
         btnRerecord.setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
             startVoiceInput()
         }
 
         val btnStopVoice = keyboardView.findViewById<TextView>(R.id.btn_stop_voice)
         btnStopVoice.setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
             speechManager.stopListening()
         }
 
@@ -235,6 +239,13 @@ class BolKeIMEService : InputMethodService() {
                 val voiceStatus = keyboardView.findViewById<TextView>(R.id.voice_status)
                 voiceStatus.text = getString(R.string.voice_processing)
             }
+
+            override fun onRmsChanged(rmsdB: Float) {
+                // rmsdB ranges typically from -2 to 10. Let's normalize it to a scale factor between 1.0 and 1.5
+                val scale = 1.0f + (rmsdB.coerceIn(0f, 10f) / 10f) * 0.5f
+                val indicator = keyboardView.findViewById<View>(R.id.voice_recording_indicator)
+                indicator?.animate()?.scaleX(scale)?.scaleY(scale)?.setDuration(50)?.start()
+            }
         }
     }
 
@@ -266,16 +277,28 @@ class BolKeIMEService : InputMethodService() {
                     val keyText = view.text.toString()
                     when (idName) {
                         "key_shift" -> {
-                            view.setOnClickListener { toggleShift() }
+                            view.setOnClickListener {
+                                view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                                toggleShift()
+                            }
                         }
                         "key_backspace", "key_backspace_num" -> {
-                            view.setOnClickListener { handleBackspace() }
+                            view.setOnClickListener {
+                                view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                                handleBackspace()
+                            }
                         }
                         "key_symbols" -> {
-                            view.setOnClickListener { toggleSymbols() }
+                            view.setOnClickListener {
+                                view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                                toggleSymbols()
+                            }
                         }
                         "key_enter" -> {
-                            view.setOnClickListener { handleEnter() }
+                            view.setOnClickListener {
+                                view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                                handleEnter()
+                            }
                         }
                         else -> {
                             // Alphabetic and numeric/symbol keys
@@ -283,6 +306,7 @@ class BolKeIMEService : InputMethodService() {
                                 alphabeticKeys.add(view)
                             }
                             view.setOnClickListener {
+                                view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
                                 val charToCommit = view.text.toString()
                                 currentInputConnection?.commitText(charToCommit, 1)
                                 if (isShifted) {
