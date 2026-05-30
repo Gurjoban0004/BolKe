@@ -76,6 +76,7 @@ class BolKeIMEService : InputMethodService() {
         quickRepliesContainer = keyboardView.findViewById(R.id.quick_replies_container)
         populateQuickReplies()
 
+        /*
         val btnSizeMinus = keyboardView.findViewById<View>(R.id.btn_size_minus)
         val btnSizePlus = keyboardView.findViewById<View>(R.id.btn_size_plus)
 
@@ -96,6 +97,7 @@ class BolKeIMEService : InputMethodService() {
             }
             startActivity(intent)
         }
+        */
 
         modeSelector = keyboardView.findViewById(R.id.mode_selector)
         updateModeSelectorText()
