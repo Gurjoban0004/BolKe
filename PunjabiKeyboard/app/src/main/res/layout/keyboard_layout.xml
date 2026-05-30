@@ -22,7 +22,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@drawable/ic_settings"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:background="@android:color/transparent"
             android:contentDescription="Settings"
             android:scaleType="centerInside"
             android:padding="3dp" />

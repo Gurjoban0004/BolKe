@@ -20,25 +20,22 @@ object TransliterationHelper {
         Transliterator.getInstance("Gurmukhi-Latin")
     }
 
-    /**
-     * Convert Gurmukhi script to natural romanized Punjabi.
-     *
-     * @param gurmukhiText Text in Gurmukhi script (e.g., "ਕੀ ਹਾਲ ਆ ਤੇਰਾ")
-     * @return Romanized text (e.g., "kee haal aa teraa")
-     */
     fun transliterate(gurmukhiText: String): String {
         if (gurmukhiText.isBlank()) return gurmukhiText
 
-        // Step 1: ICU transliteration → produces academic romanization with diacritics
-        val withDiacritics = transliterator.transliterate(gurmukhiText)
+        return try {
+            // Step 1: ICU transliteration → produces academic romanization with diacritics
+            val withDiacritics = transliterator.transliterate(gurmukhiText)
 
-        // Step 2: Convert diacritics to natural spelling before stripping
-        val natural = convertToNaturalSpelling(withDiacritics)
+            // Step 2: Convert diacritics to natural spelling before stripping
+            val natural = convertToNaturalSpelling(withDiacritics)
 
-        // Step 3: Clean up whitespace
-        return natural
-            .replace(Regex("\\s+"), " ")
-            .trim()
+            // Step 3: Clean up whitespace
+            natural.replace(Regex("\\s+"), " ").trim()
+        } catch (e: Exception) {
+            // Fallback to returning the original Punjabi Gurmukhi text if transliteration fails
+            gurmukhiText
+        }
     }
 
     /**
