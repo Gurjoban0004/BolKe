@@ -11,112 +11,283 @@
         android:orientation="vertical"
         android:padding="24dp">
 
-        <!-- Title -->
+        <!-- Title Header -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/settings_title"
             android:textColor="@color/text_primary"
-            android:textSize="24sp"
+            android:textSize="26sp"
             android:textStyle="bold"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="32dp" />
-
-        <!-- Output Mode Section -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/settings_output_mode"
-            android:textColor="@color/accent_blue"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/settings_output_mode_desc"
-            android:textColor="@color/text_secondary"
-            android:textSize="12sp"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="12dp" />
-
-        <RadioGroup
-            android:id="@+id/mode_radio_group"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/card_bg"
-            android:padding="16dp"
-            android:layout_marginBottom="24dp">
-
-            <RadioButton
-                android:id="@+id/radio_punglish"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Punglish — ki haal aa tera"
-                android:textColor="@color/text_primary"
-                android:textSize="15sp"
-                android:buttonTint="@color/accent_blue"
-                android:padding="8dp" />
-
-            <RadioButton
-                android:id="@+id/radio_punjabi"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="ਪੰਜਾਬੀ — ਕੀ ਹਾਲ ਆ ਤੇਰਾ"
-                android:textColor="@color/text_primary"
-                android:textSize="15sp"
-                android:buttonTint="@color/accent_blue"
-                android:padding="8dp" />
-
-            <RadioButton
-                android:id="@+id/radio_english"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="English — How are you"
-                android:textColor="@color/text_primary"
-                android:textSize="15sp"
-                android:buttonTint="@color/accent_blue"
-                android:padding="8dp" />
-        </RadioGroup>
-
-        <!-- Divider -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/divider"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="24dp" />
 
-        <!-- API Key Section -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/settings_api_key"
-            android:textColor="@color/accent_blue"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Only needed for English translation mode"
-            android:textColor="@color/text_secondary"
-            android:textSize="12sp"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="12dp" />
-
-        <EditText
-            android:id="@+id/api_key_input"
+        <!-- Card 1: Output Mode Selector -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:hint="@string/settings_api_key_hint"
-            android:textColor="@color/text_primary"
-            android:textColorHint="@color/text_secondary"
-            android:textSize="14sp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:background="@color/card_bg"
-            android:padding="12dp"
-            android:inputType="text"
-            android:singleLine="true"
-            android:layout_marginBottom="32dp" />
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_output_mode"
+                android:textColor="@color/accent_blue"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_output_mode_desc"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="12dp" />
+
+            <RadioGroup
+                android:id="@+id/mode_radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/radio_punglish"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Punglish — ki haal aa tera"
+                    android:textColor="@color/text_primary"
+                    android:textSize="14sp"
+                    android:buttonTint="@color/accent_blue"
+                    android:padding="8dp" />
+
+                <RadioButton
+                    android:id="@+id/radio_punjabi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ਪੰਜਾਬੀ — ਕੀ ਹਾਲ ਆ ਤੇਰਾ"
+                    android:textColor="@color/text_primary"
+                    android:textSize="14sp"
+                    android:buttonTint="@color/accent_blue"
+                    android:padding="8dp" />
+
+                <RadioButton
+                    android:id="@+id/radio_english"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="English — How are you"
+                    android:textColor="@color/text_primary"
+                    android:textSize="14sp"
+                    android:buttonTint="@color/accent_blue"
+                    android:padding="8dp" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <!-- Card 2: Keyboard Size Selector -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/card_bg"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ਕੀਬੋਰਡ ਦਾ ਸਾਈਜ਼ — Keyboard Size"
+                android:textColor="@color/accent_blue"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Choose height size of the keyboard keys"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="12dp" />
+
+            <RadioGroup
+                android:id="@+id/size_radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal">
+
+                <RadioButton
+                    android:id="@+id/size_small"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Small"
+                    android:textColor="@color/text_primary"
+                    android:textSize="12sp"
+                    android:buttonTint="@color/accent_blue"
+                    android:padding="4dp" />
+
+                <RadioButton
+                    android:id="@+id/size_medium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Medium"
+                    android:textColor="@color/text_primary"
+                    android:textSize="12sp"
+                    android:buttonTint="@color/accent_blue"
+                    android:padding="4dp" />
+
+                <RadioButton
+                    android:id="@+id/size_large"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Large"
+                    android:textColor="@color/text_primary"
+                    android:textSize="12sp"
+                    android:buttonTint="@color/accent_blue"
+                    android:padding="4dp" />
+
+                <RadioButton
+                    android:id="@+id/size_xlarge"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.1"
+                    android:text="X-Large"
+                    android:textColor="@color/text_primary"
+                    android:textSize="12sp"
+                    android:buttonTint="@color/accent_blue"
+                    android:padding="4dp" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <!-- Card 3: Auto-Send Configuration -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/card_bg"
+            android:padding="16dp"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ਆਟੋ-ਸੈਂਡ — Auto-Send after speaking"
+                    android:textColor="@color/accent_blue"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sends the message instantly in WhatsApp when speech ends"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp"
+                    android:layout_marginTop="2dp" />
+            </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/auto_send_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/accent_blue"
+                android:checked="true" />
+        </LinearLayout>
+
+        <!-- Card 4: Offline Punjabi Speech Guide (Flawless Voice Typing) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/card_bg"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📢 Flawless Offline Voice Typing Guide"
+                android:textColor="@color/accent_green"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="For the best accuracy and instant, offline Punjabi typing, download the Punjabi language model:\n\n1. Open the Google app on your phone.\n2. Tap your profile -> Settings -> Voice.\n3. Tap Offline speech recognition -> 'All' tab.\n4. Search for 'Punjabi' (ਪੰਜਾਬੀ) and download it.\n\nਇਹ ਸੈਟਿੰਗ ਕਰਨ ਨਾਲ ਵੌਇਸ ਟਾਈਪਿੰਗ ਬਿਨਾਂ ਇੰਟਰਨੈੱਟ ਦੇ ਵੀ ਬਹੁਤ ਤੇਜ਼ ਅਤੇ ਸਹੀ ਕੰਮ ਕਰੇਗੀ।"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:layout_marginTop="8dp"
+                android:lineSpacingExtra="3dp" />
+        </LinearLayout>
+
+        <!-- Advanced settings toggle -->
+        <TextView
+            android:id="@+id/btn_advanced_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="⚙️ Advanced Settings (Google Cloud API) ▾"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_gravity="center_horizontal"
+            android:padding="8dp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Collapsible API Key section (hidden by default) -->
+        <LinearLayout
+            android:id="@+id/advanced_settings_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/card_bg"
+            android:padding="16dp"
+            android:visibility="gone"
+            android:layout_marginBottom="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_api_key"
+                android:textColor="@color/accent_blue"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Paste your Google Cloud Translation API Key below to translate Punjabi speech to English text."
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="12dp" />
+
+            <EditText
+                android:id="@+id/api_key_input"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="@string/settings_api_key_hint"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_secondary"
+                android:textSize="13sp"
+                android:background="@color/top_bar_bg"
+                android:padding="12dp"
+                android:inputType="text"
+                android:singleLine="true" />
+        </LinearLayout>
 
         <!-- Save Button -->
         <TextView

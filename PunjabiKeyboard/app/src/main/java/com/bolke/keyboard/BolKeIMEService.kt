@@ -63,6 +63,20 @@ class BolKeIMEService : InputMethodService() {
         }
         translationManager = TranslationManager()
 
+        // Adjust keyboard row heights programmatically based on user setting
+        val multiplier = prefsManager.keyboardSize
+        val density = resources.displayMetrics.density
+        val rowHeight = (46 * density * multiplier).toInt()
+        val specialRowHeight = (52 * density * multiplier).toInt()
+
+        keyboardView.findViewById<View>(R.id.row1)?.layoutParams?.height = rowHeight
+        keyboardView.findViewById<View>(R.id.row2)?.layoutParams?.height = rowHeight
+        keyboardView.findViewById<View>(R.id.row3)?.layoutParams?.height = rowHeight
+        keyboardView.findViewById<View>(R.id.row4)?.layoutParams?.height = specialRowHeight
+        keyboardView.findViewById<View>(R.id.numbers_row1)?.layoutParams?.height = rowHeight
+        keyboardView.findViewById<View>(R.id.numbers_row2)?.layoutParams?.height = rowHeight
+        keyboardView.findViewById<View>(R.id.numbers_row3)?.layoutParams?.height = rowHeight
+
         // Bind all the keyboard keys recursively
         alphabeticKeys.clear()
         setupKeys(keyboardView)
@@ -216,9 +230,34 @@ class BolKeIMEService : InputMethodService() {
                         mode = prefsManager.outputMode,
                         apiKey = prefsManager.apiKey
                     )
-                    currentInputText = processed
-                    currentState = KeyboardState.PREVIEW
-                    updateUIState()
+                    
+                    val connection = currentInputConnection
+                    if (prefsManager.isAutoSendEnabled && connection != null && processed.isNotEmpty()) {
+                        // Direct Flow: Commit text, add space, and send
+                        connection.commitText(processed, 1)
+                        connection.commitText(" ", 1)
+
+                        val editorInfo = currentInputEditorInfo
+                        val actionId = editorInfo.imeOptions and EditorInfo.IME_MASK_ACTION
+                        if (actionId == EditorInfo.IME_ACTION_SEND ||
+                            actionId == EditorInfo.IME_ACTION_GO ||
+                            actionId == EditorInfo.IME_ACTION_DONE ||
+                            actionId == EditorInfo.IME_ACTION_SEARCH) {
+                            connection.performEditorAction(actionId)
+                        } else {
+                            // Fallback to sending Enter key event (works in WhatsApp)
+                            connection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER))
+                            connection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_ENTER))
+                        }
+                        
+                        currentState = KeyboardState.KEYBOARD
+                        updateUIState()
+                    } else {
+                        // Manual Flow: Show in preview bar
+                        currentInputText = processed
+                        currentState = KeyboardState.PREVIEW
+                        updateUIState()
+                    }
                 }
             }
 
