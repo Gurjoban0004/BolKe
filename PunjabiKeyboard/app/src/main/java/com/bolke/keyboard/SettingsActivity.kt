@@ -10,7 +10,9 @@ import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.bolke.keyboard.util.OutputMode
 import com.bolke.keyboard.util.PreferencesManager
 
@@ -36,8 +38,28 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var advancedContainer: LinearLayout
     private lateinit var apiKeyInput: EditText
 
+    private lateinit var checkboxOfflineMode: CheckBox
+    private lateinit var radioGroupQRFormat: RadioGroup
+    private lateinit var radioQRFollow: RadioButton
+    private lateinit var radioQRPunglish: RadioButton
+    private lateinit var radioQRPunjabi: RadioButton
+
     private lateinit var btnSave: TextView
     private lateinit var saveStatus: TextView
+
+    private val quickRepliesList = ArrayList<Pair<String, String>>()
+    private val slangMappingsList = ArrayList<Pair<String, String>>()
+
+    private lateinit var quickRepliesListContainer: LinearLayout
+    private lateinit var slangListContainer: LinearLayout
+    private lateinit var editNewQRPunjabi: EditText
+    private lateinit var editNewQRPunglish: EditText
+    private lateinit var editNewSlangTarget: EditText
+    private lateinit var editNewSlangReplacement: EditText
+    private lateinit var btnAddQR: TextView
+    private lateinit var btnAddSlang: TextView
+    private lateinit var btnResetQR: TextView
+    private lateinit var btnResetSlang: TextView
 
     private lateinit var prefsManager: PreferencesManager
     private var isAdvancedVisible = false
@@ -66,6 +88,28 @@ class SettingsActivity : AppCompatActivity() {
         btnAdvancedToggle = findViewById(R.id.btn_advanced_settings)
         advancedContainer = findViewById(R.id.advanced_settings_container)
         apiKeyInput = findViewById(R.id.api_key_input)
+
+        quickRepliesListContainer = findViewById(R.id.quick_replies_list_container)
+        slangListContainer = findViewById(R.id.slang_list_container)
+        editNewQRPunjabi = findViewById(R.id.new_qr_punjabi)
+        editNewQRPunglish = findViewById(R.id.new_qr_punglish)
+        editNewSlangTarget = findViewById(R.id.new_slang_target)
+        editNewSlangReplacement = findViewById(R.id.new_slang_replacement)
+        btnAddQR = findViewById(R.id.btn_add_qr)
+        btnAddSlang = findViewById(R.id.btn_add_slang)
+        btnResetQR = findViewById(R.id.btn_reset_qr_defaults)
+        btnResetSlang = findViewById(R.id.btn_reset_slang_defaults)
+
+        btnAddQR.setOnClickListener { addQuickReply() }
+        btnAddSlang.setOnClickListener { addSlangMapping() }
+        btnResetQR.setOnClickListener { resetQuickReplyDefaults() }
+        btnResetSlang.setOnClickListener { resetSlangDefaults() }
+
+        checkboxOfflineMode = findViewById(R.id.offline_mode_checkbox)
+        radioGroupQRFormat = findViewById(R.id.qr_format_radio_group)
+        radioQRFollow = findViewById(R.id.qr_follow_keyboard)
+        radioQRPunglish = findViewById(R.id.qr_always_punglish)
+        radioQRPunjabi = findViewById(R.id.qr_always_punjabi)
 
         btnSave = findViewById(R.id.btn_save)
         saveStatus = findViewById(R.id.save_status)
@@ -116,6 +160,37 @@ class SettingsActivity : AppCompatActivity() {
 
         // API Key
         apiKeyInput.setText(prefsManager.apiKey)
+
+        // Custom Quick replies and slang lists parsing
+        quickRepliesList.clear()
+        val savedReplies = prefsManager.quickReplies
+        savedReplies.split("\n").map { it.trim() }.filter { it.isNotEmpty() }.forEach {
+            val parts = it.split("|")
+            if (parts.size == 2) {
+                quickRepliesList.add(Pair(parts[0], parts[1]))
+            }
+        }
+        refreshQuickRepliesUI()
+
+        slangMappingsList.clear()
+        val savedSlang = prefsManager.slangMappings
+        savedSlang.split("\n").map { it.trim() }.filter { it.isNotEmpty() }.forEach {
+            val parts = it.split(":")
+            if (parts.size == 2) {
+                slangMappingsList.add(Pair(parts[0], parts[1]))
+            }
+        }
+        refreshSlangUI()
+
+        // Offline mode
+        checkboxOfflineMode.isChecked = prefsManager.isOfflineMode
+
+        // Quick replies format
+        when (prefsManager.quickReplyMode) {
+            "FOLLOW_KEYBOARD" -> radioQRFollow.isChecked = true
+            "PUNGLISH" -> radioQRPunglish.isChecked = true
+            "PUNJABI" -> radioQRPunjabi.isChecked = true
+        }
     }
 
     private fun saveSettings() {
@@ -139,12 +214,28 @@ class SettingsActivity : AppCompatActivity() {
         // 3. Auto-send and API Key
         val isAutoSend = checkboxAutoSend.isChecked
         val apiKey = apiKeyInput.text.toString().trim()
+        val isOfflineMode = checkboxOfflineMode.isChecked
+        val qrMode = when (radioGroupQRFormat.checkedRadioButtonId) {
+            R.id.qr_follow_keyboard -> "FOLLOW_KEYBOARD"
+            R.id.qr_always_punglish -> "PUNGLISH"
+            R.id.qr_always_punjabi -> "PUNJABI"
+            else -> "FOLLOW_KEYBOARD"
+        }
+
+        // Serialize quick replies list
+        val quickRepliesSerialized = quickRepliesList.joinToString("\n") { "${it.first}|${it.second}" }
+        // Serialize slang mappings list
+        val slangMappingsSerialized = slangMappingsList.joinToString("\n") { "${it.first}:${it.second}" }
 
         // Save to preferences
         prefsManager.outputMode = selectedMode
         prefsManager.keyboardSize = selectedSize
         prefsManager.isAutoSendEnabled = isAutoSend
         prefsManager.apiKey = apiKey
+        prefsManager.quickReplies = quickRepliesSerialized
+        prefsManager.slangMappings = slangMappingsSerialized
+        prefsManager.isOfflineMode = isOfflineMode
+        prefsManager.quickReplyMode = qrMode
 
         // Show status message
         saveStatus.text = getString(R.string.settings_saved)
@@ -154,5 +245,192 @@ class SettingsActivity : AppCompatActivity() {
         Handler(Looper.getMainLooper()).postDelayed({
             saveStatus.visibility = View.GONE
         }, 2000)
+    }
+
+    private fun Int.toPx(): Int = (this * resources.displayMetrics.density).toInt()
+
+    private fun addQuickReply() {
+        val punjabi = editNewQRPunjabi.text.toString().trim()
+        val punglish = editNewQRPunglish.text.toString().trim()
+        if (punjabi.isNotEmpty() && punglish.isNotEmpty()) {
+            quickRepliesList.add(Pair(punjabi, punglish))
+            editNewQRPunjabi.text.clear()
+            editNewQRPunglish.text.clear()
+            refreshQuickRepliesUI()
+        } else {
+            Toast.makeText(this, "ਕਿਰਪਾ ਕਰਕੇ ਦੋਵੇਂ ਖਾਨੇ ਭਰੋ (Fill both fields)", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun removeQuickReply(punjabi: String, punglish: String) {
+        quickRepliesList.removeAll { it.first == punjabi && it.second == punglish }
+        refreshQuickRepliesUI()
+    }
+
+    private fun resetQuickReplyDefaults() {
+        quickRepliesList.clear()
+        val defaultReplies = "ਕਿੱਥੇ ਆਗਿਆ?|kithe aagya?\nਮੈਂ ਚੱਲ ਪਈ!|mai chalpyi!\nਪੁੱਤ ਕਿੱਥੇ ਆਂ?|putt kithe aa?\nਹਾਂਜੀ|hanji\nਨਾਜੀ|naji\nਠੀਕ ਹੈ|thik hai\nਸਤਿ ਸ੍ਰੀ ਅਕਾਲ|sat sri akal\nਕੀ ਹਾਲ ਹੈ?|ki haal hai?"
+        defaultReplies.split("\n").map { it.trim() }.filter { it.isNotEmpty() }.forEach {
+            val parts = it.split("|")
+            if (parts.size == 2) {
+                quickRepliesList.add(Pair(parts[0], parts[1]))
+            }
+        }
+        refreshQuickRepliesUI()
+    }
+
+    private fun refreshQuickRepliesUI() {
+        quickRepliesListContainer.removeAllViews()
+        for (pair in quickRepliesList) {
+            val view = createQuickReplyRow(pair.first, pair.second)
+            quickRepliesListContainer.addView(view)
+        }
+    }
+
+    private fun createQuickReplyRow(punjabi: String, punglish: String): View {
+        val context = this
+        val rowLayout = LinearLayout(context).apply {
+            orientation = LinearLayout.VERTICAL
+            setBackgroundResource(R.drawable.mode_pill_bg)
+            setPadding(12.toPx(), 10.toPx(), 12.toPx(), 10.toPx())
+            val params = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                setMargins(0, 4.toPx(), 0, 4.toPx())
+            }
+            layoutParams = params
+        }
+
+        val contentLayout = LinearLayout(context).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = android.view.Gravity.CENTER_VERTICAL
+        }
+
+        val textLayout = LinearLayout(context).apply {
+            orientation = LinearLayout.VERTICAL
+            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+        }
+
+        val punjabiTxt = TextView(context).apply {
+            text = punjabi
+            setTextColor(ContextCompat.getColor(context, R.color.text_primary))
+            textSize = 15f
+            setTypeface(null, android.graphics.Typeface.BOLD)
+        }
+
+        val punglishTxt = TextView(context).apply {
+            text = punglish
+            setTextColor(ContextCompat.getColor(context, R.color.text_secondary))
+            textSize = 13f
+            setPadding(0, 2.toPx(), 0, 0)
+        }
+
+        textLayout.addView(punjabiTxt)
+        textLayout.addView(punglishTxt)
+
+        val deleteBtn = TextView(context).apply {
+            text = "🗑️"
+            textSize = 16f
+            setPadding(12.toPx(), 8.toPx(), 12.toPx(), 8.toPx())
+            isClickable = true
+            isFocusable = true
+            setOnClickListener {
+                removeQuickReply(punjabi, punglish)
+            }
+        }
+
+        contentLayout.addView(textLayout)
+        contentLayout.addView(deleteBtn)
+        rowLayout.addView(contentLayout)
+
+        return rowLayout
+    }
+
+    private fun addSlangMapping() {
+        val target = editNewSlangTarget.text.toString().trim()
+        val replacement = editNewSlangReplacement.text.toString().trim()
+        if (target.isNotEmpty() && replacement.isNotEmpty()) {
+            slangMappingsList.removeAll { it.first.lowercase() == target.lowercase() }
+            slangMappingsList.add(Pair(target, replacement))
+            editNewSlangTarget.text.clear()
+            editNewSlangReplacement.text.clear()
+            refreshSlangUI()
+        } else {
+            Toast.makeText(this, "ਕਿਰਪਾ ਕਰਕੇ ਦੋਵੇਂ ਖਾਨੇ ਭਰੋ (Fill both fields)", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun removeSlangMapping(target: String) {
+        slangMappingsList.removeAll { it.first == target }
+        refreshSlangUI()
+    }
+
+    private fun resetSlangDefaults() {
+        slangMappingsList.clear()
+        val defaultSlangs = "karo:kro\nchalo:chlo\nkarda:krda\nkardi:krdi\nkarde:krde\njaldi:jldi"
+        defaultSlangs.split("\n").map { it.trim() }.filter { it.isNotEmpty() }.forEach {
+            val parts = it.split(":")
+            if (parts.size == 2) {
+                slangMappingsList.add(Pair(parts[0], parts[1]))
+            }
+        }
+        refreshSlangUI()
+    }
+
+    private fun refreshSlangUI() {
+        slangListContainer.removeAllViews()
+        for (pair in slangMappingsList) {
+            val view = createSlangRow(pair.first, pair.second)
+            slangListContainer.addView(view)
+        }
+    }
+
+    private fun createSlangRow(target: String, replacement: String): View {
+        val context = this
+        val rowLayout = LinearLayout(context).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = android.view.Gravity.CENTER_VERTICAL
+            setPadding(0, 6.toPx(), 0, 6.toPx())
+        }
+
+        val targetTxt = TextView(context).apply {
+            text = target
+            setTextColor(ContextCompat.getColor(context, R.color.text_primary))
+            textSize = 15f
+            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+        }
+
+        val arrowTxt = TextView(context).apply {
+            text = " ➔ "
+            setTextColor(ContextCompat.getColor(context, R.color.accent_blue))
+            textSize = 14f
+            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        }
+
+        val replacementTxt = TextView(context).apply {
+            text = replacement
+            setTextColor(ContextCompat.getColor(context, R.color.text_primary))
+            textSize = 15f
+            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+        }
+
+        val deleteBtn = TextView(context).apply {
+            text = "🗑️"
+            textSize = 16f
+            setPadding(12.toPx(), 8.toPx(), 12.toPx(), 8.toPx())
+            isClickable = true
+            isFocusable = true
+            setOnClickListener {
+                removeSlangMapping(target)
+            }
+        }
+
+        rowLayout.addView(targetTxt)
+        rowLayout.addView(arrowTxt)
+        rowLayout.addView(replacementTxt)
+        rowLayout.addView(deleteBtn)
+
+        return rowLayout
     }
 }

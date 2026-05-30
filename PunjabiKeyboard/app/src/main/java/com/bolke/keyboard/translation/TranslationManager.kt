@@ -27,13 +27,13 @@ class TranslationManager {
      * @param apiKey Google Cloud Translation API key (only needed for ENGLISH mode)
      * @return Processed text in the requested format
      */
-    suspend fun process(gurmukhiText: String, mode: OutputMode, apiKey: String = ""): String {
+    suspend fun process(gurmukhiText: String, mode: OutputMode, apiKey: String = "", isOfflineMode: Boolean = false): String {
         return when (mode) {
             OutputMode.PUNJABI -> gurmukhiText
             OutputMode.PUNGLISH -> TransliterationHelper.transliterate(gurmukhiText)
             OutputMode.ENGLISH -> {
-                if (apiKey.isBlank()) {
-                    // Fall back to transliteration if no API key
+                if (isOfflineMode || apiKey.isBlank()) {
+                    // Fall back to transliteration if forced offline mode or no API key
                     TransliterationHelper.transliterate(gurmukhiText)
                 } else {
                     translateToEnglish(gurmukhiText, apiKey)

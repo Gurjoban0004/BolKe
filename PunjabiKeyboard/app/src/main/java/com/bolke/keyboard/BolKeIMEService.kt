@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import com.bolke.keyboard.speech.SpeechManager
@@ -40,6 +41,7 @@ class BolKeIMEService : InputMethodService() {
 
     private lateinit var keyboardView: View
     private lateinit var modeSelector: TextView
+    private lateinit var quickRepliesContainer: LinearLayout
     
     private lateinit var prefsManager: PreferencesManager
     private lateinit var speechManager: SpeechManager
@@ -82,6 +84,9 @@ class BolKeIMEService : InputMethodService() {
         setupKeys(keyboardView)
 
         // Bind top bar buttons
+        quickRepliesContainer = keyboardView.findViewById(R.id.quick_replies_container)
+        populateQuickReplies()
+
         val btnSettings = keyboardView.findViewById<ImageButton>(R.id.btn_settings)
         btnSettings.setOnClickListener {
             val intent = Intent(this, SettingsActivity::class.java).apply {
@@ -139,23 +144,11 @@ class BolKeIMEService : InputMethodService() {
             speechManager.stopListening()
         }
 
-        // Set up mic button touch listener for space/voice input
-        val micButton = keyboardView.findViewById<ImageView>(R.id.mic_button)
-        micButton.setOnTouchListener { view, event ->
-            if (event.action == MotionEvent.ACTION_UP) {
-                val width = view.width
-                val x = event.x
-                // Center 50% for mic, outer 25% on each side for spacebar
-                val isCenter = x > width * 0.25 && x < width * 0.75
-                if (isCenter) {
-                    startVoiceInput()
-                } else {
-                    currentInputConnection?.commitText(" ", 1)
-                    view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-                }
-                view.performClick()
-            }
-            true
+        // Set up mic button listener
+        val micButton = keyboardView.findViewById<View>(R.id.mic_button)
+        micButton.setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+            startVoiceInput()
         }
 
         currentState = KeyboardState.KEYBOARD
@@ -228,13 +221,21 @@ class BolKeIMEService : InputMethodService() {
                     val processed = translationManager.process(
                         gurmukhiText = text,
                         mode = prefsManager.outputMode,
-                        apiKey = prefsManager.apiKey
+                        apiKey = prefsManager.apiKey,
+                        isOfflineMode = prefsManager.isOfflineMode
                     )
                     
+                    val slangApplied = if (prefsManager.outputMode == OutputMode.PUNGLISH) {
+                        applySlangMappings(processed, prefsManager.slangMappings)
+                    } else {
+                        processed
+                    }
+                    val finalOutput = appendVoiceEmojis(slangApplied)
+
                     val connection = currentInputConnection
-                    if (prefsManager.isAutoSendEnabled && connection != null && processed.isNotEmpty()) {
+                    if (prefsManager.isAutoSendEnabled && connection != null && finalOutput.isNotEmpty()) {
                         // Direct Flow: Commit text, add space, and send
-                        connection.commitText(processed, 1)
+                        connection.commitText(finalOutput, 1)
                         connection.commitText(" ", 1)
 
                         val editorInfo = currentInputEditorInfo
@@ -254,7 +255,7 @@ class BolKeIMEService : InputMethodService() {
                         updateUIState()
                     } else {
                         // Manual Flow: Show in preview bar
-                        currentInputText = processed
+                        currentInputText = finalOutput
                         currentState = KeyboardState.PREVIEW
                         updateUIState()
                     }
@@ -331,6 +332,12 @@ class BolKeIMEService : InputMethodService() {
                             view.setOnClickListener {
                                 view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
                                 toggleSymbols()
+                            }
+                        }
+                        "key_space" -> {
+                            view.setOnClickListener {
+                                view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                                currentInputConnection?.commitText(" ", 1)
                             }
                         }
                         "key_enter" -> {
@@ -462,5 +469,187 @@ class BolKeIMEService : InputMethodService() {
                 // In preview mode we only show the preview bar (Option A) to keep UI clean and simple.
             }
         }
+    }
+
+    private fun populateQuickReplies() {
+        if (!::quickRepliesContainer.isInitialized) return
+        quickRepliesContainer.removeAllViews()
+
+        val repliesStr = prefsManager.quickReplies
+        val list = repliesStr.split("\n").map { it.trim() }.filter { it.isNotEmpty() }
+        
+        val density = resources.displayMetrics.density
+        val paddingH = (12 * density).toInt()
+        val paddingV = (6 * density).toInt()
+        val marginStartEnd = (4 * density).toInt()
+
+        for (replyLine in list) {
+            val parts = replyLine.split("|")
+            if (parts.size == 2) {
+                val punjabiText = parts[0].trim()
+                val punglishText = parts[1].trim()
+
+                val displayFormat = prefsManager.quickReplyMode
+                val displayText = when (displayFormat) {
+                    "PUNJABI" -> punjabiText
+                    "PUNGLISH" -> punglishText
+                    else -> { // FOLLOW_KEYBOARD
+                        if (prefsManager.outputMode == OutputMode.PUNGLISH) punglishText else punjabiText
+                    }
+                }
+
+                val textView = TextView(this).apply {
+                    text = displayText
+                    setTextColor(ContextCompat.getColor(context, R.color.key_text))
+                    textSize = 13f
+                    gravity = android.view.Gravity.CENTER
+                    setBackgroundResource(R.drawable.mode_pill_bg)
+                    setPadding(paddingH, paddingV, paddingH, paddingV)
+                    
+                    val params = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    ).apply {
+                        setMargins(marginStartEnd, 0, marginStartEnd, 0)
+                    }
+                    layoutParams = params
+                    isClickable = true
+                    isFocusable = true
+                    
+                    setOnClickListener {
+                        it.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                        handleQuickReplyClick(punjabiText, punglishText)
+                    }
+                }
+                quickRepliesContainer.addView(textView)
+            }
+        }
+    }
+
+    private fun handleQuickReplyClick(punjabiText: String, punglishText: String) {
+        serviceScope.launch {
+            val targetMode = when (prefsManager.quickReplyMode) {
+                "PUNGLISH" -> OutputMode.PUNGLISH
+                "PUNJABI" -> OutputMode.PUNJABI
+                else -> prefsManager.outputMode
+            }
+
+            val finalOutput = when (targetMode) {
+                OutputMode.PUNJABI -> punjabiText
+                OutputMode.PUNGLISH -> applySlangMappings(punglishText, prefsManager.slangMappings)
+                OutputMode.ENGLISH -> {
+                    if (prefsManager.isOfflineMode || prefsManager.apiKey.isBlank()) {
+                        applySlangMappings(punglishText, prefsManager.slangMappings)
+                    } else {
+                        translationManager.process(
+                            gurmukhiText = punjabiText,
+                            mode = OutputMode.ENGLISH,
+                            apiKey = prefsManager.apiKey,
+                            isOfflineMode = prefsManager.isOfflineMode
+                        )
+                    }
+                }
+            }
+            val finalWithEmojis = appendVoiceEmojis(finalOutput)
+
+            val connection = currentInputConnection
+            if (connection != null && finalWithEmojis.isNotEmpty()) {
+                connection.commitText(finalWithEmojis, 1)
+                connection.commitText(" ", 1)
+
+                if (prefsManager.isAutoSendEnabled) {
+                    val editorInfo = currentInputEditorInfo
+                    val actionId = editorInfo.imeOptions and EditorInfo.IME_MASK_ACTION
+                    if (actionId == EditorInfo.IME_ACTION_SEND ||
+                        actionId == EditorInfo.IME_ACTION_GO ||
+                        actionId == EditorInfo.IME_ACTION_DONE ||
+                        actionId == EditorInfo.IME_ACTION_SEARCH) {
+                        connection.performEditorAction(actionId)
+                    } else {
+                        connection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER))
+                        connection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_ENTER))
+                    }
+                }
+            }
+        }
+    }
+
+    private fun applySlangMappings(text: String, mappingsStr: String): String {
+        if (mappingsStr.isBlank()) return text
+        var result = text
+        val lines = mappingsStr.split("\n")
+        for (line in lines) {
+            val parts = line.split(":", "=")
+            if (parts.size == 2) {
+                val target = parts[0].trim()
+                val replacement = parts[1].trim()
+                if (target.isNotEmpty()) {
+                    val regex = Regex("\\b${Regex.escape(target)}\\b", RegexOption.IGNORE_CASE)
+                    result = result.replace(regex, replacement)
+                }
+            }
+        }
+        return result
+    }
+
+    private val emojiMappings = mapOf(
+        // Gurmukhi keywords
+        "ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ" to "🙏",
+        "ਵਾਹਿਗੁਰੂ" to "🙏",
+        "ਪ੍ਰਣਾਮ" to "🙏",
+        "namaste" to "🙏",
+        "ਨਮਸਤੇ" to "🙏",
+        "ਧੰਨਵਾਦ" to "🙏",
+        "ਸ਼ੁਕਰੀਆ" to "🙏",
+        "ਵਧਾਈ" to "🎉",
+        "ਮੁਬਾਰਕ" to "🎉",
+        "ਠੀਕ" to "👍",
+        "ਵਧੀਆ" to "👍",
+        "ਗੁੱਸਾ" to "😡",
+        "ਪਿਆਰ" to "❤️",
+        "ਹਾਹਾ" to "😂",
+        "ਹੱਸ" to "😊",
+        "ਖੁਸ਼" to "😊",
+        "ਜਨਮਦਿਨ" to "🎂",
+
+        // Punglish/English keywords
+        "sat sri akal" to "🙏",
+        "sat sri akaal" to "🙏",
+        "waheguru" to "🙏",
+        "pranam" to "🙏",
+        "namaste" to "🙏",
+        "dhanyavad" to "🙏",
+        "thanks" to "🙏",
+        "thank you" to "🙏",
+        "shukriya" to "🙏",
+        "vadhai" to "🎉",
+        "mubarak" to "🎉",
+        "congrats" to "🎉",
+        "congratulations" to "🎉",
+        "thik" to "👍",
+        "theek" to "👍",
+        "vadiya" to "👍",
+        "gussa" to "😡",
+        "angry" to "😡",
+        "pyar" to "❤️",
+        "love" to "❤️",
+        "haha" to "😂",
+        "happy" to "😊",
+        "khush" to "😊",
+        "birthday" to "🎂",
+        "janamdin" to "🎂"
+    )
+
+    private fun appendVoiceEmojis(text: String): String {
+        var emojiToAppend = ""
+        val lowerText = text.lowercase()
+        for ((keyword, emoji) in emojiMappings) {
+            if (lowerText.contains(keyword)) {
+                if (!emojiToAppend.contains(emoji)) {
+                    emojiToAppend += " $emoji"
+                }
+            }
+        }
+        return if (emojiToAppend.isNotEmpty()) text + emojiToAppend else text
     }
 }

@@ -233,6 +233,316 @@
                 android:lineSpacingExtra="3dp" />
         </LinearLayout>
 
+        <!-- Card 5: Quick Replies Customization -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/card_bg"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:text="ਤੁਰੰਤ ਜਵਾਬ — Quick Replies"
+                    android:textColor="@color/accent_blue"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/btn_reset_qr_defaults"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="ਮੂਲ ਮੁੜ-ਲੋਡ ਕਰੋ (Reset Defaults)"
+                    android:textColor="@color/accent_orange"
+                    android:textSize="11sp"
+                    android:clickable="true"
+                    android:focusable="true" />
+            </RelativeLayout>
+
+            <!-- Dynamic List Container -->
+            <LinearLayout
+                android:id="@+id/quick_replies_list_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="12dp" />
+
+            <!-- Add Row Form -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ਨਵਾਂ ਤੁਰੰਤ ਜਵਾਬ ਜੋੜੋ (Add Quick Reply):"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:layout_marginBottom="6dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="6dp">
+
+                    <EditText
+                        android:id="@+id/new_qr_punjabi"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:hint="Punjabi e.g. ਕਿੱਥੇ ਆਗਿਆ?"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_secondary"
+                        android:textSize="13sp"
+                        android:background="@color/top_bar_bg"
+                        android:paddingHorizontal="10dp"
+                        android:singleLine="true" />
+
+                    <EditText
+                        android:id="@+id/new_qr_punglish"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="4dp"
+                        android:hint="Punglish e.g. kithe aagya?"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_secondary"
+                        android:textSize="13sp"
+                        android:background="@color/top_bar_bg"
+                        android:paddingHorizontal="10dp"
+                        android:singleLine="true" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/btn_add_qr"
+                    android:layout_width="44dp"
+                    android:layout_height="84dp"
+                    android:background="@drawable/btn_send_bg"
+                    android:text="➕"
+                    android:textColor="@color/btn_send_text"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Card 6: Slang Mapping Customization -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/card_bg"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:text="ਸ਼ਬਦ ਬਦਲਾਵ — Slang Mappings"
+                    android:textColor="@color/accent_blue"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/btn_reset_slang_defaults"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="ਮੂਲ ਮੁੜ-ਲੋਡ ਕਰੋ (Reset Defaults)"
+                    android:textColor="@color/accent_orange"
+                    android:textSize="11sp"
+                    android:clickable="true"
+                    android:focusable="true" />
+            </RelativeLayout>
+
+            <!-- Dynamic List Container -->
+            <LinearLayout
+                android:id="@+id/slang_list_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="12dp" />
+
+            <!-- Add Row Form -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ਨਵਾਂ ਸ਼ਬਦ ਬਦਲਾਵ ਜੋੜੋ (Add Slang Mapping):"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:layout_marginBottom="6dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <EditText
+                    android:id="@+id/new_slang_target"
+                    android:layout_width="0dp"
+                    android:layout_height="44dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="4dp"
+                    android:hint="Spoken (e.g. karo)"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_secondary"
+                    android:textSize="13sp"
+                    android:background="@color/top_bar_bg"
+                    android:paddingHorizontal="10dp"
+                    android:singleLine="true" />
+
+                <EditText
+                    android:id="@+id/new_slang_replacement"
+                    android:layout_width="0dp"
+                    android:layout_height="44dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="6dp"
+                    android:hint="Replaced (e.g. kro)"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_secondary"
+                    android:textSize="13sp"
+                    android:background="@color/top_bar_bg"
+                    android:paddingHorizontal="10dp"
+                    android:singleLine="true" />
+
+                <TextView
+                    android:id="@+id/btn_add_slang"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:background="@drawable/btn_send_bg"
+                    android:text="➕"
+                    android:textColor="@color/btn_send_text"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Card 7: Offline Mode Switch -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/card_bg"
+            android:padding="16dp"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ਆਫਲਾਈਨ ਮੋਡ — Force Offline Mode"
+                    android:textColor="@color/accent_blue"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bypasses internet APIs and uses offline local transliteration only"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp"
+                    android:layout_marginTop="2dp" />
+            </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/offline_mode_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/accent_blue"
+                android:checked="false" />
+        </LinearLayout>
+
+        <!-- Card 8: Quick Replies Mode selector -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/card_bg"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ਤੁਰੰਤ ਜਵਾਬ ਦਾ ਫਾਰਮੈਟ — Quick Replies Format"
+                android:textColor="@color/accent_blue"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Choose output format for quick reply buttons"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="12dp" />
+
+            <RadioGroup
+                android:id="@+id/qr_format_radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/qr_follow_keyboard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Follow Keyboard Output Mode (ਕੀਬੋਰਡ ਮੋਡ ਦੇ ਅਨੁਸਾਰ)"
+                    android:textColor="@color/text_primary"
+                    android:textSize="14sp"
+                    android:buttonTint="@color/accent_blue"
+                    android:padding="8dp" />
+
+                <RadioButton
+                    android:id="@+id/qr_always_punglish"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Always Punglish / Romanized (Punglish - e.g. kithe aa?)"
+                    android:textColor="@color/text_primary"
+                    android:textSize="14sp"
+                    android:buttonTint="@color/accent_blue"
+                    android:padding="8dp" />
+
+                <RadioButton
+                    android:id="@+id/qr_always_punjabi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Always Punjabi / Gurmukhi (ਪੰਜਾਬੀ - e.g. ਕਿੱਥੇ ਆਂ?)"
+                    android:textColor="@color/text_primary"
+                    android:textSize="14sp"
+                    android:buttonTint="@color/accent_blue"
+                    android:padding="8dp" />
+            </RadioGroup>
+        </LinearLayout>
+
         <!-- Advanced settings toggle -->
         <TextView
             android:id="@+id/btn_advanced_settings"
