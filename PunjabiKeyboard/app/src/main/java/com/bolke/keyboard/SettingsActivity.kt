@@ -1,5 +1,6 @@
 package com.bolke.keyboard
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -47,6 +48,11 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var btnSave: TextView
     private lateinit var saveStatus: TextView
 
+    private lateinit var btnHelpGuide: TextView
+    private lateinit var helpGuideContainer: LinearLayout
+    private lateinit var btnAppSizeMinus: TextView
+    private lateinit var btnAppSizePlus: TextView
+
     private val quickRepliesList = ArrayList<Pair<String, String>>()
     private val slangMappingsList = ArrayList<Pair<String, String>>()
 
@@ -63,6 +69,19 @@ class SettingsActivity : AppCompatActivity() {
 
     private lateinit var prefsManager: PreferencesManager
     private var isAdvancedVisible = false
+    private var isHelpGuideVisible = false
+
+
+    override fun attachBaseContext(newBase: Context) {
+        val prefs = PreferencesManager(newBase)
+        val scale = prefs.appScale
+        val config = newBase.resources.configuration
+        config.fontScale = scale
+        val metrics = newBase.resources.displayMetrics
+        config.densityDpi = (metrics.densityDpi * scale).toInt()
+        val context = newBase.createConfigurationContext(config)
+        super.attachBaseContext(context)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,6 +132,23 @@ class SettingsActivity : AppCompatActivity() {
 
         btnSave = findViewById(R.id.btn_save)
         saveStatus = findViewById(R.id.save_status)
+
+        // Bind Help Guide
+        btnHelpGuide = findViewById(R.id.btn_help_guide)
+        helpGuideContainer = findViewById(R.id.help_guide_container)
+        btnHelpGuide.setOnClickListener {
+            toggleHelpGuide()
+        }
+
+        // Bind App Size buttons
+        btnAppSizeMinus = findViewById(R.id.btn_app_size_minus)
+        btnAppSizePlus = findViewById(R.id.btn_app_size_plus)
+        btnAppSizeMinus.setOnClickListener {
+            adjustAppScale(-0.1f)
+        }
+        btnAppSizePlus.setOnClickListener {
+            adjustAppScale(0.1f)
+        }
 
         // Bind Advanced Toggle click listener
         btnAdvancedToggle.setOnClickListener {
@@ -257,6 +293,7 @@ class SettingsActivity : AppCompatActivity() {
             editNewQRPunjabi.text.clear()
             editNewQRPunglish.text.clear()
             refreshQuickRepliesUI()
+            saveSettings()
         } else {
             Toast.makeText(this, "ਕਿਰਪਾ ਕਰਕੇ ਦੋਵੇਂ ਖਾਨੇ ਭਰੋ (Fill both fields)", Toast.LENGTH_SHORT).show()
         }
@@ -265,6 +302,7 @@ class SettingsActivity : AppCompatActivity() {
     private fun removeQuickReply(punjabi: String, punglish: String) {
         quickRepliesList.removeAll { it.first == punjabi && it.second == punglish }
         refreshQuickRepliesUI()
+        saveSettings()
     }
 
     private fun resetQuickReplyDefaults() {
@@ -277,6 +315,7 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
         refreshQuickRepliesUI()
+        saveSettings()
     }
 
     private fun refreshQuickRepliesUI() {
@@ -356,6 +395,7 @@ class SettingsActivity : AppCompatActivity() {
             editNewSlangTarget.text.clear()
             editNewSlangReplacement.text.clear()
             refreshSlangUI()
+            saveSettings()
         } else {
             Toast.makeText(this, "ਕਿਰਪਾ ਕਰਕੇ ਦੋਵੇਂ ਖਾਨੇ ਭਰੋ (Fill both fields)", Toast.LENGTH_SHORT).show()
         }
@@ -364,6 +404,7 @@ class SettingsActivity : AppCompatActivity() {
     private fun removeSlangMapping(target: String) {
         slangMappingsList.removeAll { it.first == target }
         refreshSlangUI()
+        saveSettings()
     }
 
     private fun resetSlangDefaults() {
@@ -376,6 +417,7 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
         refreshSlangUI()
+        saveSettings()
     }
 
     private fun refreshSlangUI() {
@@ -432,5 +474,27 @@ class SettingsActivity : AppCompatActivity() {
         rowLayout.addView(deleteBtn)
 
         return rowLayout
+    }
+
+    private fun toggleHelpGuide() {
+        isHelpGuideVisible = !isHelpGuideVisible
+        if (isHelpGuideVisible) {
+            helpGuideContainer.visibility = View.VISIBLE
+            btnHelpGuide.text = "💡 View Voice Setup Guide (ਵੌਇਸ ਗਾਈਡ) ▴"
+        } else {
+            helpGuideContainer.visibility = View.GONE
+            btnHelpGuide.text = "💡 View Voice Setup Guide (ਵੌਇਸ ਗਾਈਡ) ▾"
+        }
+    }
+
+    private fun adjustAppScale(delta: Float) {
+        val newScale = (prefsManager.appScale + delta).coerceIn(0.8f, 1.6f)
+        prefsManager.appScale = newScale
+        recreate()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        saveSettings()
     }
 }

@@ -17,22 +17,10 @@
         android:paddingHorizontal="6dp"
         android:background="@color/top_bar_bg">
 
-        <ImageButton
-            android:id="@+id/btn_settings"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:src="@drawable/ic_settings"
-            android:background="@android:color/transparent"
-            android:contentDescription="Settings"
-            android:scaleType="centerInside"
-            android:padding="2dp" />
-
-        <!-- Vertical divider between gear and quick replies -->
+        <!-- Top-left corner kept empty -->
         <View
-            android:layout_width="1dp"
-            android:layout_height="18dp"
-            android:background="@color/divider"
-            android:layout_marginHorizontal="6dp" />
+            android:layout_width="24dp"
+            android:layout_height="match_parent" />
 
         <!-- Scrollable Quick Replies Row -->
         <HorizontalScrollView
@@ -50,6 +38,52 @@
                 android:gravity="center_vertical"
                 android:paddingEnd="8dp" />
         </HorizontalScrollView>
+
+        <!-- Right section containing size control (- / +) and settings gear -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/btn_size_minus"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:text="-"
+                android:textColor="@color/accent_blue"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:background="@drawable/mode_pill_bg"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginEnd="4dp" />
+
+            <TextView
+                android:id="@+id/btn_size_plus"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:text="+"
+                android:textColor="@color/accent_blue"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:background="@drawable/mode_pill_bg"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginEnd="6dp" />
+
+            <ImageButton
+                android:id="@+id/btn_settings"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/ic_settings"
+                android:background="@android:color/transparent"
+                android:contentDescription="Settings"
+                android:scaleType="centerInside"
+                android:padding="2dp" />
+        </LinearLayout>
 
         <!-- Hidden / Gone mode selector (so code binding doesn't break) -->
         <TextView

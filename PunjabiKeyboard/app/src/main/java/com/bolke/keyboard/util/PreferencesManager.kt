@@ -20,6 +20,7 @@ class PreferencesManager(context: Context) {
         private const val KEY_SLANG_MAPPINGS = "slang_mappings"
         private const val KEY_OFFLINE_MODE = "offline_mode"
         private const val KEY_QR_MODE = "qr_mode"
+        private const val KEY_APP_SCALE = "app_scale"
 
         private const val DEFAULT_QUICK_REPLIES = "ਕਿੱਥੇ ਆਗਿਆ?|kithe aagya?\nਮੈਂ ਚੱਲ ਪਈ!|mai chalpyi!\nਪੁੱਤ ਕਿੱਥੇ ਆਂ?|putt kithe aa?\nਹਾਂਜੀ|hanji\nਨਾਜੀ|naji\nਠੀਕ ਹੈ|thik hai\nਸਤਿ ਸ੍ਰੀ ਅਕਾਲ|sat sri akal\nਕੀ ਹਾਲ ਹੈ?|ki haal hai?"
         private const val DEFAULT_SLANG_MAPPINGS = "karo:kro\nchalo:chlo\nkarda:krda\nkardi:krdi\nkarde:krde\njaldi:jldi"
@@ -96,6 +97,13 @@ class PreferencesManager(context: Context) {
         get() = prefs.getString(KEY_QR_MODE, "FOLLOW_KEYBOARD") ?: "FOLLOW_KEYBOARD"
         set(value) {
             prefs.edit().putString(KEY_QR_MODE, value).apply()
+        }
+
+    /** Font and layout scale multiplier for the Settings App UI (default: 1.0f) */
+    var appScale: Float
+        get() = prefs.getFloat(KEY_APP_SCALE, 1.0f)
+        set(value) {
+            prefs.edit().putFloat(KEY_APP_SCALE, value).apply()
         }
 }
 

@@ -66,18 +66,7 @@ class BolKeIMEService : InputMethodService() {
         translationManager = TranslationManager()
 
         // Adjust keyboard row heights programmatically based on user setting
-        val multiplier = prefsManager.keyboardSize
-        val density = resources.displayMetrics.density
-        val rowHeight = (46 * density * multiplier).toInt()
-        val specialRowHeight = (52 * density * multiplier).toInt()
-
-        keyboardView.findViewById<View>(R.id.row1)?.layoutParams?.height = rowHeight
-        keyboardView.findViewById<View>(R.id.row2)?.layoutParams?.height = rowHeight
-        keyboardView.findViewById<View>(R.id.row3)?.layoutParams?.height = rowHeight
-        keyboardView.findViewById<View>(R.id.row4)?.layoutParams?.height = specialRowHeight
-        keyboardView.findViewById<View>(R.id.numbers_row1)?.layoutParams?.height = rowHeight
-        keyboardView.findViewById<View>(R.id.numbers_row2)?.layoutParams?.height = rowHeight
-        keyboardView.findViewById<View>(R.id.numbers_row3)?.layoutParams?.height = rowHeight
+        scaleKeyboardRows(prefsManager.keyboardSize)
 
         // Bind all the keyboard keys recursively
         alphabeticKeys.clear()
@@ -86,6 +75,19 @@ class BolKeIMEService : InputMethodService() {
         // Bind top bar buttons
         quickRepliesContainer = keyboardView.findViewById(R.id.quick_replies_container)
         populateQuickReplies()
+
+        val btnSizeMinus = keyboardView.findViewById<View>(R.id.btn_size_minus)
+        val btnSizePlus = keyboardView.findViewById<View>(R.id.btn_size_plus)
+
+        btnSizeMinus?.setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+            adjustKeyboardSize(-0.05f)
+        }
+
+        btnSizePlus?.setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+            adjustKeyboardSize(0.05f)
+        }
 
         val btnSettings = keyboardView.findViewById<ImageButton>(R.id.btn_settings)
         btnSettings.setOnClickListener {
@@ -651,5 +653,35 @@ class BolKeIMEService : InputMethodService() {
             }
         }
         return if (emojiToAppend.isNotEmpty()) text + emojiToAppend else text
+    }
+
+    override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
+        super.onStartInputView(info, restarting)
+        // Refresh quick replies and size dynamically when keyboard shows up
+        populateQuickReplies()
+        scaleKeyboardRows(prefsManager.keyboardSize)
+    }
+
+    private fun adjustKeyboardSize(delta: Float) {
+        val currentSize = prefsManager.keyboardSize
+        val newSize = (currentSize + delta).coerceIn(0.70f, 1.45f)
+        prefsManager.keyboardSize = newSize
+        scaleKeyboardRows(newSize)
+    }
+
+    private fun scaleKeyboardRows(multiplier: Float) {
+        if (!::keyboardView.isInitialized) return
+        val density = resources.displayMetrics.density
+        val rowHeight = (46 * density * multiplier).toInt()
+        val specialRowHeight = (52 * density * multiplier).toInt()
+
+        keyboardView.findViewById<View>(R.id.row1)?.layoutParams?.height = rowHeight
+        keyboardView.findViewById<View>(R.id.row2)?.layoutParams?.height = rowHeight
+        keyboardView.findViewById<View>(R.id.row3)?.layoutParams?.height = rowHeight
+        keyboardView.findViewById<View>(R.id.row4)?.layoutParams?.height = specialRowHeight
+        keyboardView.findViewById<View>(R.id.numbers_row1)?.layoutParams?.height = rowHeight
+        keyboardView.findViewById<View>(R.id.numbers_row2)?.layoutParams?.height = rowHeight
+        keyboardView.findViewById<View>(R.id.numbers_row3)?.layoutParams?.height = rowHeight
+        keyboardView.requestLayout()
     }
 }

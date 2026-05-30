@@ -26,6 +26,17 @@ class SetupActivity : AppCompatActivity() {
     private lateinit var btnDone: TextView
     private lateinit var prefsManager: PreferencesManager
 
+    override fun attachBaseContext(newBase: Context) {
+        val prefs = PreferencesManager(newBase)
+        val scale = prefs.appScale
+        val config = newBase.resources.configuration
+        config.fontScale = scale
+        val metrics = newBase.resources.displayMetrics
+        config.densityDpi = (metrics.densityDpi * scale).toInt()
+        val context = newBase.createConfigurationContext(config)
+        super.attachBaseContext(context)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setup)
