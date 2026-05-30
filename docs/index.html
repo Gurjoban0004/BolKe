@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ਬੋਲ ਕੇ — BolKe Keyboard | Download</title>
+    
+    <!-- Content Security Policy to allow styling, fonts, and browser extensions -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:; connect-src 'self';">
+    
+    <!-- Premium Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #0A0A0F;
+            --card-bg: #13131A;
+            --accent-blue: #A2D2FF;
+            --accent-green: #81C784;
+            --accent-orange: #FFB74D;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A0B0;
+            --divider: #22222E;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .brand-title {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* ═══════════ Background Glow Effects ═══════════ */
+        .glow-sphere {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(162, 210, 255, 0.15) 0%, rgba(0,0,0,0) 70%);
+            top: -50px;
+            z-index: -1;
+        }
+
+        /* ═══════════ Container ═══════════ */
+        .container {
+            width: 100%;
+            max-width: 600px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* ═══════════ Logo & Title ═══════════ */
+        .logo-container {
+            margin-top: 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .logo-icon {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, #1A1A24 0%, #111116 100%);
+            border: 2px solid var(--accent-blue);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 25px rgba(162, 210, 255, 0.25);
+            font-size: 42px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .logo-ripple {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 1px solid var(--accent-blue);
+            animation: pulse 2.5s infinite;
+            opacity: 0;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(1.4);
+                opacity: 0;
+            }
+        }
+
+        .app-title-gurmukhi {
+            font-size: 38px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .app-title-roman {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .app-description {
+            font-size: 15px;
+            color: var(--text-secondary);
+            max-width: 420px;
+            margin-bottom: 36px;
+        }
+
+        /* ═══════════ Download Button ═══════════ */
+        .download-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 320px;
+            height: 58px;
+            background-color: var(--accent-blue);
+            color: #000000;
+            text-decoration: none;
+            border-radius: 29px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            box-shadow: 0 6px 20px rgba(162, 210, 255, 0.3);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 36px;
+            cursor: pointer;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(162, 210, 255, 0.45);
+            background-color: #BDE0FE;
+        }
+
+        .download-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .download-btn span {
+            margin-left: 8px;
+        }
+
+        /* ═══════════ Security Highlights ═══════════ */
+        .security-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--divider);
+            border-radius: 18px;
+            padding: 22px;
+            width: 100%;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .security-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .shield-icon {
+            font-size: 24px;
+            margin-right: 12px;
+        }
+
+        .security-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+
+        .security-list {
+            list-style: none;
+        }
+
+        .security-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            font-size: 13.5px;
+            color: var(--text-secondary);
+        }
+
+        .security-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .bullet-point {
+            color: var(--accent-green);
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 16px;
+            line-height: 1;
+        }
+
+        .security-item strong {
+            color: var(--text-primary);
+        }
+
+        /* ═══════════ Setup Instructions ═══════════ */
+        .instructions-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--divider);
+            border-radius: 18px;
+            padding: 24px;
+            width: 100%;
+            margin-bottom: 32px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .instructions-title {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--divider);
+            padding-bottom: 12px;
+            color: var(--accent-blue);
+        }
+
+        .step-row {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .step-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .step-number {
+            width: 28px;
+            height: 28px;
+            background-color: rgba(162, 210, 255, 0.1);
+            border: 1px solid var(--accent-blue);
+            color: var(--accent-blue);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 700;
+            font-size: 13px;
+            margin-right: 14px;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .step-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .step-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .note-box {
+            margin-top: 14px;
+            padding: 10px 12px;
+            background-color: rgba(255, 183, 77, 0.08);
+            border-left: 3px solid var(--accent-orange);
+            border-radius: 4px;
+            font-size: 12px;
+            color: var(--accent-orange);
+        }
+
+        /* ═══════════ Footer ═══════════ */
+        footer {
+            margin-top: auto;
+            padding: 32px 16px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--divider);
+            width: 100%;
+        }
+
+        footer a {
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+        
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glow-sphere"></div>
+
+    <div class="container">
+        
+        <!-- Header -->
+        <div class="logo-container">
+            <div class="logo-icon">
+                🎤
+                <div class="logo-ripple"></div>
+            </div>
+            <h1 class="app-title-gurmukhi">ਬੋਲ ਕੇ</h1>
+            <div class="app-title-roman">BolKe Keyboard</div>
+            <p class="app-description">
+                ਸੁਰੱਖਿਅਤ ਪੰਜਾਬੀ ਵੌਇਸ ਕੀਬੋਰਡ ਜੋ ਤੁਹਾਡੀ ਬੋਲੀ ਨੂੰ ਤੁਰੰਤ ਟੈਕਸਟ ਵਿੱਚ ਬਦਲਦਾ ਹੈ। ਖਾਸ ਤੌਰ 'ਤੇ ਮਾਵਾਂ ਅਤੇ ਬਜ਼ੁਰਗਾਂ ਲਈ ਤਿਆਰ ਕੀਤਾ ਗਿਆ।
+            </p>
+        </div>
+
+        <!-- Download Button -->
+        <a href="app-release.apk" class="download-btn" download>
+            📥 <span>ਡਾਊਨਲੋਡ ਕਰੋ (Download APK)</span>
+        </a>
+
+        <!-- Security / Safety Highlights -->
+        <div class="security-card">
+            <div class="security-header">
+                <span class="shield-icon">🛡️</span>
+                <h2 class="security-title">ਇਹ ਐਪ 100% ਸੁਰੱਖਿਅਤ ਹੈ (100% Private &amp; Safe)</h2>
+            </div>
+            <ul class="security-list">
+                <li class="security-item">
+                    <span class="bullet-point">✓</span>
+                    <div>
+                        <strong>ਕੋਈ ਡਾਟਾ ਚੋਰੀ ਨਹੀਂ (Zero Data Sharing):</strong> ਇਹ ਕੀਬੋਰਡ ਤੁਹਾਡੀਆਂ ਲਿਖਤਾਂ, ਪਾਸਵਰਡ ਜਾਂ ਨਿੱਜੀ ਗੱਲਾਂ ਨੂੰ ਕਦੇ ਵੀ ਇਕੱਠਾ ਨਹੀਂ ਕਰਦਾ ਅਤੇ ਨਾ ਹੀ ਕਿਸੇ ਸਰਵਰ 'ਤੇ ਭੇਜਦਾ ਹੈ।
+                    </div>
+                </li>
+                <li class="security-item">
+                    <span class="bullet-point">✓</span>
+                    <div>
+                        <strong>ਆਫਲਾਈਨ ਕੰਮ ਕਰਦਾ ਹੈ (Works Fully Offline):</strong> ਪੰਜਾਬੀ ਬੋਲ ਕੇ ਲਿਖਣਾ ਅਤੇ ਤੁਰੰਤ ਜਵਾਬ (Quick Replies) ਬਿਨਾਂ ਇੰਟਰਨੈੱਟ ਦੇ ਵੀ ਪੂਰੀ ਤਰ੍ਹਾਂ ਕੰਮ ਕਰਦੇ ਹਨ।
+                    </div>
+                </li>
+                <li class="security-item">
+                    <span class="bullet-point">✓</span>
+                    <div>
+                        <strong>ਕੋਈ ਵਿਗਿਆਪਨ ਨਹੀਂ (No Ads / Trackers):</strong> ਐਪ ਵਿੱਚ ਕੋਈ ਵਿਗਿਆਪਨ (Ads) ਜਾਂ ਟਰੈਕਰ ਨਹੀਂ ਹਨ। ਇਹ ਬਿਲਕੁਲ ਸਾਫ਼-ਸੁਥਰੀ ਅਤੇ ਸੁਰੱਖਿਅਤ ਹੈ।
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Setup Instructions -->
+        <div class="instructions-card">
+            <h2 class="instructions-title">ਇੰਸਟਾਲ ਕਰਨ ਦਾ ਤਰੀਕਾ (Installation Guide)</h2>
+            
+            <!-- Step 1 -->
+            <div class="step-row">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3 class="step-title">ਡਾਊਨਲੋਡ ਕਰੋ (Download)</h3>
+                    <p class="step-desc">ਉੱਪਰ ਦਿੱਤੇ ਨੀਲੇ ਬਟਨ 'ਤੇ ਕਲਿੱਕ ਕਰਕੇ ਐਪ ਫਾਈਲ (APK) ਨੂੰ ਫੋਨ ਵਿੱਚ ਡਾਊਨਲੋਡ ਕਰੋ।</p>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="step-row">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3 class="step-title">ਇੰਸਟਾਲ ਕਰੋ (Install)</h3>
+                    <p class="step-desc">ਡਾਊਨਲੋਡ ਕੀਤੀ ਫਾਈਲ 'ਤੇ ਕਲਿੱਕ ਕਰੋ। ਜੇਕਰ ਫੋਨ ਪੁੱਛੇ, ਤਾਂ "Allow from this source" ਜਾਂ "Install anyway" 'ਤੇ ਕਲਿੱਕ ਕਰੋ।</p>
+                    <div class="note-box">
+                        💡 Android ਫੋਨਾਂ ਵਿੱਚ ਜਦੋਂ ਅਸੀਂ ਪਲੇਅ ਸਟੋਰ ਤੋਂ ਬਾਹਰੋਂ ਐਪ ਇੰਸਟਾਲ ਕਰਦੇ ਹਾਂ, ਤਾਂ ਫੋਨ ਸੁਰੱਖਿਆ ਚੇਤਾਵਨੀ ਦਿਖਾ ਸਕਦਾ ਹੈ। ਇਹ ਆਮ ਹੈ। ਤੁਸੀਂ ਬਿਨਾਂ ਕਿਸੇ ਡਰ ਦੇ "Install Anyway" 'ਤੇ ਕਲਿੱਕ ਕਰ ਸਕਦੇ ਹੋ ਕਿਉਂਕਿ BolKe 100% ਸੁਰੱਖਿਅਤ ਹੈ।
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="step-row">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3 class="step-title">ਚਾਲੂ ਕਰੋ (Setup &amp; Enable)</h3>
+                    <p class="step-desc">ਇੰਸਟਾਲ ਹੋਣ ਤੋਂ ਬਾਅਦ ਐਪ ਨੂੰ ਖੋਲ੍ਹੋ। ਐਪ ਵਿੱਚ ਦਿੱਤੇ ਦੋ ਸੌਖੇ ਸਟੈਪਸ ਦੀ ਪਾਲਣਾ ਕਰਕੇ 'BolKe Keyboard' ਨੂੰ ਆਪਣੇ ਫੋਨ ਵਿੱਚ ਚਾਲੂ (Enable) ਅਤੇ ਡਿਫੌਲਟ ਵਜੋਂ ਸੈੱਟ (Select) ਕਰੋ।</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        ਪ੍ਰਾਈਵੇਟ ਅਤੇ ਸੁਰੱਖਿਅਤ • Designed with ❤️ for Mom &amp; Friends
+    </footer>
+
+</body>
+</html>
