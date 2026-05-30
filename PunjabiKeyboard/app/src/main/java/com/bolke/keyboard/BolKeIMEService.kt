@@ -89,8 +89,8 @@ class BolKeIMEService : InputMethodService() {
             adjustKeyboardSize(0.05f)
         }
 
-        val btnSettings = keyboardView.findViewById<ImageButton>(R.id.btn_settings)
-        btnSettings.setOnClickListener {
+        val btnSettings = keyboardView.findViewById<View>(R.id.btn_settings)
+        btnSettings?.setOnClickListener {
             val intent = Intent(this, SettingsActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
             }
