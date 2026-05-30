@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ਬੋਲ ਕੇ — BolKe</string>
+    <string name="subtype_punjabi_voice">Punjabi Voice</string>
+    <string name="settings_title">ਸੈਟਿੰਗਜ਼ — Settings</string>
+
+    <!-- Output modes -->
+    <string name="mode_punjabi">ਪੰਜਾਬੀ</string>
+    <string name="mode_english">English</string>
+    <string name="mode_punglish">Punglish</string>
+
+    <!-- Voice UI -->
+    <string name="voice_prompt">🎤 ਬੋਲੋ…</string>
+    <string name="voice_listening">ਸੁਣ ਰਿਹਾ ਹਾਂ…</string>
+    <string name="voice_processing">ਸੋਚ ਰਿਹਾ ਹਾਂ…</string>
+    <string name="voice_stop">⏹ ਬੱਸ</string>
+    <string name="btn_send">✓ ਭੇਜੋ</string>
+    <string name="btn_rerecord">🔄 ਦੁਬਾਰਾ</string>
+
+    <!-- Setup wizard -->
+    <string name="setup_welcome_title">ਬੋਲ ਕੇ ਵਿੱਚ ਜੀ ਆਇਆਂ ਨੂੰ!</string>
+    <string name="setup_welcome_subtitle">Welcome to BolKe — Your Punjabi Voice Keyboard</string>
+    <string name="setup_step1_title">Step 1: Enable Keyboard</string>
+    <string name="setup_step1_desc">ਪਹਿਲਾਂ ਕੀਬੋਰਡ ਨੂੰ ਚਾਲੂ ਕਰੋ</string>
+    <string name="setup_step1_btn">Enable BolKe Keyboard</string>
+    <string name="setup_step2_title">Step 2: Select Keyboard</string>
+    <string name="setup_step2_desc">ਹੁਣ BolKe ਨੂੰ ਆਪਣਾ ਕੀਬੋਰਡ ਬਣਾਓ</string>
+    <string name="setup_step2_btn">Select BolKe</string>
+    <string name="setup_step3_title">Step 3: All Done! ✓</string>
+    <string name="setup_step3_desc">ਬੱਸ! ਹੁਣ WhatsApp ਖੋਲ੍ਹੋ ਤੇ 🎤 ਦੱਬੋ</string>
+    <string name="setup_done_btn">ਸ਼ੁਰੂ ਕਰੋ!</string>
+
+    <!-- Settings -->
+    <string name="settings_output_mode">Output Mode</string>
+    <string name="settings_output_mode_desc">ਆਉਟਪੁੱਟ ਦੀ ਭਾਸ਼ਾ ਚੁਣੋ</string>
+    <string name="settings_api_key">Google Translate API Key</string>
+    <string name="settings_api_key_hint">Paste your API key here</string>
+    <string name="settings_save">ਸੇਵ ਕਰੋ — Save</string>
+    <string name="settings_saved">✓ ਸੇਵ ਹੋ ਗਿਆ!</string>
+
+    <!-- Errors -->
+    <string name="error_no_speech">ਕੁਝ ਸੁਣਿਆ ਨਹੀਂ — ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ</string>
+    <string name="error_no_match">ਕੁਝ ਸਮਝ ਨਹੀਂ ਆਇਆ — ਦੁਬਾਰਾ ਬੋਲੋ</string>
+    <string name="error_network">ਇੰਟਰਨੈਟ ਚੈੱਕ ਕਰੋ</string>
+    <string name="error_permission">ਮਾਈਕ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ</string>
+    <string name="error_translation">Translation failed</string>
+    <string name="error_no_api_key">API key ਸੈਟਿੰਗਜ਼ ਵਿੱਚ ਪਾਓ</string>
+</resources>

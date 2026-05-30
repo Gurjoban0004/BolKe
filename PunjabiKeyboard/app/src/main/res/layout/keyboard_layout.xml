@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/keyboard_bg"
+    android:paddingHorizontal="3dp"
+    android:paddingTop="2dp"
+    android:paddingBottom="4dp">
+
+    <!-- ═══════════ Top Bar: Settings + Mode Selector ═══════════ -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="6dp"
+        android:background="@color/top_bar_bg">
+
+        <ImageButton
+            android:id="@+id/btn_settings"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_settings"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Settings"
+            android:scaleType="centerInside"
+            android:padding="3dp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/mode_selector"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:text="Punglish ▾"
+            android:textColor="@color/accent_blue"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:paddingHorizontal="14dp"
+            android:background="@drawable/mode_pill_bg"
+            android:clickable="true"
+            android:focusable="true" />
+    </LinearLayout>
+
+    <!-- ═══════════ Preview Area (hidden by default) ═══════════ -->
+    <LinearLayout
+        android:id="@+id/preview_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:background="@color/preview_bg"
+        android:padding="10dp"
+        android:layout_marginHorizontal="2dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp">
+
+        <TextView
+            android:id="@+id/preview_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/key_text"
+            android:textSize="16sp"
+            android:lineSpacingExtra="4dp"
+            android:padding="6dp"
+            android:minLines="1"
+            android:maxLines="5" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:id="@+id/btn_rerecord"
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:text="@string/btn_rerecord"
+                android:textColor="@color/btn_rerecord_text"
+                android:textSize="13sp"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
+                android:background="@drawable/btn_rerecord_bg"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:id="@+id/btn_send"
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:text="@string/btn_send"
+                android:textColor="@color/btn_send_text"
+                android:textSize="13sp"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
+                android:background="@drawable/btn_send_bg"
+                android:clickable="true"
+                android:focusable="true" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- ═══════════ Voice Overlay (hidden by default) ═══════════ -->
+    <LinearLayout
+        android:id="@+id/voice_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:background="@color/voice_overlay_bg"
+        android:padding="16dp"
+        android:gravity="center"
+        android:layout_marginHorizontal="2dp"
+        android:layout_marginVertical="4dp">
+
+        <TextView
+            android:id="@+id/voice_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/voice_prompt"
+            android:textColor="@color/accent_blue"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/partial_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/key_text_secondary"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:minHeight="24dp" />
+
+        <TextView
+            android:id="@+id/btn_stop_voice"
+            android:layout_width="wrap_content"
+            android:layout_height="34dp"
+            android:text="@string/voice_stop"
+            android:textColor="@color/accent_orange"
+            android:textSize="13sp"
+            android:gravity="center"
+            android:paddingHorizontal="20dp"
+            android:background="@drawable/btn_rerecord_bg"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:focusable="true" />
+    </LinearLayout>
+
+    <!-- ═══════════ Row 1: q w e r t y u i o p ═══════════ -->
+    <LinearLayout
+        android:id="@+id/row1"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="3dp">
+
+        <TextView android:id="@+id/key_q" style="@style/KeyStyle" android:text="q" />
+        <TextView android:id="@+id/key_w" style="@style/KeyStyle" android:text="w" />
+        <TextView android:id="@+id/key_e" style="@style/KeyStyle" android:text="e" />
+        <TextView android:id="@+id/key_r" style="@style/KeyStyle" android:text="r" />
+        <TextView android:id="@+id/key_t" style="@style/KeyStyle" android:text="t" />
+        <TextView android:id="@+id/key_y" style="@style/KeyStyle" android:text="y" />
+        <TextView android:id="@+id/key_u" style="@style/KeyStyle" android:text="u" />
+        <TextView android:id="@+id/key_i" style="@style/KeyStyle" android:text="i" />
+        <TextView android:id="@+id/key_o" style="@style/KeyStyle" android:text="o" />
+        <TextView android:id="@+id/key_p" style="@style/KeyStyle" android:text="p" />
+    </LinearLayout>
+
+    <!-- ═══════════ Row 2: a s d f g h j k l ═══════════ -->
+    <LinearLayout
+        android:id="@+id/row2"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="3dp"
+        android:paddingHorizontal="16dp">
+
+        <TextView android:id="@+id/key_a" style="@style/KeyStyle" android:text="a" />
+        <TextView android:id="@+id/key_s" style="@style/KeyStyle" android:text="s" />
+        <TextView android:id="@+id/key_d" style="@style/KeyStyle" android:text="d" />
+        <TextView android:id="@+id/key_f" style="@style/KeyStyle" android:text="f" />
+        <TextView android:id="@+id/key_g" style="@style/KeyStyle" android:text="g" />
+        <TextView android:id="@+id/key_h" style="@style/KeyStyle" android:text="h" />
+        <TextView android:id="@+id/key_j" style="@style/KeyStyle" android:text="j" />
+        <TextView android:id="@+id/key_k" style="@style/KeyStyle" android:text="k" />
+        <TextView android:id="@+id/key_l" style="@style/KeyStyle" android:text="l" />
+    </LinearLayout>
+
+    <!-- ═══════════ Row 3: ⬆ z x c v b n m ⌫ ═══════════ -->
+    <LinearLayout
+        android:id="@+id/row3"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="3dp">
+
+        <TextView
+            android:id="@+id/key_shift"
+            style="@style/KeyStyleSpecial"
+            android:text="⬆"
+            android:layout_weight="1.5" />
+
+        <TextView android:id="@+id/key_z" style="@style/KeyStyle" android:text="z" />
+        <TextView android:id="@+id/key_x" style="@style/KeyStyle" android:text="x" />
+        <TextView android:id="@+id/key_c" style="@style/KeyStyle" android:text="c" />
+        <TextView android:id="@+id/key_v" style="@style/KeyStyle" android:text="v" />
+        <TextView android:id="@+id/key_b" style="@style/KeyStyle" android:text="b" />
+        <TextView android:id="@+id/key_n" style="@style/KeyStyle" android:text="n" />
+        <TextView android:id="@+id/key_m" style="@style/KeyStyle" android:text="m" />
+
+        <TextView
+            android:id="@+id/key_backspace"
+            style="@style/KeyStyleSpecial"
+            android:text="⌫"
+            android:layout_weight="1.5" />
+    </LinearLayout>
+
+    <!-- ═══════════ Row 4: ?123  ,  🎤(BIG)  .  ⏎ ═══════════ -->
+    <LinearLayout
+        android:id="@+id/row4"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="3dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/key_symbols"
+            style="@style/KeyStyleSpecial"
+            android:text="\?123"
+            android:textSize="12sp"
+            android:layout_weight="1.2" />
+
+        <TextView
+            android:id="@+id/key_comma"
+            style="@style/KeyStyle"
+            android:text=","
+            android:layout_weight="0.8" />
+
+        <!-- ★ THE BIG MIC BUTTON ★ -->
+        <FrameLayout
+            android:id="@+id/mic_button_container"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:layout_marginHorizontal="4dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:id="@+id/mic_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_mic"
+                android:background="@drawable/mic_button_bg"
+                android:padding="10dp"
+                android:scaleType="centerInside"
+                android:contentDescription="Voice Input" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/key_period"
+            style="@style/KeyStyle"
+            android:text="."
+            android:layout_weight="0.8" />
+
+        <TextView
+            android:id="@+id/key_enter"
+            style="@style/KeyStyleSpecial"
+            android:text="⏎"
+            android:layout_weight="1.2" />
+    </LinearLayout>
+
+    <!-- ═══════════ Number/Symbol Rows (hidden by default) ═══════════ -->
+    <LinearLayout
+        android:id="@+id/numbers_row1"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="3dp"
+        android:visibility="gone">
+
+        <TextView android:id="@+id/key_1" style="@style/KeyStyle" android:text="1" />
+        <TextView android:id="@+id/key_2" style="@style/KeyStyle" android:text="2" />
+        <TextView android:id="@+id/key_3" style="@style/KeyStyle" android:text="3" />
+        <TextView android:id="@+id/key_4" style="@style/KeyStyle" android:text="4" />
+        <TextView android:id="@+id/key_5" style="@style/KeyStyle" android:text="5" />
+        <TextView android:id="@+id/key_6" style="@style/KeyStyle" android:text="6" />
+        <TextView android:id="@+id/key_7" style="@style/KeyStyle" android:text="7" />
+        <TextView android:id="@+id/key_8" style="@style/KeyStyle" android:text="8" />
+        <TextView android:id="@+id/key_9" style="@style/KeyStyle" android:text="9" />
+        <TextView android:id="@+id/key_0" style="@style/KeyStyle" android:text="0" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/numbers_row2"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="3dp"
+        android:paddingHorizontal="16dp"
+        android:visibility="gone">
+
+        <TextView android:id="@+id/key_at" style="@style/KeyStyle" android:text="\@" />
+        <TextView android:id="@+id/key_hash" style="@style/KeyStyle" android:text="#" />
+        <TextView android:id="@+id/key_dollar" style="@style/KeyStyle" android:text="₹" />
+        <TextView android:id="@+id/key_percent" style="@style/KeyStyle" android:text="%" />
+        <TextView android:id="@+id/key_amp" style="@style/KeyStyle" android:text="&amp;" />
+        <TextView android:id="@+id/key_dash" style="@style/KeyStyle" android:text="-" />
+        <TextView android:id="@+id/key_plus" style="@style/KeyStyle" android:text="+" />
+        <TextView android:id="@+id/key_lparen" style="@style/KeyStyle" android:text="(" />
+        <TextView android:id="@+id/key_rparen" style="@style/KeyStyle" android:text=")" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/numbers_row3"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="3dp"
+        android:visibility="gone">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.5" />
+
+        <TextView android:id="@+id/key_star" style="@style/KeyStyle" android:text="*" />
+        <TextView android:id="@+id/key_quote" style="@style/KeyStyle" android:text="&quot;" />
+        <TextView android:id="@+id/key_apos" style="@style/KeyStyle" android:text="'" />
+        <TextView android:id="@+id/key_colon" style="@style/KeyStyle" android:text=":" />
+        <TextView android:id="@+id/key_semi" style="@style/KeyStyle" android:text=";" />
+        <TextView android:id="@+id/key_excl" style="@style/KeyStyle" android:text="!" />
+        <TextView android:id="@+id/key_ques" style="@style/KeyStyle" android:text="?" />
+
+        <TextView
+            android:id="@+id/key_backspace_num"
+            style="@style/KeyStyleSpecial"
+            android:text="⌫"
+            android:layout_weight="1.5" />
+    </LinearLayout>
+
+</LinearLayout>

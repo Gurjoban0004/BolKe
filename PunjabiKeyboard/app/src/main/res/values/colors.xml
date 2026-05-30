@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Keyboard colors -->
+    <color name="keyboard_bg">#1B1B1F</color>
+    <color name="key_bg">#2D2D35</color>
+    <color name="key_bg_pressed">#3D3D45</color>
+    <color name="key_bg_special">#3A3A45</color>
+    <color name="key_text">#FFFFFF</color>
+    <color name="key_text_secondary">#9E9EA8</color>
+
+    <!-- Accent colors -->
+    <color name="accent_blue">#4A9EFF</color>
+    <color name="accent_purple">#7B61FF</color>
+    <color name="accent_green">#4CAF50</color>
+    <color name="accent_orange">#FF7043</color>
+
+    <!-- UI sections -->
+    <color name="preview_bg">#252530</color>
+    <color name="voice_overlay_bg">#1E1E28</color>
+    <color name="top_bar_bg">#16161A</color>
+    <color name="mode_pill_bg">#2A2A38</color>
+
+    <!-- Send/Re-record buttons -->
+    <color name="btn_send_bg">#2E7D32</color>
+    <color name="btn_send_text">#FFFFFF</color>
+    <color name="btn_rerecord_bg">#37373F</color>
+    <color name="btn_rerecord_text">#FF7043</color>
+
+    <!-- Setup / Settings activity -->
+    <color name="activity_bg">#0F0F14</color>
+    <color name="card_bg">#1B1B24</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#A0A0B0</color>
+    <color name="divider">#2A2A35</color>
+
+    <!-- Mic button gradient colors -->
+    <color name="mic_gradient_start">#4A9EFF</color>
+    <color name="mic_gradient_end">#7B61FF</color>
+    <color name="mic_glow">#334A9EFF</color>
+
+    <!-- Status bar -->
+    <color name="status_bar">#0A0A0E</color>
+</resources>

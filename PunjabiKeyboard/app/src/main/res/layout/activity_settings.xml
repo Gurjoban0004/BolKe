@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activity_bg"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_title"
+            android:textColor="@color/text_primary"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="32dp" />
+
+        <!-- Output Mode Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_output_mode"
+            android:textColor="@color/accent_blue"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_output_mode_desc"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="12dp" />
+
+        <RadioGroup
+            android:id="@+id/mode_radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/card_bg"
+            android:padding="16dp"
+            android:layout_marginBottom="24dp">
+
+            <RadioButton
+                android:id="@+id/radio_punglish"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Punglish — ki haal aa tera"
+                android:textColor="@color/text_primary"
+                android:textSize="15sp"
+                android:buttonTint="@color/accent_blue"
+                android:padding="8dp" />
+
+            <RadioButton
+                android:id="@+id/radio_punjabi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ਪੰਜਾਬੀ — ਕੀ ਹਾਲ ਆ ਤੇਰਾ"
+                android:textColor="@color/text_primary"
+                android:textSize="15sp"
+                android:buttonTint="@color/accent_blue"
+                android:padding="8dp" />
+
+            <RadioButton
+                android:id="@+id/radio_english"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="English — How are you"
+                android:textColor="@color/text_primary"
+                android:textSize="15sp"
+                android:buttonTint="@color/accent_blue"
+                android:padding="8dp" />
+        </RadioGroup>
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider"
+            android:layout_marginBottom="24dp" />
+
+        <!-- API Key Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_api_key"
+            android:textColor="@color/accent_blue"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Only needed for English translation mode"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="12dp" />
+
+        <EditText
+            android:id="@+id/api_key_input"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:hint="@string/settings_api_key_hint"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary"
+            android:textSize="14sp"
+            android:background="@color/card_bg"
+            android:padding="12dp"
+            android:inputType="text"
+            android:singleLine="true"
+            android:layout_marginBottom="32dp" />
+
+        <!-- Save Button -->
+        <TextView
+            android:id="@+id/btn_save"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="@string/settings_save"
+            android:textColor="@color/key_text"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:background="@drawable/btn_send_bg"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <!-- Status message -->
+        <TextView
+            android:id="@+id/save_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/accent_green"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
+            android:visibility="gone" />
+
+    </LinearLayout>
+</ScrollView>
