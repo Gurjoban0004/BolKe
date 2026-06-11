@@ -35,6 +35,11 @@ class SpeechManager(private val context: Context) {
      * Creates a new SpeechRecognizer if needed and begins recognition.
      */
     fun startListening() {
+        if (!SpeechRecognizer.isRecognitionAvailable(context)) {
+            callback?.onError("Speech recognition not available")
+            return
+        }
+
         // Destroy existing recognizer to avoid stale state
         speechRecognizer?.destroy()
 

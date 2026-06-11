@@ -45,6 +45,19 @@ object TransliterationHelper {
     private fun convertToNaturalSpelling(text: String): String {
         var result = text
 
+        // === Colloquial Conversions (before diacritic stripping) ===
+        // Common words that sound better in texting style
+        result = result.replace("tuhāḍā", "thada")
+        result = result.replace("tuhāḍe", "thade")
+        result = result.replace("tuhāḍī", "thadi")
+        result = result.replace("thōḍā", "thoda")
+        result = result.replace("thōḍe", "thode")
+        result = result.replace("thōḍī", "thodi")
+        result = result.replace("kiuṃ", "kyu")
+        result = result.replace("rihā", "rha")
+        result = result.replace("rihī", "rhi")
+        result = result.replace("rahē", "rhe")
+
         // === Long vowels → doubled letters (before stripping diacritics) ===
         // ā → aa (long a)
         result = result.replace("ā", "aa")
@@ -58,7 +71,7 @@ object TransliterationHelper {
         result = result.replace("ū", "oo")
         result = result.replace("Ū", "Oo")
 
-        // ē → e (Punjabi ē is typically just written as 'e' in texting)
+        // ē → e
         result = result.replace("ē", "e")
         result = result.replace("Ē", "E")
 
@@ -89,10 +102,13 @@ object TransliterationHelper {
         val normalized = Normalizer.normalize(result, Normalizer.Form.NFD)
         result = normalized.replace(Regex("[\\u0300-\\u036F]"), "")
 
-        // === Final cleanup ===
+        // === Final texting-style cleanups ===
+        result = result.replace("eea", "iya") // kariya instead of kareea
+        result = result.replace("vicha", "ch") // "ch" is common for "vich"
+        
         // Remove any remaining special Unicode characters that might slip through
         result = result.replace(Regex("[^\\p{ASCII}\\s]"), "")
 
-        return result.lowercase()
+        return result
     }
 }

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activity_bg"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Header -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/personalization_title"
+            android:textColor="@color/text_primary"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp" />
+
+        <!-- ═══════════ Card 1: Quick Replies ═══════════ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/card_bg"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ps_quick_replies"
+                    android:textColor="@color/accent_blue"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/btn_reset_qr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="@string/ps_reset"
+                    android:textColor="@color/accent_orange"
+                    android:textSize="12sp"
+                    android:clickable="true"
+                    android:focusable="true" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/qr_list_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <!-- Add QR Form -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp"
+                android:gravity="center_vertical">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/new_qr_punjabi"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:hint="Gurmukhi (e.g. ਕੀ ਹਾਲ ਹੈ?)"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_secondary"
+                        android:textSize="13sp"
+                        android:background="@drawable/mode_pill_bg"
+                        android:paddingHorizontal="12dp"
+                        android:singleLine="true" />
+
+                    <EditText
+                        android:id="@+id/new_qr_punglish"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="4dp"
+                        android:hint="Punglish (e.g. ki haal hai?)"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_secondary"
+                        android:textSize="13sp"
+                        android:background="@drawable/mode_pill_bg"
+                        android:paddingHorizontal="12dp"
+                        android:singleLine="true" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/btn_add_qr"
+                    android:layout_width="48dp"
+                    android:layout_height="84dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/btn_send_bg"
+                    android:text="+"
+                    android:textColor="@color/btn_send_text"
+                    android:textSize="20sp"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- ═══════════ Card 2: Word Shortcuts ═══════════ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/card_bg"
+            android:padding="16dp"
+            android:layout_marginBottom="24dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ps_word_shortcuts"
+                    android:textColor="@color/accent_blue"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/btn_reset_slang"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="@string/ps_reset"
+                    android:textColor="@color/accent_orange"
+                    android:textSize="12sp"
+                    android:clickable="true"
+                    android:focusable="true" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/slang_list_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <!-- Add Slang Form -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp"
+                android:gravity="center_vertical">
+
+                <EditText
+                    android:id="@+id/new_slang_target"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:hint="Word"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_secondary"
+                    android:textSize="13sp"
+                    android:background="@drawable/mode_pill_bg"
+                    android:paddingHorizontal="12dp"
+                    android:singleLine="true" />
+
+                <EditText
+                    android:id="@+id/new_slang_replacement"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="4dp"
+                    android:hint="Short"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_secondary"
+                    android:textSize="13sp"
+                    android:background="@drawable/mode_pill_bg"
+                    android:paddingHorizontal="12dp"
+                    android:singleLine="true" />
+
+                <TextView
+                    android:id="@+id/btn_add_slang"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/btn_send_bg"
+                    android:text="+"
+                    android:textColor="@color/btn_send_text"
+                    android:textSize="20sp"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Back Button -->
+        <TextView
+            android:id="@+id/btn_back"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Back to Settings"
+            android:textColor="@color/key_text"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:background="@drawable/btn_rerecord_bg"
+            android:clickable="true"
+            android:focusable="true" />
+
+    </LinearLayout>
+</ScrollView>

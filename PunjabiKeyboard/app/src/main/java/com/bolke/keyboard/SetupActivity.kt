@@ -122,35 +122,44 @@ class SetupActivity : AppCompatActivity() {
         val enabled = isKeyboardEnabled()
         val selected = isKeyboardSelected()
 
+        // Bind containers
+        val step1Container = findViewById<View>(R.id.step1_container)
+        val step2Container = findViewById<View>(R.id.step2_container)
+        val step3Container = findViewById<View>(R.id.step3_container)
+
+        // Bind checks
+        val step1Check = findViewById<View>(R.id.step1_check)
+        val step2Check = findViewById<View>(R.id.step2_check)
+
+        // Step 1: Enable
         if (enabled) {
-            btnEnableKeyboard.text = "BolKe Enabled ✓"
-            btnEnableKeyboard.setBackgroundResource(R.drawable.btn_rerecord_bg)
-            btnEnableKeyboard.setTextColor(ContextCompat.getColor(this, R.color.text_secondary))
-            btnEnableKeyboard.isEnabled = false
+            step1Check.visibility = View.VISIBLE
+            btnEnableKeyboard.visibility = View.GONE
+            step1Container.alpha = 0.6f
         } else {
-            btnEnableKeyboard.text = getString(R.string.setup_step1_btn)
-            btnEnableKeyboard.setBackgroundResource(R.drawable.btn_send_bg)
-            btnEnableKeyboard.setTextColor(ContextCompat.getColor(this, R.color.key_text))
-            btnEnableKeyboard.isEnabled = true
+            step1Check.visibility = View.GONE
+            btnEnableKeyboard.visibility = View.VISIBLE
+            step1Container.alpha = 1.0f
         }
 
-        if (selected) {
-            btnSelectKeyboard.text = "BolKe Selected ✓"
-            btnSelectKeyboard.setBackgroundResource(R.drawable.btn_rerecord_bg)
-            btnSelectKeyboard.setTextColor(ContextCompat.getColor(this, R.color.text_secondary))
-            btnSelectKeyboard.isEnabled = false
+        // Step 2: Select
+        if (enabled) {
+            step2Container.alpha = if (selected) 0.6f else 1.0f
+            btnSelectKeyboard.visibility = if (selected) View.GONE else View.VISIBLE
+            step2Check.visibility = if (selected) View.VISIBLE else View.GONE
         } else {
-            btnSelectKeyboard.text = getString(R.string.setup_step2_btn)
-            btnSelectKeyboard.setBackgroundResource(R.drawable.btn_send_bg)
-            btnSelectKeyboard.setTextColor(ContextCompat.getColor(this, R.color.key_text))
-            btnSelectKeyboard.isEnabled = true
+            step2Container.alpha = 0.4f
+            btnSelectKeyboard.visibility = View.VISIBLE
+            step2Check.visibility = View.GONE
         }
 
-        // Highlight done button if both are configured
+        // Step 3: Done
         if (enabled && selected) {
-            btnDone.alpha = 1.0f
+            step3Container.alpha = 1.0f
+            btnDone.isEnabled = true
         } else {
-            btnDone.alpha = 0.6f
+            step3Container.alpha = 0.4f
+            btnDone.isEnabled = false
         }
     }
 

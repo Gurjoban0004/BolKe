@@ -3,11 +3,12 @@
     <string name="app_name">ਬੋਲ ਕੇ — BolKe</string>
     <string name="subtype_punjabi_voice">Punjabi Voice</string>
     <string name="settings_title">ਸੈਟਿੰਗਜ਼ — Settings</string>
+    <string name="personalization_title">ਮੇਰੇ ਸ਼ਬਦ — My Shortcuts</string>
 
     <!-- Output modes -->
-    <string name="mode_punjabi">ਪੰਜਾਬੀ</string>
-    <string name="mode_english">English</string>
-    <string name="mode_punglish">Punglish</string>
+    <string name="mode_punjabi">ਪੰਜਾਬੀ (Gurmukhi)</string>
+    <string name="mode_english">English (Translated)</string>
+    <string name="mode_punglish">Punglish (Texting Style)</string>
 
     <!-- Voice UI -->
     <string name="voice_prompt">🎤 ਬੋਲੋ…</string>
@@ -30,13 +31,30 @@
     <string name="setup_step3_desc">ਬੱਸ! ਹੁਣ WhatsApp ਖੋਲ੍ਹੋ ਤੇ 🎤 ਦੱਬੋ</string>
     <string name="setup_done_btn">ਸ਼ੁਰੂ ਕਰੋ!</string>
 
-    <!-- Settings -->
-    <string name="settings_output_mode">Output Mode</string>
-    <string name="settings_output_mode_desc">ਆਉਟਪੁੱਟ ਦੀ ਭਾਸ਼ਾ ਚੁਣੋ</string>
-    <string name="settings_api_key">Google Translate API Key</string>
-    <string name="settings_api_key_hint">Paste your API key here</string>
+    <!-- Settings Main -->
+    <string name="settings_section_typing">ਲਿਖਣ ਦਾ ਤਰੀਕਾ — Typing Style</string>
+    <string name="settings_what_i_speak">What I speak becomes…</string>
+    <string name="settings_auto_send">Auto-Send after speaking</string>
+    <string name="settings_offline">Use Offline Mode</string>
+
+    <string name="settings_section_appearance">ਦਿੱਖ — Appearance</string>
+    <string name="settings_keyboard_size">Keyboard Size</string>
+    <string name="settings_double_tap">Double-tap Space for Period</string>
+    <string name="settings_auto_cap">Auto-Capitalization</string>
+
+    <string name="settings_section_personal">ਨਿੱਜੀ ਸੈਟਿੰਗਾਂ — Personalization</string>
+    <string name="settings_manage_shortcuts">Manage Quick Replies &amp; Shortcuts</string>
+    <string name="settings_manage_shortcuts_desc">Add your own phrases and word shortcuts</string>
+
+    <string name="settings_advanced">Advanced (Google API)</string>
     <string name="settings_save">ਸੇਵ ਕਰੋ — Save</string>
     <string name="settings_saved">✓ ਸੇਵ ਹੋ ਗਿਆ!</string>
+
+    <!-- Personalization Screen -->
+    <string name="ps_quick_replies">ਤੁਰੰਤ ਜਵਾਬ — Quick Replies</string>
+    <string name="ps_word_shortcuts">ਸ਼ਬਦ ਬਦਲਾਵ — Word Shortcuts</string>
+    <string name="ps_add_new">Add New Item</string>
+    <string name="ps_reset">Reset Defaults</string>
 
     <!-- Errors -->
     <string name="error_no_speech">ਕੁਝ ਸੁਣਿਆ ਨਹੀਂ — ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ</string>

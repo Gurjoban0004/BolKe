@@ -21,6 +21,8 @@ class PreferencesManager(context: Context) {
         private const val KEY_OFFLINE_MODE = "offline_mode"
         private const val KEY_QR_MODE = "qr_mode"
         private const val KEY_APP_SCALE = "app_scale"
+        private const val KEY_DOUBLE_TAP_PERIOD = "double_tap_period"
+        private const val KEY_AUTO_CAP = "auto_cap"
 
         private const val DEFAULT_QUICK_REPLIES = "ਕਿੱਥੇ ਆਗਿਆ?|kithe aagya?\nਮੈਂ ਚੱਲ ਪਈ!|mai chalpyi!\nਪੁੱਤ ਕਿੱਥੇ ਆਂ?|putt kithe aa?\nਹਾਂਜੀ|hanji\nਨਾਜੀ|naji\nਠੀਕ ਹੈ|thik hai\nਸਤਿ ਸ੍ਰੀ ਅਕਾਲ|sat sri akal\nਕੀ ਹਾਲ ਹੈ?|ki haal hai?"
         private const val DEFAULT_SLANG_MAPPINGS = "karo:kro\nchalo:chlo\nkarda:krda\nkardi:krdi\nkarde:krde\njaldi:jldi"
@@ -104,6 +106,20 @@ class PreferencesManager(context: Context) {
         get() = prefs.getFloat(KEY_APP_SCALE, 1.0f)
         set(value) {
             prefs.edit().putFloat(KEY_APP_SCALE, value).apply()
+        }
+
+    /** Whether double-tapping space inserts a period and space */
+    var isDoubleTapPeriodEnabled: Boolean
+        get() = prefs.getBoolean(KEY_DOUBLE_TAP_PERIOD, true)
+        set(value) {
+            prefs.edit().putBoolean(KEY_DOUBLE_TAP_PERIOD, value).apply()
+        }
+
+    /** Whether to automatically toggle shift after punctuation */
+    var isAutoCapitalizationEnabled: Boolean
+        get() = prefs.getBoolean(KEY_AUTO_CAP, true)
+        set(value) {
+            prefs.edit().putBoolean(KEY_AUTO_CAP, value).apply()
         }
 }
 

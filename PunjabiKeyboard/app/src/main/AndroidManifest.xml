@@ -50,6 +50,13 @@
             android:theme="@style/Theme.BolKe"
             android:label="@string/settings_title" />
 
+        <!-- Personalization Activity -->
+        <activity
+            android:name=".PersonalizationActivity"
+            android:exported="false"
+            android:theme="@style/Theme.BolKe"
+            android:label="@string/personalization_title" />
+
     </application>
 
 </manifest>

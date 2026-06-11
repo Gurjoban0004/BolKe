@@ -18,6 +18,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import com.bolke.keyboard.speech.SpeechManager
+import com.bolke.keyboard.ui.VoiceRippleView
 import com.bolke.keyboard.translation.TranslationManager
 import com.bolke.keyboard.util.OutputMode
 import com.bolke.keyboard.util.PreferencesManager
@@ -55,6 +56,8 @@ class BolKeIMEService : InputMethodService() {
     private var isSymbolsActive = false
     private var currentState = KeyboardState.KEYBOARD
     private var currentInputText = ""
+    private var lastSpaceTime: Long = 0
+    private var isToolbarExpanded = false
 
     override fun onCreateInputView(): View {
         keyboardView = layoutInflater.inflate(R.layout.keyboard_layout, null)
@@ -76,7 +79,18 @@ class BolKeIMEService : InputMethodService() {
         quickRepliesContainer = keyboardView.findViewById(R.id.quick_replies_container)
         populateQuickReplies()
 
-        /*
+        val toolbarToggle = keyboardView.findViewById<ImageView>(R.id.toolbar_toggle)
+        val utilityButtons = keyboardView.findViewById<View>(R.id.utility_buttons)
+        
+        toolbarToggle.setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+            isToolbarExpanded = !isToolbarExpanded
+            utilityButtons.visibility = if (isToolbarExpanded) View.VISIBLE else View.GONE
+            toolbarToggle.setImageResource(
+                if (isToolbarExpanded) R.drawable.ic_chevron_left else R.drawable.ic_chevron_right
+            )
+        }
+
         val btnSizeMinus = keyboardView.findViewById<View>(R.id.btn_size_minus)
         val btnSizePlus = keyboardView.findViewById<View>(R.id.btn_size_plus)
 
@@ -92,12 +106,12 @@ class BolKeIMEService : InputMethodService() {
 
         val btnSettings = keyboardView.findViewById<View>(R.id.btn_settings)
         btnSettings?.setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
             val intent = Intent(this, SettingsActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
             }
             startActivity(intent)
         }
-        */
 
         modeSelector = keyboardView.findViewById(R.id.mode_selector)
         updateModeSelectorText()
@@ -229,10 +243,16 @@ class BolKeIMEService : InputMethodService() {
                         isOfflineMode = prefsManager.isOfflineMode
                     )
                     
-                    val slangApplied = if (prefsManager.outputMode == OutputMode.PUNGLISH) {
-                        applySlangMappings(processed, prefsManager.slangMappings)
+                    val capitalized = if (isShifted && processed.isNotEmpty()) {
+                        processed.substring(0, 1).uppercase() + processed.substring(1)
                     } else {
                         processed
+                    }
+
+                    val slangApplied = if (prefsManager.outputMode == OutputMode.PUNGLISH) {
+                        applySlangMappings(capitalized, prefsManager.slangMappings)
+                    } else {
+                        capitalized
                     }
                     val finalOutput = appendVoiceEmojis(slangApplied)
 
@@ -285,10 +305,10 @@ class BolKeIMEService : InputMethodService() {
             }
 
             override fun onRmsChanged(rmsdB: Float) {
-                // rmsdB ranges typically from -2 to 10. Let's normalize it to a scale factor between 1.0 and 1.5
-                val scale = 1.0f + (rmsdB.coerceIn(0f, 10f) / 10f) * 0.5f
-                val indicator = keyboardView.findViewById<View>(R.id.voice_recording_indicator)
-                indicator?.animate()?.scaleX(scale)?.scaleY(scale)?.setDuration(50)?.start()
+                // rmsdB ranges typically from -2 to 10. Normalize to 0.0 - 1.0
+                val normalized = (rmsdB.coerceIn(0f, 10f) / 10f)
+                val indicator = keyboardView.findViewById<VoiceRippleView>(R.id.voice_recording_indicator)
+                indicator?.setAmplitude(normalized)
             }
         }
     }
@@ -315,6 +335,7 @@ class BolKeIMEService : InputMethodService() {
                 setupKeys(view.getChildAt(i))
             }
         } else if (view is TextView) {
+            if (view.id == View.NO_ID) return
             try {
                 val idName = resources.getResourceEntryName(view.id)
                 if (idName.startsWith("key_")) {
@@ -341,7 +362,36 @@ class BolKeIMEService : InputMethodService() {
                         "key_space" -> {
                             view.setOnClickListener {
                                 view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-                                currentInputConnection?.commitText(" ", 1)
+                                val connection = currentInputConnection ?: return@setOnClickListener
+                                val now = System.currentTimeMillis()
+                                
+                                if (prefsManager.isDoubleTapPeriodEnabled && now - lastSpaceTime < 400) {
+                                    val textBefore = connection.getTextBeforeCursor(1, 0)
+                                    if (textBefore != null && textBefore.isNotEmpty() && textBefore[0] == ' ') {
+                                        connection.deleteSurroundingText(1, 0)
+                                        connection.commitText(". ", 1)
+                                        if (prefsManager.isAutoCapitalizationEnabled && !isShifted) {
+                                            toggleShift()
+                                        }
+                                        lastSpaceTime = 0 // Reset to prevent triple-tap period
+                                        return@setOnClickListener
+                                    }
+                                }
+                                
+                                connection.commitText(" ", 1)
+                                
+                                // Auto-cap after punctuation + space
+                                if (prefsManager.isAutoCapitalizationEnabled && !isShifted) {
+                                    val textBefore = connection.getTextBeforeCursor(2, 0)
+                                    if (textBefore != null && textBefore.length >= 2) {
+                                        val lastChar = textBefore[0]
+                                        if (lastChar == '.' || lastChar == '!' || lastChar == '?') {
+                                            toggleShift()
+                                        }
+                                    }
+                                }
+                                
+                                lastSpaceTime = now
                             }
                         }
                         "key_enter" -> {
