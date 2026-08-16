@@ -15,14 +15,14 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp">
+            android:layout_marginBottom="20dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/settings_title"
                 android:textColor="@color/text_primary"
-                android:textSize="22sp"
+                android:textSize="24sp"
                 android:textStyle="bold" />
 
             <!-- App Scale Toggle -->
@@ -60,12 +60,12 @@
             </LinearLayout>
         </RelativeLayout>
 
-        <!-- ═══════════ Section 1: Typing Style ═══════════ -->
+        <!-- Typing style -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@color/card_bg"
+            android:background="@drawable/surface_bg"
             android:padding="16dp"
             android:layout_marginBottom="16dp">
 
@@ -114,6 +114,7 @@
                     android:id="@+id/radio_english"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:text="@string/mode_english"
                     android:textColor="@color/text_primary"
                     android:textSize="13sp"
@@ -139,18 +140,19 @@
                 android:id="@+id/offline_mode_checkbox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:text="@string/settings_offline"
                 android:textColor="@color/text_primary"
                 android:textSize="13sp"
                 android:buttonTint="@color/accent_blue" />
         </LinearLayout>
 
-        <!-- ═══════════ Section 2: Appearance ═══════════ -->
+        <!-- Appearance -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@color/card_bg"
+            android:background="@drawable/surface_bg"
             android:padding="16dp"
             android:layout_marginBottom="16dp">
 
@@ -233,13 +235,13 @@
                 android:buttonTint="@color/accent_blue" />
         </LinearLayout>
 
-        <!-- ═══════════ Section 3: Personalization ═══════════ -->
+        <!-- Personalization -->
         <LinearLayout
             android:id="@+id/btn_open_personalization"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@color/card_bg"
+            android:background="@drawable/surface_bg"
             android:padding="16dp"
             android:layout_marginBottom="16dp"
             android:clickable="true"
@@ -270,7 +272,139 @@
                 android:layout_marginTop="2dp" />
         </LinearLayout>
 
-        <!-- ═══════════ Section 4: Advanced ═══════════ -->
+        <!-- Samjho translator -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/surface_bg"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/samjho_section"
+                android:textColor="@color/accent_blue"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/samjho_desc"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:lineSpacingExtra="2dp"
+                android:layout_marginTop="4dp" />
+
+            <TextView
+                android:id="@+id/samjho_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:layout_marginTop="12dp" />
+
+            <TextView
+                android:id="@+id/btn_samjho_accessibility"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:text="@string/samjho_open_settings"
+                android:textColor="@color/accent_blue"
+                android:textSize="13sp"
+                android:gravity="center"
+                android:background="@drawable/mode_pill_bg"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginTop="8dp" />
+
+            <CheckBox
+                android:id="@+id/samjho_bubble_checkbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/samjho_show_bubble"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"
+                android:layout_marginTop="8dp" />
+
+            <EditText
+                android:id="@+id/gemini_key_input"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:hint="@string/samjho_api_key_hint"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_secondary"
+                android:textSize="13sp"
+                android:background="@drawable/mode_pill_bg"
+                android:paddingHorizontal="12dp"
+                android:singleLine="true"
+                android:inputType="textNoSuggestions"
+                android:layout_marginTop="12dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:id="@+id/btn_samjho_test"
+                    android:layout_width="0dp"
+                    android:layout_height="44dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/samjho_test"
+                    android:textColor="@color/accent_blue"
+                    android:textSize="12sp"
+                    android:gravity="center"
+                    android:background="@drawable/mode_pill_bg"
+                    android:clickable="true"
+                    android:focusable="true" />
+
+                <TextView
+                    android:id="@+id/btn_samjho_clear_cache"
+                    android:layout_width="0dp"
+                    android:layout_height="44dp"
+                    android:layout_weight="1"
+                    android:text="@string/samjho_cache_clear"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp"
+                    android:gravity="center"
+                    android:background="@drawable/mode_pill_bg"
+                    android:clickable="true"
+                    android:focusable="true" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/samjho_test_result"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_primary"
+                android:textSize="15sp"
+                android:lineSpacingExtra="3dp"
+                android:layout_marginTop="10dp"
+                android:visibility="gone" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/samjho_privacy"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp"
+                android:lineSpacingExtra="2dp"
+                android:layout_marginTop="12dp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="Privacy: BolKe processes only the phrase you speak. Your saved phrases stay on this device."
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:lineSpacingExtra="2dp" />
+
+        <!-- Advanced -->
         <TextView
             android:id="@+id/btn_advanced_toggle"
             android:layout_width="wrap_content"
@@ -279,6 +413,7 @@
             android:textColor="@color/text_secondary"
             android:textSize="13sp"
             android:padding="8dp"
+            android:visibility="gone"
             android:layout_gravity="center_horizontal" />
 
         <LinearLayout
@@ -287,7 +422,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:visibility="gone"
-            android:background="@color/card_bg"
+            android:background="@drawable/surface_bg"
             android:padding="16dp"
             android:layout_marginBottom="16dp">
 

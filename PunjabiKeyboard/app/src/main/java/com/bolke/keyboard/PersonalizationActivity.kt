@@ -154,8 +154,10 @@ class PersonalizationActivity : AppCompatActivity() {
         })
 
         val deleteBtn = TextView(this).apply {
-            text = "🗑️"
-            textSize = 18f
+            text = "Remove"
+            textSize = 13f
+            setTextColor(ContextCompat.getColor(context, R.color.accent_orange))
+            contentDescription = "Remove quick reply"
             setPadding(12.toPx(), 8.toPx(), 12.toPx(), 8.toPx())
             setOnClickListener { removeQuickReply(punjabi, punglish) }
         }
@@ -219,7 +221,7 @@ class PersonalizationActivity : AppCompatActivity() {
         })
 
         row.addView(TextView(this).apply {
-            text = " ➔ "
+            text = " to "
             setTextColor(ContextCompat.getColor(context, R.color.accent_blue))
             textSize = 12f
         })
@@ -232,8 +234,10 @@ class PersonalizationActivity : AppCompatActivity() {
         })
 
         val deleteBtn = TextView(this).apply {
-            text = "🗑️"
-            textSize = 16f
+            text = "Remove"
+            textSize = 13f
+            setTextColor(ContextCompat.getColor(context, R.color.accent_orange))
+            contentDescription = "Remove shortcut"
             setPadding(12.toPx(), 8.toPx(), 12.toPx(), 8.toPx())
             setOnClickListener { removeSlangMapping(target) }
         }

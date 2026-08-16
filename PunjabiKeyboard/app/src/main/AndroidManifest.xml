@@ -32,6 +32,20 @@
                 android:resource="@xml/method" />
         </service>
 
+        <!-- Samjho translator (accessibility service) -->
+        <service
+            android:name=".samjho.SamjhoService"
+            android:exported="true"
+            android:label="@string/samjho_section"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/samjho_service" />
+        </service>
+
         <!-- Setup Activity (Launcher) -->
         <activity
             android:name=".SetupActivity"

@@ -1,46 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Keyboard colors -->
-    <color name="keyboard_bg">#000000</color>
-    <color name="key_bg">#1A1A1E</color>
-    <color name="key_bg_pressed">#2C2C32</color>
-    <color name="key_bg_special">#1D1D22</color>
-    <color name="key_text">#FFFFFF</color>
-    <color name="key_text_secondary">#8E8E98</color>
-    <color name="key_border">#252528</color>
-    <color name="key_border_pressed">#44444A</color>
+    <color name="keyboard_bg">#10131A</color>
+    <color name="key_bg">#252B36</color>
+    <color name="key_bg_pressed">#394353</color>
+    <color name="key_bg_special">#1B202A</color>
+    <color name="key_text">#F7F8FC</color>
+    <color name="key_text_secondary">#B5BFCE</color>
+    <color name="key_border">#343D4C</color>
+    <color name="key_border_pressed">#6A7A91</color>
 
     <!-- Accent colors -->
-    <color name="pastel_blue">#A2D2FF</color>
-    <color name="accent_blue">#A2D2FF</color>
-    <color name="accent_purple">#B3C5FF</color>
-    <color name="accent_green">#81C784</color>
-    <color name="accent_orange">#FFB74D</color>
+    <color name="pastel_blue">#8CC7FF</color>
+    <color name="accent_blue">#8CC7FF</color>
+    <color name="accent_purple">#B9C5FF</color>
+    <color name="accent_green">#77D5A5</color>
+    <color name="accent_orange">#F7C66B</color>
 
     <!-- UI sections -->
-    <color name="preview_bg">#121212</color>
-    <color name="voice_overlay_bg">#080808</color>
-    <color name="top_bar_bg">#000000</color>
-    <color name="mode_pill_bg">#1E1E1E</color>
+    <color name="preview_bg">#171C25</color>
+    <color name="voice_overlay_bg">#171C25</color>
+    <color name="top_bar_bg">#10131A</color>
+    <color name="mode_pill_bg">#202733</color>
 
     <!-- Send/Re-record buttons -->
-    <color name="btn_send_bg">#A2D2FF</color>
-    <color name="btn_send_text">#000000</color>
-    <color name="btn_rerecord_bg">#222226</color>
-    <color name="btn_rerecord_text">#FFB74D</color>
+    <color name="btn_send_bg">#8CC7FF</color>
+    <color name="btn_send_text">#10131A</color>
+    <color name="btn_rerecord_bg">#252B36</color>
+    <color name="btn_rerecord_text">#F7F8FC</color>
 
     <!-- Setup / Settings activity -->
-    <color name="activity_bg">#000000</color>
-    <color name="card_bg">#121212</color>
-    <color name="text_primary">#FFFFFF</color>
-    <color name="text_secondary">#A0A0B0</color>
-    <color name="divider">#22222A</color>
+    <color name="activity_bg">#10131A</color>
+    <color name="card_bg">#171C25</color>
+    <color name="text_primary">#F7F8FC</color>
+    <color name="text_secondary">#B5BFCE</color>
+    <color name="divider">#343D4C</color>
 
     <!-- Mic button gradient colors -->
-    <color name="mic_gradient_start">#A2D2FF</color>
-    <color name="mic_gradient_end">#A2D2FF</color>
-    <color name="mic_glow">#22A2D2FF</color>
+    <color name="mic_gradient_start">#8CC7FF</color>
+    <color name="mic_gradient_end">#8CC7FF</color>
+    <color name="mic_glow">#228CC7FF</color>
 
     <!-- Status bar -->
-    <color name="status_bar">#000000</color>
+    <color name="status_bar">#10131A</color>
 </resources>

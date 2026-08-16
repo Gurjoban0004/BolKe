@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.Settings
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
@@ -80,7 +81,7 @@ class SetupActivity : AppCompatActivity() {
 
             if (enabled && selected) {
                 prefsManager.isSetupComplete = true
-                Toast.makeText(this, "ਸੈਟਅੱਪ ਪੂਰਾ ਹੋ ਗਿਆ! ✓", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "ਸੈਟਅੱਪ ਪੂਰਾ ਹੋ ਗਿਆ", Toast.LENGTH_SHORT).show()
                 startSettingsActivity()
                 finish()
             } else {
@@ -185,7 +186,7 @@ class SetupActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == PERMISSION_REQUEST_RECORD_AUDIO) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "ਮਾਈਕ ਦੀ ਇਜਾਜ਼ਤ ਮਿਲ ਗਈ ਹੈ! ✓", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "ਮਾਈਕ ਦੀ ਇਜਾਜ਼ਤ ਮਿਲ ਗਈ ਹੈ", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(
                     this,

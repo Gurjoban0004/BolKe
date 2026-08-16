@@ -21,12 +21,12 @@
             android:textStyle="bold"
             android:layout_marginBottom="24dp" />
 
-        <!-- ═══════════ Card 1: Quick Replies ═══════════ -->
+        <!-- Quick replies -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@color/card_bg"
+            android:background="@drawable/surface_bg"
             android:padding="16dp"
             android:layout_marginBottom="16dp">
 
@@ -116,12 +116,12 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- ═══════════ Card 2: Word Shortcuts ═══════════ -->
+        <!-- Word shortcuts -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@color/card_bg"
+            android:background="@drawable/surface_bg"
             android:padding="16dp"
             android:layout_marginBottom="24dp">
 

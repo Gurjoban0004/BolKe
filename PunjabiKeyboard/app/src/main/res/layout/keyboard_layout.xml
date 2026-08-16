@@ -4,14 +4,14 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@color/keyboard_bg"
-    android:paddingHorizontal="3dp"
-    android:paddingTop="2dp"
-    android:paddingBottom="4dp">
+    android:paddingHorizontal="4dp"
+    android:paddingTop="6dp"
+    android:paddingBottom="6dp">
 
-    <!-- ═══════════ Top Bar: Centered & Scrollable Quick Replies ═══════════ -->
+    <!-- Top bar -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="36dp"
+        android:layout_height="40dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:background="@color/top_bar_bg">
@@ -88,16 +88,30 @@
                 android:paddingHorizontal="8dp" />
         </HorizontalScrollView>
 
+        <!-- Emoji drawer toggle -->
+        <TextView
+            android:id="@+id/btn_emoji"
+            android:layout_width="32dp"
+            android:layout_height="28dp"
+            android:layout_marginEnd="4dp"
+            android:text="😊"
+            android:textSize="17sp"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Emoji" />
+
         <!-- Mode selector pill (now visible in top bar as well) -->
         <TextView
             android:id="@+id/mode_selector"
             android:layout_width="wrap_content"
-            android:layout_height="24dp"
+            android:layout_height="28dp"
             android:layout_marginEnd="8dp"
             android:paddingHorizontal="10dp"
             android:background="@drawable/mode_pill_bg"
             android:textColor="@color/accent_blue"
-            android:textSize="11sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             android:gravity="center"
             android:clickable="true"
@@ -105,14 +119,57 @@
             android:visibility="visible" />
     </LinearLayout>
 
-    <!-- ═══════════ Preview Area (hidden by default) ═══════════ -->
+    <LinearLayout
+        android:id="@+id/voice_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginHorizontal="2dp"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/voice_surface_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Voice text inserted"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/btn_save_voice_phrase"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingHorizontal="10dp"
+            android:text="Save phrase"
+            android:textColor="@color/accent_blue"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/btn_undo_voice"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingHorizontal="10dp"
+            android:text="Undo"
+            android:textColor="@color/accent_blue"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Preview area -->
     <LinearLayout
         android:id="@+id/preview_area"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="gone"
-        android:background="@color/preview_bg"
+        android:background="@drawable/voice_surface_bg"
         android:padding="10dp"
         android:layout_marginHorizontal="2dp"
         android:layout_marginTop="4dp"
@@ -165,14 +222,14 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- ═══════════ Voice Overlay (hidden by default) ═══════════ -->
+    <!-- Voice overlay -->
     <LinearLayout
         android:id="@+id/voice_overlay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="gone"
-        android:background="@color/voice_overlay_bg"
+        android:background="@drawable/voice_surface_bg"
         android:padding="16dp"
         android:gravity="center"
         android:layout_marginHorizontal="2dp"
@@ -199,7 +256,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/key_text"
-            android:textSize="28sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:gravity="center"
             android:layout_marginTop="12dp"
@@ -221,13 +278,13 @@
             android:focusable="true" />
     </LinearLayout>
 
-    <!-- ═══════════ Row 1: q w e r t y u i o p ═══════════ -->
+    <!-- Row 1: q w e r t y u i o p -->
     <LinearLayout
         android:id="@+id/row1"
         android:layout_width="match_parent"
-        android:layout_height="46dp"
+        android:layout_height="48dp"
         android:orientation="horizontal"
-        android:layout_marginTop="3dp">
+        android:layout_marginTop="4dp">
 
         <TextView android:id="@+id/key_q" style="@style/KeyStyle" android:text="q" />
         <TextView android:id="@+id/key_w" style="@style/KeyStyle" android:text="w" />
@@ -241,13 +298,13 @@
         <TextView android:id="@+id/key_p" style="@style/KeyStyle" android:text="p" />
     </LinearLayout>
 
-    <!-- ═══════════ Row 2: a s d f g h j k l ═══════════ -->
+    <!-- Row 2: a s d f g h j k l -->
     <LinearLayout
         android:id="@+id/row2"
         android:layout_width="match_parent"
-        android:layout_height="46dp"
+        android:layout_height="48dp"
         android:orientation="horizontal"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="4dp"
         android:paddingHorizontal="16dp">
 
         <TextView android:id="@+id/key_a" style="@style/KeyStyle" android:text="a" />
@@ -261,18 +318,19 @@
         <TextView android:id="@+id/key_l" style="@style/KeyStyle" android:text="l" />
     </LinearLayout>
 
-    <!-- ═══════════ Row 3: ⬆ z x c v b n m ⌫ ═══════════ -->
+    <!-- Row 3 -->
     <LinearLayout
         android:id="@+id/row3"
         android:layout_width="match_parent"
-        android:layout_height="46dp"
+        android:layout_height="48dp"
         android:orientation="horizontal"
-        android:layout_marginTop="3dp">
+        android:layout_marginTop="4dp">
 
         <TextView
             android:id="@+id/key_shift"
             style="@style/KeyStyleSpecial"
-            android:text="⬆"
+            android:text="Shift"
+            android:textSize="12sp"
             android:layout_weight="1.5" />
 
         <TextView android:id="@+id/key_z" style="@style/KeyStyle" android:text="z" />
@@ -286,17 +344,18 @@
         <TextView
             android:id="@+id/key_backspace"
             style="@style/KeyStyleSpecial"
-            android:text="⌫"
+            android:text="Delete"
+            android:textSize="11sp"
             android:layout_weight="1.5" />
     </LinearLayout>
 
-    <!-- ═══════════ Row 4: ?123  ,  🎤(BIG)  .  ⏎ ═══════════ -->
+    <!-- Row 4 -->
     <LinearLayout
         android:id="@+id/row4"
         android:layout_width="match_parent"
-        android:layout_height="52dp"
+        android:layout_height="54dp"
         android:orientation="horizontal"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="4dp"
         android:gravity="center_vertical">
 
         <TextView
@@ -353,11 +412,12 @@
         <TextView
             android:id="@+id/key_enter"
             style="@style/KeyStyleSpecial"
-            android:text="⏎"
+            android:text="Enter"
+            android:textSize="11sp"
             android:layout_weight="1.2" />
     </LinearLayout>
 
-    <!-- ═══════════ Number/Symbol Rows (hidden by default) ═══════════ -->
+    <!-- Number and symbol rows (hidden by default) -->
     <LinearLayout
         android:id="@+id/numbers_row1"
         android:layout_width="match_parent"
@@ -422,8 +482,130 @@
         <TextView
             android:id="@+id/key_backspace_num"
             style="@style/KeyStyleSpecial"
-            android:text="⌫"
+            android:text="Delete"
+            android:textSize="11sp"
             android:layout_weight="1.5" />
+    </LinearLayout>
+
+    <!-- Dedicated numeric keypad (auto-shown for number/phone/date fields) -->
+    <LinearLayout
+        android:id="@+id/numpad_row1"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="4dp"
+        android:visibility="gone">
+
+        <TextView android:id="@+id/key_np1" style="@style/KeyStyle" android:text="1" />
+        <TextView android:id="@+id/key_np2" style="@style/KeyStyle" android:text="2" />
+        <TextView android:id="@+id/key_np3" style="@style/KeyStyle" android:text="3" />
+        <TextView
+            android:id="@+id/key_backspace_pad"
+            style="@style/KeyStyleSpecial"
+            android:text="Delete"
+            android:textSize="11sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/numpad_row2"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="4dp"
+        android:visibility="gone">
+
+        <TextView android:id="@+id/key_np4" style="@style/KeyStyle" android:text="4" />
+        <TextView android:id="@+id/key_np5" style="@style/KeyStyle" android:text="5" />
+        <TextView android:id="@+id/key_np6" style="@style/KeyStyle" android:text="6" />
+        <TextView android:id="@+id/key_np_plus" style="@style/KeyStyleSpecial" android:text="+" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/numpad_row3"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="4dp"
+        android:visibility="gone">
+
+        <TextView android:id="@+id/key_np7" style="@style/KeyStyle" android:text="7" />
+        <TextView android:id="@+id/key_np8" style="@style/KeyStyle" android:text="8" />
+        <TextView android:id="@+id/key_np9" style="@style/KeyStyle" android:text="9" />
+        <TextView android:id="@+id/key_np_dash" style="@style/KeyStyleSpecial" android:text="-" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/numpad_row4"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="4dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/btn_numpad_abc"
+            style="@style/KeyStyleSpecial"
+            android:text="ABC"
+            android:textSize="13sp" />
+
+        <TextView android:id="@+id/key_np0" style="@style/KeyStyle" android:text="0" />
+        <TextView android:id="@+id/key_np_dot" style="@style/KeyStyle" android:text="." />
+
+        <TextView
+            android:id="@+id/key_enter_pad"
+            style="@style/KeyStyleSpecial"
+            android:text="Done"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <!-- Emoji drawer -->
+    <LinearLayout
+        android:id="@+id/emoji_drawer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="4dp"
+        android:visibility="gone">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="196dp"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/emoji_grid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp">
+
+            <TextView
+                android:id="@+id/btn_emoji_abc"
+                style="@style/KeyStyleSpecial"
+                android:text="ABC"
+                android:textSize="13sp"
+                android:layout_weight="1.4" />
+
+            <TextView
+                android:id="@+id/btn_emoji_space"
+                style="@style/KeyStyle"
+                android:text="Space"
+                android:textSize="14sp"
+                android:layout_weight="3" />
+
+            <TextView
+                android:id="@+id/btn_emoji_backspace"
+                style="@style/KeyStyleSpecial"
+                android:text="Delete"
+                android:textSize="11sp"
+                android:layout_weight="1.4" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

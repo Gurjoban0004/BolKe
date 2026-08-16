@@ -97,7 +97,7 @@
                     android:id="@+id/step1_check"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="✓"
+                    android:text="Done"
                     android:textColor="@color/accent_green"
                     android:textSize="20sp"
                     android:visibility="gone" />
@@ -155,7 +155,7 @@
                     android:id="@+id/step2_check"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="✓"
+                    android:text="Done"
                     android:textColor="@color/accent_green"
                     android:textSize="20sp"
                     android:visibility="gone" />

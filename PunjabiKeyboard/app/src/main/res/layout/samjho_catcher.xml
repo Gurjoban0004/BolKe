@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#14000000">
+
+    <TextView
+        android:id="@+id/samjho_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="72dp"
+        android:background="@drawable/samjho_card_bg"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:text="@string/samjho_hint"
+        android:textColor="@color/accent_blue"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+</FrameLayout>

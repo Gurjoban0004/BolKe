@@ -14,10 +14,11 @@ import java.net.URLEncoder
  * Processes recognized Gurmukhi text based on the selected output mode.
  *
  * PUNJABI  → pass-through (returns Gurmukhi as-is)
- * PUNGLISH → transliterates via Smart Romanization (Online) or ICU (Offline)
+ * PUNGLISH → transliterates with the app's Punjabi texting-style romanizer
  * ENGLISH  → translates via Smart Translation (Online) or Google Cloud API
  */
 class TranslationManager {
+    private val languageService = LanguageServiceClient()
 
     /**
      * Process the recognized Gurmukhi text according to the output mode.
@@ -32,13 +33,10 @@ class TranslationManager {
             OutputMode.PUNJABI -> gurmukhiText
             
             OutputMode.PUNGLISH -> {
-                if (isOfflineMode) {
-                    TransliterationHelper.transliterate(gurmukhiText)
-                } else {
-                    // Smart Romanization: Get high-quality Punglish from Google's internal API
-                    smartTranslate(gurmukhiText, "en", includeTranslit = true)?.second 
-                        ?: TransliterationHelper.transliterate(gurmukhiText)
-                }
+                // Private cloud quality when configured; deterministic local output remains a
+                // reliable fallback during outages or before the service is deployed.
+                languageService.normalize(gurmukhiText)
+                    ?: TransliterationHelper.transliterate(gurmukhiText)
             }
             
             OutputMode.ENGLISH -> {

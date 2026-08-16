@@ -16,6 +16,35 @@ import java.text.Normalizer
  */
 object TransliterationHelper {
 
+    /**
+     * High-frequency Punjabi words whose ICU spelling is technically correct but not how
+     * Punjabi speakers usually write them in Latin-script chats. These are deliberately
+     * whole-word replacements, so names and neighbouring words are never altered.
+     */
+    private val conversationalWords = mapOf(
+        "jihaadaa" to "jehda", "jihaaraa" to "jehda", "jihara" to "jehda",
+        "jihaadii" to "jehdi", "jihaari" to "jehdi", "jihari" to "jehdi",
+        "jihaade" to "jehde", "jihare" to "jehde",
+        "kihaadaa" to "kehda", "kihaaraa" to "kehda", "kihara" to "kehda",
+        "kihaadii" to "kehdi", "kihaari" to "kehdi", "kihari" to "kehdi",
+        "kihaade" to "kehde", "kihare" to "kehde",
+        "kivem" to "kiven", "kiwem" to "kiven", "tainoom" to "tainu", "tainoo" to "tainu",
+        "mainoom" to "mainu", "mainoo" to "mainu", "aapanaa" to "aapa", "aipa" to "aapa", "aapam" to "aapa",
+        "banaaiaa" to "banai aa", "banaiaa" to "banai aa",
+        "doosare" to "doosre", "phona" to "phone", "vica" to "vich",
+        "calaanaa" to "chalana", "calaana" to "chalana", "calana" to "chalana", "toom" to "tu", "too" to "tu",
+        "dassaa" to "dass", "dasa" to "dass", "rihaa" to "reha", "rihi" to "rahi", "rahe" to "rahe",
+        "taam" to "ta", "likhaa" to "likha", "likha" to "likha", "bhejanaa" to "bhejna", "bhejana" to "bhejna", "ihana" to "ihna",
+        "ihanam" to "ihna", "maidama" to "madam", "jobana" to "jo bana",
+        "thoda" to "thoda", "thode" to "thode", "thadi" to "thadi",
+        "tuhaadaa" to "thada", "tuhada" to "thada", "tuhaade" to "thade", "tuhade" to "thade", "tuhaadii" to "thadi", "tuhadi" to "thadi",
+        "kiu" to "kyu", "nahim" to "nahi", "han" to "haan",
+        "hai" to "aa", "haim" to "aa", "hama" to "haan",
+        "karana" to "karna", "karada" to "karda", "karadi" to "kardi",
+        "karade" to "karde", "jaana" to "jana", "aana" to "auna",
+        "milana" to "milna", "bolana" to "bolna"
+    )
+
     private val transliterator: Transliterator by lazy {
         Transliterator.getInstance("Gurmukhi-Latin")
     }
@@ -47,16 +76,6 @@ object TransliterationHelper {
 
         // === Colloquial Conversions (before diacritic stripping) ===
         // Common words that sound better in texting style
-        result = result.replace("tuhāḍā", "thada")
-        result = result.replace("tuhāḍe", "thade")
-        result = result.replace("tuhāḍī", "thadi")
-        result = result.replace("thōḍā", "thoda")
-        result = result.replace("thōḍe", "thode")
-        result = result.replace("thōḍī", "thodi")
-        result = result.replace("kiuṃ", "kyu")
-        result = result.replace("rihā", "rha")
-        result = result.replace("rihī", "rhi")
-        result = result.replace("rahē", "rhe")
 
         // === Long vowels → doubled letters (before stripping diacritics) ===
         // ā → aa (long a)
@@ -104,7 +123,12 @@ object TransliterationHelper {
 
         // === Final texting-style cleanups ===
         result = result.replace("eea", "iya") // kariya instead of kareea
-        result = result.replace("vicha", "ch") // "ch" is common for "vich"
+
+        // Apply familiar chat spellings only after all diacritics are removed. Sorting keeps
+        // the longest phrases first should a future mapping contain overlapping entries.
+        conversationalWords.entries.sortedByDescending { it.key.length }.forEach { (source, target) ->
+            result = result.replace(Regex("\\b${Regex.escape(source)}\\b", RegexOption.IGNORE_CASE), target)
+        }
         
         // Remove any remaining special Unicode characters that might slip through
         result = result.replace(Regex("[^\\p{ASCII}\\s]"), "")

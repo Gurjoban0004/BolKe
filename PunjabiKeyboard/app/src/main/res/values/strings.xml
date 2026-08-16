@@ -3,38 +3,38 @@
     <string name="app_name">ਬੋਲ ਕੇ — BolKe</string>
     <string name="subtype_punjabi_voice">Punjabi Voice</string>
     <string name="settings_title">ਸੈਟਿੰਗਜ਼ — Settings</string>
-    <string name="personalization_title">ਮੇਰੇ ਸ਼ਬਦ — My Shortcuts</string>
+    <string name="personalization_title">ਮੇਰੇ ਸ਼ਬਦ — Family Phrases</string>
 
     <!-- Output modes -->
     <string name="mode_punjabi">ਪੰਜਾਬੀ (Gurmukhi)</string>
     <string name="mode_english">English (Translated)</string>
-    <string name="mode_punglish">Punglish (Texting Style)</string>
+    <string name="mode_punglish">Punjabi in English letters</string>
 
     <!-- Voice UI -->
-    <string name="voice_prompt">🎤 ਬੋਲੋ…</string>
+    <string name="voice_prompt">ਬੋਲੋ…</string>
     <string name="voice_listening">ਸੁਣ ਰਿਹਾ ਹਾਂ…</string>
     <string name="voice_processing">ਸੋਚ ਰਿਹਾ ਹਾਂ…</string>
-    <string name="voice_stop">⏹ ਬੱਸ</string>
-    <string name="btn_send">✓ ਭੇਜੋ</string>
-    <string name="btn_rerecord">🔄 ਦੁਬਾਰਾ</string>
+    <string name="voice_stop">ਰੋਕੋ</string>
+    <string name="btn_send">ਭੇਜੋ</string>
+    <string name="btn_rerecord">ਦੁਬਾਰਾ ਬੋਲੋ</string>
 
     <!-- Setup wizard -->
-    <string name="setup_welcome_title">ਬੋਲ ਕੇ ਵਿੱਚ ਜੀ ਆਇਆਂ ਨੂੰ!</string>
-    <string name="setup_welcome_subtitle">Welcome to BolKe — Your Punjabi Voice Keyboard</string>
+    <string name="setup_welcome_title">ਪੰਜਾਬੀ ਬੋਲੋ, ਅੰਗਰੇਜ਼ੀ ਅੱਖਰਾਂ ਵਿੱਚ ਲਿਖੋ</string>
+    <string name="setup_welcome_subtitle">Speak Punjabi naturally. BolKe writes familiar Punjabi in English letters.</string>
     <string name="setup_step1_title">Step 1: Enable Keyboard</string>
     <string name="setup_step1_desc">ਪਹਿਲਾਂ ਕੀਬੋਰਡ ਨੂੰ ਚਾਲੂ ਕਰੋ</string>
     <string name="setup_step1_btn">Enable BolKe Keyboard</string>
     <string name="setup_step2_title">Step 2: Select Keyboard</string>
     <string name="setup_step2_desc">ਹੁਣ BolKe ਨੂੰ ਆਪਣਾ ਕੀਬੋਰਡ ਬਣਾਓ</string>
     <string name="setup_step2_btn">Select BolKe</string>
-    <string name="setup_step3_title">Step 3: All Done! ✓</string>
-    <string name="setup_step3_desc">ਬੱਸ! ਹੁਣ WhatsApp ਖੋਲ੍ਹੋ ਤੇ 🎤 ਦੱਬੋ</string>
+    <string name="setup_step3_title">Step 3: Ready to use</string>
+    <string name="setup_step3_desc">ਹੁਣ ਕਿਸੇ ਵੀ ਮੈਸੇਜ ਐਪ ਵਿੱਚ ਮਾਈਕ ਬਟਨ ਦਬਾਓ। ਤੁਹਾਡੇ ਮੈਸੇਜ ਸੇਵ ਨਹੀਂ ਹੁੰਦੇ।</string>
     <string name="setup_done_btn">ਸ਼ੁਰੂ ਕਰੋ!</string>
 
     <!-- Settings Main -->
     <string name="settings_section_typing">ਲਿਖਣ ਦਾ ਤਰੀਕਾ — Typing Style</string>
     <string name="settings_what_i_speak">What I speak becomes…</string>
-    <string name="settings_auto_send">Auto-Send after speaking</string>
+    <string name="settings_auto_send">Insert after speaking</string>
     <string name="settings_offline">Use Offline Mode</string>
 
     <string name="settings_section_appearance">ਦਿੱਖ — Appearance</string>
@@ -42,13 +42,35 @@
     <string name="settings_double_tap">Double-tap Space for Period</string>
     <string name="settings_auto_cap">Auto-Capitalization</string>
 
-    <string name="settings_section_personal">ਨਿੱਜੀ ਸੈਟਿੰਗਾਂ — Personalization</string>
-    <string name="settings_manage_shortcuts">Manage Quick Replies &amp; Shortcuts</string>
-    <string name="settings_manage_shortcuts_desc">Add your own phrases and word shortcuts</string>
+    <string name="settings_section_personal">ਤੁਹਾਡੇ ਸ਼ਬਦ — Your words</string>
+    <string name="settings_manage_shortcuts">Family Phrases</string>
+    <string name="settings_manage_shortcuts_desc">Save the names, phrases, and spellings your family uses</string>
 
     <string name="settings_advanced">Advanced (Google API)</string>
     <string name="settings_save">ਸੇਵ ਕਰੋ — Save</string>
-    <string name="settings_saved">✓ ਸੇਵ ਹੋ ਗਿਆ!</string>
+    <string name="settings_saved">ਸੈਟਿੰਗਾਂ ਸੇਵ ਹੋ ਗਈਆਂ</string>
+
+    <!-- Samjho translator -->
+    <string name="samjho_section">ਸਮਝੋ — Understand English</string>
+    <string name="samjho_desc">ਬਬਲ ਦਬਾਓ, ਫਿਰ ਕਿਸੇ ਵੀ ਅੰਗਰੇਜ਼ੀ ਮੈਸੇਜ ਤੇ ਟੈਪ ਕਰੋ। ਉਹ ਪੰਜਾਬੀ ਵਿੱਚ ਦਿਖੇਗਾ।</string>
+    <string name="samjho_status_on">ਚਾਲੂ ਹੈ — Accessibility permission granted</string>
+    <string name="samjho_status_off">ਬੰਦ ਹੈ — Accessibility permission needed</string>
+    <string name="samjho_open_settings">ਸੈਟਿੰਗਾਂ ਖੋਲ੍ਹੋ — Open Accessibility Settings</string>
+    <string name="samjho_show_bubble">ਬਬਲ ਦਿਖਾਓ — Show the bubble</string>
+    <string name="samjho_api_key_hint">Gemini API Key</string>
+    <string name="samjho_privacy">ਜਦੋਂ ਤੁਸੀਂ ਮੈਸੇਜ ਤੇ ਟੈਪ ਕਰਦੇ ਹੋ, ਸਿਰਫ਼ ਉਹੀ ਮੈਸੇਜ ਅਨੁਵਾਦ ਲਈ ਭੇਜਿਆ ਜਾਂਦਾ ਹੈ। ਹੋਰ ਕੁਝ ਨਹੀਂ।</string>
+    <string name="samjho_service_description">ਸਮਝੋ reads the text on your screen only when you tap the bubble and then tap a message, so it can show you that message in Punjabi.</string>
+    <string name="samjho_bubble_letter">ਬ</string>
+    <string name="samjho_bubble_desc">ਸਮਝੋ</string>
+    <string name="samjho_hint">ਮੈਸੇਜ ਤੇ ਟੈਪ ਕਰੋ</string>
+    <string name="samjho_no_text">ਇਸ ਸਕਰੀਨ ਤੇ ਪੜ੍ਹਨ ਲਈ ਕੁਝ ਨਹੀਂ ਮਿਲਿਆ</string>
+    <string name="samjho_translating">ਅਨੁਵਾਦ ਹੋ ਰਿਹਾ ਹੈ…</string>
+    <string name="samjho_error_no_key">ਸੈਟਿੰਗਾਂ ਵਿੱਚ Gemini API key ਪਾਓ</string>
+    <string name="samjho_error_network">ਇੰਟਰਨੈਟ ਚੈੱਕ ਕਰੋ</string>
+    <string name="samjho_error_api">ਅਨੁਵਾਦ ਨਹੀਂ ਹੋ ਸਕਿਆ — ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ</string>
+    <string name="samjho_test">ਟੈਸਟ ਕਰੋ — Test translation</string>
+    <string name="samjho_cache_clear">ਸੇਵ ਕੀਤੇ ਅਨੁਵਾਦ ਮਿਟਾਓ — Clear cache</string>
+    <string name="samjho_cache_cleared">ਮਿਟਾ ਦਿੱਤੇ ਗਏ</string>
 
     <!-- Personalization Screen -->
     <string name="ps_quick_replies">ਤੁਰੰਤ ਜਵਾਬ — Quick Replies</string>
