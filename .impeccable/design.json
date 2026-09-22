@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-19T00:00:00+05:30",
+  "title": "Design System: BolKe",
+  "extensions": {
+    "colorMeta": {
+      "primary": { "role": "primary", "displayName": "Trust Blue", "canonical": "#0B57D0", "tonalRamp": ["#E8F0FE", "#D8E6FE", "#AECBFA", "#7BAAF7", "#4285F4", "#0B57D0", "#0842A0", "#062E6F"] },
+      "keyboard-bg": { "role": "neutral", "displayName": "Keyboard Night", "canonical": "#10131A", "tonalRamp": ["#F7F8FC", "#D9DEE7", "#B5BFCE", "#758196", "#4B5668", "#252B36", "#171C25", "#10131A"] },
+      "app-bg": { "role": "neutral", "displayName": "App Mist", "canonical": "#F4F6F8", "tonalRamp": ["#FFFFFF", "#F4F6F8", "#EBEFF4", "#D5DAE1", "#AEB6C2", "#737C89", "#3E4651", "#1B1C1E"] }
+    },
+    "typographyMeta": {
+      "headline": { "displayName": "Headline", "purpose": "Setup and settings page titles." },
+      "body": { "displayName": "Body", "purpose": "Instructions and supporting copy in Latin or Gurmukhi." }
+    },
+    "shadows": [],
+    "motion": [
+      { "name": "state-change", "value": "150ms", "purpose": "Pressed, focus, and panel state transitions only." }
+    ],
+    "breakpoints": []
+  },
+  "components": [
+    { "name": "Primary Button", "kind": "button", "refersTo": "button-primary", "description": "The single strongest action on a setup or settings surface.", "html": "<button class=\"ds-primary\">Copy Punjabi</button>", "css": ".ds-primary{min-height:48px;padding:0 20px;border:0;border-radius:999px;background:#0B57D0;color:#fff;font:700 16px system-ui}.ds-primary:hover{background:#0842A0}.ds-primary:focus-visible{outline:3px solid #1B1C1E;outline-offset:2px}.ds-primary:active{background:#062E6F}" },
+    { "name": "Keyboard Key", "kind": "button", "refersTo": "keyboard-key", "description": "Ordinary typing key on the dark keyboard surface.", "html": "<button class=\"ds-key\">a</button>", "css": ".ds-key{width:48px;height:48px;border:0;border-radius:12px;background:#252B36;color:#F7F8FC;font:400 17px system-ui}.ds-key:hover,.ds-key:active{background:#394353}.ds-key:focus-visible{outline:3px solid #8CC7FF;outline-offset:1px}" },
+    { "name": "Translation Result", "kind": "custom", "description": "Large conversational Gurmukhi result shown in place of keys.", "html": "<section class=\"ds-translation\" lang=\"pa-Guru\">ਮੈਸੇਜ ਦਾ ਸੌਖਾ ਪੰਜਾਬੀ ਅਰਥ ਇੱਥੇ ਦਿਖੇਗਾ।</section>", "css": ".ds-translation{padding:20px;border-radius:12px;background:#171C25;color:#F7F8FC;font:600 24px/1.4 system-ui}.ds-translation:focus-visible{outline:3px solid #8CC7FF;outline-offset:2px}" }
+  ],
+  "narrative": {
+    "northStar": "The Family Interpreter",
+    "overview": "A clear, patient product that helps without taking over. Speaking and understanding remain one-step tasks, and privacy limits are visible in the interface.",
+    "keyCharacteristics": ["Large readable Punjabi", "One restrained accent", "Tonal hierarchy", "Explicit privacy limits"],
+    "rules": [
+      { "name": "The One Accent Rule", "body": "Blue signals action or selection, never decoration.", "section": "colors" },
+      { "name": "The Read-It-Once Rule", "body": "Punjabi results are large enough to understand without zooming.", "section": "typography" },
+      { "name": "The Flat-by-Default Rule", "body": "Depth comes from tonal layering rather than decorative shadows.", "section": "elevation" }
+    ],
+    "dos": ["Use 48dp minimum touch targets.", "Show exact privacy boundaries.", "Use system typography and familiar Android interactions."],
+    "donts": ["Do not use emojis or decorative controls.", "Do not use Accessibility screen reading or overlays.", "Do not show clipboard or network tools in secure fields."]
+  }
+}
