@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="20dp">
+        <TextView style="@style/Bento.Headline" android:text="@string/privacy_title" />
+        <TextView style="@style/Bento.Body" android:layout_marginTop="18dp" android:text="@string/privacy_audio" android:textSize="16sp" />
+        <TextView style="@style/Bento.Body" android:layout_marginTop="16dp" android:text="@string/privacy_clipboard" android:textSize="16sp" />
+        <TextView style="@style/Bento.Body" android:layout_marginTop="16dp" android:text="@string/privacy_retention" android:textSize="16sp" />
+        <TextView style="@style/Bento.Body" android:layout_marginTop="16dp" android:text="@string/secure_field_explanation" android:textSize="16sp" />
+        <TextView android:id="@+id/btn_privacy_back" style="@style/Bento.PillPrimary" android:layout_marginTop="28dp" android:text="@string/back" />
+    </LinearLayout>
+</ScrollView>

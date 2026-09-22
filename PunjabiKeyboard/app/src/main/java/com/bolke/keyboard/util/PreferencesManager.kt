@@ -5,14 +5,14 @@ import android.content.SharedPreferences
 
 /**
  * Manages app preferences stored in SharedPreferences.
- * Stores output mode, API key, and setup completion status.
+ * Stores non-sensitive keyboard preferences. Provider credentials and copied messages
+ * are deliberately never persisted.
  */
 class PreferencesManager(context: Context) {
 
     companion object {
         private const val PREFS_NAME = "bolke_prefs"
         private const val KEY_OUTPUT_MODE = "output_mode"
-        private const val KEY_API_KEY = "api_key"
         private const val KEY_SETUP_COMPLETE = "setup_complete"
         private const val KEY_KEYBOARD_SIZE = "keyboard_size"
         private const val KEY_AUTO_SEND = "auto_send"
@@ -24,11 +24,7 @@ class PreferencesManager(context: Context) {
         private const val KEY_DOUBLE_TAP_PERIOD = "double_tap_period"
         private const val KEY_AUTO_CAP = "auto_cap"
         private const val KEY_SAVED_PHRASES = "saved_phrases"
-        private const val KEY_GEMINI_API_KEY = "gemini_api_key"
-        private const val KEY_SAMJHO_BUBBLE = "samjho_bubble"
-        private const val KEY_BUBBLE_X = "bubble_x"
-        private const val KEY_BUBBLE_Y = "bubble_y"
-        private const val KEY_SAMJHO_CACHE = "samjho_cache"
+        private const val KEY_TRANSLATE_COPIED_MESSAGES = "translate_copied_messages"
 
         private const val DEFAULT_QUICK_REPLIES = "ਕਿੱਥੇ ਆਗਿਆ?|kithe aagya?\nਮੈਂ ਚੱਲ ਪਈ!|mai chalpyi!\nਪੁੱਤ ਕਿੱਥੇ ਆਂ?|putt kithe aa?\nਹਾਂਜੀ|hanji\nਨਾਜੀ|naji\nਠੀਕ ਹੈ|thik hai\nਸਤਿ ਸ੍ਰੀ ਅਕਾਲ|sat sri akal\nਕੀ ਹਾਲ ਹੈ?|ki haal hai?"
         private const val DEFAULT_SLANG_MAPPINGS = "karo:kro\nchalo:chlo\nkarda:krda\nkardi:krdi\nkarde:krde\njaldi:jldi"
@@ -36,6 +32,18 @@ class PreferencesManager(context: Context) {
 
     private val prefs: SharedPreferences =
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+
+    init {
+        // Remove secrets and message caches left by pre-2.2 builds.
+        prefs.edit()
+            .remove("api_key")
+            .remove("gemini_api_key")
+            .remove("samjho_cache")
+            .remove("bubble_x")
+            .remove("bubble_y")
+            .remove("samjho_bubble")
+            .apply()
+    }
 
     /** Current output mode (defaults to PUNGLISH — romanized Punjabi) */
     var outputMode: OutputMode
@@ -49,13 +57,6 @@ class PreferencesManager(context: Context) {
         }
         set(value) {
             prefs.edit().putString(KEY_OUTPUT_MODE, value.name).apply()
-        }
-
-    /** Google Cloud Translation API key (needed for English mode only) */
-    var apiKey: String
-        get() = prefs.getString(KEY_API_KEY, "") ?: ""
-        set(value) {
-            prefs.edit().putString(KEY_API_KEY, value).apply()
         }
 
     /** Whether the first-launch setup wizard has been completed */
@@ -135,40 +136,10 @@ class PreferencesManager(context: Context) {
             prefs.edit().putBoolean(KEY_AUTO_CAP, value).apply()
         }
 
-    /** Gemini API key used by the Samjho translator */
-    var geminiApiKey: String
-        get() = prefs.getString(KEY_GEMINI_API_KEY, "") ?: ""
+    /** Explicit opt-in for translating a newly copied WhatsApp message. */
+    var translateCopiedMessages: Boolean
+        get() = prefs.getBoolean(KEY_TRANSLATE_COPIED_MESSAGES, false)
         set(value) {
-            prefs.edit().putString(KEY_GEMINI_API_KEY, value).apply()
-        }
-
-    /**
-     * Whether the Samjho bubble is shown. Independent of the accessibility permission
-     * so the bubble can be hidden without going back into system settings.
-     */
-    var isSamjhoBubbleEnabled: Boolean
-        get() = prefs.getBoolean(KEY_SAMJHO_BUBBLE, true)
-        set(value) {
-            prefs.edit().putBoolean(KEY_SAMJHO_BUBBLE, value).apply()
-        }
-
-    /** Where the user parked the bubble. -1 means "not placed yet". */
-    var bubbleX: Int
-        get() = prefs.getInt(KEY_BUBBLE_X, -1)
-        set(value) {
-            prefs.edit().putInt(KEY_BUBBLE_X, value).apply()
-        }
-
-    var bubbleY: Int
-        get() = prefs.getInt(KEY_BUBBLE_Y, -1)
-        set(value) {
-            prefs.edit().putInt(KEY_BUBBLE_Y, value).apply()
-        }
-
-    /** Past Samjho translations, as a JSON object of source text to Punjabi. */
-    var samjhoCache: String
-        get() = prefs.getString(KEY_SAMJHO_CACHE, "") ?: ""
-        set(value) {
-            prefs.edit().putString(KEY_SAMJHO_CACHE, value).apply()
+            prefs.edit().putBoolean(KEY_TRANSLATE_COPIED_MESSAGES, value).apply()
         }
 }

@@ -2,467 +2,166 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/activity_bg"
-    android:fillViewport="true">
+    android:background="@color/app_bg"
+    android:fillViewport="true"
+    android:scrollbars="none">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:paddingHorizontal="16dp"
+        android:paddingTop="28dp"
+        android:paddingBottom="32dp">
 
-        <!-- Header -->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/settings_title"
-                android:textColor="@color/text_primary"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
-            <!-- App Scale Toggle -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true">
-
-                <TextView
-                    android:id="@+id/btn_app_size_minus"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:text="-"
-                    android:textColor="@color/accent_blue"
-                    android:textSize="18sp"
-                    android:gravity="center"
-                    android:background="@drawable/mode_pill_bg"
-                    android:clickable="true"
-                    android:focusable="true" />
-
-                <TextView
-                    android:id="@+id/btn_app_size_plus"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_marginStart="8dp"
-                    android:text="+"
-                    android:textColor="@color/accent_blue"
-                    android:textSize="18sp"
-                    android:gravity="center"
-                    android:background="@drawable/mode_pill_bg"
-                    android:clickable="true"
-                    android:focusable="true" />
-            </LinearLayout>
-        </RelativeLayout>
-
-        <!-- Typing style -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/surface_bg"
-            android:padding="16dp"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="20dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="6dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView style="@style/Bento.Headline" android:text="@string/app_name" />
+                <TextView style="@style/Bento.Body" android:layout_marginTop="2dp" android:text="@string/settings_title" />
+            </LinearLayout>
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/settings_section_typing"
-                android:textColor="@color/accent_blue"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="12dp" />
+                android:id="@+id/btn_app_size_minus"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/pill_ghost"
+                android:clickable="true"
+                android:contentDescription="Decrease app text size"
+                android:focusable="true"
+                android:gravity="center"
+                android:text="−"
+                android:textColor="@color/app_primary"
+                android:textSize="20sp" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/settings_what_i_speak"
-                android:textColor="@color/text_primary"
-                android:textSize="13sp" />
+                android:id="@+id/btn_app_size_plus"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/pill_ghost"
+                android:clickable="true"
+                android:contentDescription="Increase app text size"
+                android:focusable="true"
+                android:gravity="center"
+                android:text="+"
+                android:textColor="@color/app_primary"
+                android:textSize="20sp" />
+        </LinearLayout>
 
+        <LinearLayout
+            style="@style/Bento"
+            android:background="@drawable/bento_green">
+
+            <TextView
+                style="@style/Bento.CardTitle"
+                android:text="@string/test_keyboard_title"
+                android:textColor="@color/app_on_green_soft" />
+
+            <EditText
+                android:id="@+id/keyboard_test_input"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/field_bg"
+                android:hint="@string/test_keyboard_hint"
+                android:inputType="textCapSentences|textMultiLine"
+                android:maxLines="3"
+                android:paddingHorizontal="16dp"
+                android:textColor="@color/app_text"
+                android:textColorHint="@color/app_text_soft"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/btn_try_keyboard"
+                style="@style/Bento.PillGhost"
+                android:layout_marginTop="10dp"
+                android:text="@string/test_keyboard_button" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/Bento" android:background="@drawable/bento_primary">
+            <TextView style="@style/Bento.CardTitle" android:text="@string/copy_translate_title" android:textColor="@color/app_on_primary_soft" />
+            <TextView style="@style/Bento.Body" android:text="@string/copy_translate_desc" android:textColor="@color/app_on_primary_soft" />
+            <CheckBox
+                android:id="@+id/translate_copied_checkbox"
+                style="@style/Bento.Choice"
+                android:layout_marginTop="12dp"
+                android:minHeight="48dp"
+                android:text="@string/copy_translate_opt_in"
+                android:textColor="@color/app_on_primary_soft" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/Bento">
+            <TextView style="@style/Bento.CardTitle" android:text="@string/settings_section_typing" />
+            <TextView style="@style/Bento.Body" android:text="@string/settings_what_i_speak" />
             <RadioGroup
                 android:id="@+id/mode_radio_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="8dp">
-
-                <RadioButton
-                    android:id="@+id/radio_punglish"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/mode_punglish"
-                    android:textColor="@color/text_primary"
-                    android:textSize="13sp"
-                    android:buttonTint="@color/accent_blue" />
-
-                <RadioButton
-                    android:id="@+id/radio_punjabi"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/mode_punjabi"
-                    android:textColor="@color/text_primary"
-                    android:textSize="13sp"
-                    android:buttonTint="@color/accent_blue" />
-
-                <RadioButton
-                    android:id="@+id/radio_english"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:text="@string/mode_english"
-                    android:textColor="@color/text_primary"
-                    android:textSize="13sp"
-                    android:buttonTint="@color/accent_blue" />
+                android:layout_marginTop="8dp"
+                android:orientation="vertical">
+                <RadioButton android:id="@+id/radio_punglish" style="@style/Bento.Choice" android:minHeight="48dp" android:text="@string/mode_punglish" />
+                <RadioButton android:id="@+id/radio_punjabi" style="@style/Bento.Choice" android:minHeight="48dp" android:text="@string/mode_punjabi" />
             </RadioGroup>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/divider"
-                android:layout_marginVertical="12dp" />
-
-            <CheckBox
-                android:id="@+id/auto_send_checkbox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/settings_auto_send"
-                android:textColor="@color/text_primary"
-                android:textSize="13sp"
-                android:buttonTint="@color/accent_blue" />
-
-            <CheckBox
-                android:id="@+id/offline_mode_checkbox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:text="@string/settings_offline"
-                android:textColor="@color/text_primary"
-                android:textSize="13sp"
-                android:buttonTint="@color/accent_blue" />
+            <CheckBox android:id="@+id/auto_send_checkbox" style="@style/Bento.Choice" android:minHeight="48dp" android:text="@string/settings_auto_send" />
+            <CheckBox android:id="@+id/offline_mode_checkbox" style="@style/Bento.Choice" android:minHeight="48dp" android:text="@string/settings_offline" />
         </LinearLayout>
 
-        <!-- Appearance -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/surface_bg"
-            android:padding="16dp"
-            android:layout_marginBottom="16dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/settings_section_appearance"
-                android:textColor="@color/accent_blue"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="12dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/settings_keyboard_size"
-                android:textColor="@color/text_primary"
-                android:textSize="13sp" />
-
+        <LinearLayout style="@style/Bento">
+            <TextView style="@style/Bento.CardTitle" android:text="@string/settings_section_appearance" />
+            <TextView style="@style/Bento.Body" android:text="@string/settings_keyboard_size" />
             <RadioGroup
                 android:id="@+id/size_radio_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="8dp">
-
-                <RadioButton
-                    android:id="@+id/size_small"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Small"
-                    android:textColor="@color/text_primary"
-                    android:textSize="12sp"
-                    android:buttonTint="@color/accent_blue" />
-
-                <RadioButton
-                    android:id="@+id/size_medium"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Mid"
-                    android:textColor="@color/text_primary"
-                    android:textSize="12sp"
-                    android:buttonTint="@color/accent_blue" />
-
-                <RadioButton
-                    android:id="@+id/size_large"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Large"
-                    android:textColor="@color/text_primary"
-                    android:textSize="12sp"
-                    android:buttonTint="@color/accent_blue" />
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+                <RadioButton android:id="@+id/size_small" style="@style/Bento.Choice" android:minHeight="48dp" android:text="@string/settings_size_small" />
+                <RadioButton android:id="@+id/size_medium" style="@style/Bento.Choice" android:minHeight="48dp" android:text="@string/settings_size_medium" />
+                <RadioButton android:id="@+id/size_large" style="@style/Bento.Choice" android:minHeight="48dp" android:text="@string/settings_size_large" />
             </RadioGroup>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/divider"
-                android:layout_marginVertical="12dp" />
-
-            <CheckBox
-                android:id="@+id/double_tap_period_checkbox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/settings_double_tap"
-                android:textColor="@color/text_primary"
-                android:textSize="13sp"
-                android:buttonTint="@color/accent_blue" />
-
-            <CheckBox
-                android:id="@+id/auto_cap_checkbox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/settings_auto_cap"
-                android:textColor="@color/text_primary"
-                android:textSize="13sp"
-                android:buttonTint="@color/accent_blue" />
+            <CheckBox android:id="@+id/double_tap_period_checkbox" style="@style/Bento.Choice" android:minHeight="48dp" android:text="@string/settings_double_tap" />
+            <CheckBox android:id="@+id/auto_cap_checkbox" style="@style/Bento.Choice" android:minHeight="48dp" android:text="@string/settings_auto_cap" />
         </LinearLayout>
 
-        <!-- Personalization -->
         <LinearLayout
             android:id="@+id/btn_open_personalization"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/surface_bg"
-            android:padding="16dp"
-            android:layout_marginBottom="16dp"
-            android:clickable="true"
-            android:focusable="true">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/settings_section_personal"
-                android:textColor="@color/accent_blue"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/settings_manage_shortcuts"
-                android:textColor="@color/text_primary"
-                android:textSize="13sp"
-                android:layout_marginTop="4dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/settings_manage_shortcuts_desc"
-                android:textColor="@color/text_secondary"
-                android:textSize="11sp"
-                android:layout_marginTop="2dp" />
-        </LinearLayout>
-
-        <!-- Samjho translator -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/surface_bg"
-            android:padding="16dp"
-            android:layout_marginBottom="16dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/samjho_section"
-                android:textColor="@color/accent_blue"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/samjho_desc"
-                android:textColor="@color/text_secondary"
-                android:textSize="12sp"
-                android:lineSpacingExtra="2dp"
-                android:layout_marginTop="4dp" />
-
-            <TextView
-                android:id="@+id/samjho_status"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:layout_marginTop="12dp" />
-
-            <TextView
-                android:id="@+id/btn_samjho_accessibility"
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:text="@string/samjho_open_settings"
-                android:textColor="@color/accent_blue"
-                android:textSize="13sp"
-                android:gravity="center"
-                android:background="@drawable/mode_pill_bg"
-                android:clickable="true"
-                android:focusable="true"
-                android:layout_marginTop="8dp" />
-
-            <CheckBox
-                android:id="@+id/samjho_bubble_checkbox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/samjho_show_bubble"
-                android:textColor="@color/text_primary"
-                android:textSize="13sp"
-                android:layout_marginTop="8dp" />
-
-            <EditText
-                android:id="@+id/gemini_key_input"
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:hint="@string/samjho_api_key_hint"
-                android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_secondary"
-                android:textSize="13sp"
-                android:background="@drawable/mode_pill_bg"
-                android:paddingHorizontal="12dp"
-                android:singleLine="true"
-                android:inputType="textNoSuggestions"
-                android:layout_marginTop="12dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="8dp">
-
-                <TextView
-                    android:id="@+id/btn_samjho_test"
-                    android:layout_width="0dp"
-                    android:layout_height="44dp"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="8dp"
-                    android:text="@string/samjho_test"
-                    android:textColor="@color/accent_blue"
-                    android:textSize="12sp"
-                    android:gravity="center"
-                    android:background="@drawable/mode_pill_bg"
-                    android:clickable="true"
-                    android:focusable="true" />
-
-                <TextView
-                    android:id="@+id/btn_samjho_clear_cache"
-                    android:layout_width="0dp"
-                    android:layout_height="44dp"
-                    android:layout_weight="1"
-                    android:text="@string/samjho_cache_clear"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp"
-                    android:gravity="center"
-                    android:background="@drawable/mode_pill_bg"
-                    android:clickable="true"
-                    android:focusable="true" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/samjho_test_result"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_primary"
-                android:textSize="15sp"
-                android:lineSpacingExtra="3dp"
-                android:layout_marginTop="10dp"
-                android:visibility="gone" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/samjho_privacy"
-                android:textColor="@color/text_secondary"
-                android:textSize="11sp"
-                android:lineSpacingExtra="2dp"
-                android:layout_marginTop="12dp" />
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="Privacy: BolKe processes only the phrase you speak. Your saved phrases stay on this device."
-            android:textColor="@color/text_secondary"
-            android:textSize="12sp"
-            android:lineSpacingExtra="2dp" />
-
-        <!-- Advanced -->
-        <TextView
-            android:id="@+id/btn_advanced_toggle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/settings_advanced"
-            android:textColor="@color/text_secondary"
-            android:textSize="13sp"
-            android:padding="8dp"
-            android:visibility="gone"
-            android:layout_gravity="center_horizontal" />
-
-        <LinearLayout
-            android:id="@+id/advanced_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone"
-            android:background="@drawable/surface_bg"
-            android:padding="16dp"
-            android:layout_marginBottom="16dp">
-
-            <EditText
-                android:id="@+id/api_key_input"
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:hint="Google Translate API Key"
-                android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_secondary"
-                android:textSize="13sp"
-                android:background="@drawable/mode_pill_bg"
-                android:paddingHorizontal="12dp"
-                android:singleLine="true" />
-        </LinearLayout>
-
-        <!-- Save Button -->
-        <TextView
-            android:id="@+id/btn_save"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:text="@string/settings_save"
-            android:textColor="@color/key_text"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:background="@drawable/btn_send_bg"
+            style="@style/Bento"
+            android:background="@drawable/bento_amber"
             android:clickable="true"
             android:focusable="true"
-            android:layout_marginTop="8dp" />
+            android:minHeight="64dp">
+            <TextView style="@style/Bento.CardTitle" android:text="@string/my_spellings_title" android:textColor="@color/app_on_amber_soft" />
+            <TextView style="@style/Bento.Body" android:text="@string/my_spellings_desc" android:textColor="@color/app_on_amber_soft" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/save_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/accent_green"
-            android:textSize="13sp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="12dp"
-            android:visibility="gone" />
+        <LinearLayout
+            android:id="@+id/btn_open_privacy"
+            style="@style/Bento"
+            android:clickable="true"
+            android:focusable="true"
+            android:minHeight="64dp">
+            <TextView style="@style/Bento.CardTitle" android:text="@string/privacy_title" />
+            <TextView style="@style/Bento.Body" android:text="@string/secure_field_explanation" />
+        </LinearLayout>
 
+        <LinearLayout style="@style/Bento">
+            <TextView style="@style/Bento.CardTitle" android:text="@string/support_title" />
+            <TextView android:id="@+id/language_service_status" style="@style/Bento.Body" />
+        </LinearLayout>
+
+        <TextView android:id="@+id/btn_save" style="@style/Bento.PillPrimary" android:layout_marginTop="8dp" android:text="@string/settings_save" />
+        <TextView android:id="@+id/save_status" style="@style/Bento.Body" android:layout_width="wrap_content" android:layout_gravity="center_horizontal" android:layout_marginTop="12dp" android:textColor="@color/app_primary" android:visibility="gone" />
     </LinearLayout>
 </ScrollView>

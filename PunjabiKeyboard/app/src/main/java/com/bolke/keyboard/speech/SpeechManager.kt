@@ -17,7 +17,7 @@ class SpeechManager(private val context: Context) {
     interface SpeechCallback {
         fun onReadyForSpeech()
         fun onPartialResult(text: String)
-        fun onFinalResult(text: String)
+        fun onFinalResult(text: String, alternatives: List<String>, confidence: Float?)
         fun onError(errorMessage: String)
         fun onEndOfSpeech()
         fun onRmsChanged(rmsdB: Float)
@@ -136,7 +136,9 @@ class SpeechManager(private val context: Context) {
             override fun onResults(results: Bundle?) {
                 val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
                 if (!matches.isNullOrEmpty()) {
-                    callback?.onFinalResult(matches[0])
+                    val confidence = results.getFloatArray(SpeechRecognizer.CONFIDENCE_SCORES)
+                        ?.firstOrNull()?.takeIf { it >= 0f }
+                    callback?.onFinalResult(matches[0], matches.drop(1).take(2), confidence)
                 } else {
                     callback?.onError("ਕੁਝ ਸਮਝ ਨਹੀਂ ਆਇਆ")
                 }

@@ -1,6 +1,8 @@
 package com.bolke.keyboard
 
 import android.content.ClipboardManager
+import android.content.ClipData
+import android.content.ClipDescription
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -8,8 +10,10 @@ import android.inputmethodservice.InputMethodService
 import android.os.Handler
 import android.os.Looper
 import android.text.InputType
+import android.view.ContextThemeWrapper
 import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -20,9 +24,13 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import com.bolke.keyboard.speech.SpeechManager
+import com.bolke.keyboard.speech.PunjabiSpeaker
 import com.bolke.keyboard.ui.VoiceRippleView
 import com.bolke.keyboard.translation.TranslationManager
 import com.bolke.keyboard.translation.TransliterationHelper
+import com.bolke.keyboard.translation.LanguageError
+import com.bolke.keyboard.translation.LanguageResponse
+import com.bolke.keyboard.translation.LanguageServiceClient
 import com.bolke.keyboard.util.OutputMode
 import com.bolke.keyboard.util.PreferencesManager
 import androidx.core.content.ContextCompat
@@ -40,7 +48,8 @@ class BolKeIMEService : InputMethodService() {
     private enum class KeyboardState {
         KEYBOARD,
         RECORDING,
-        PREVIEW
+        PREVIEW,
+        TRANSLATION
     }
 
     private lateinit var keyboardView: View
@@ -50,6 +59,7 @@ class BolKeIMEService : InputMethodService() {
     private lateinit var prefsManager: PreferencesManager
     private lateinit var speechManager: SpeechManager
     private lateinit var translationManager: TranslationManager
+    private var punjabiSpeaker: PunjabiSpeaker? = null
 
     private val serviceJob = SupervisorJob()
     private val serviceScope = CoroutineScope(Dispatchers.Main + serviceJob)
@@ -57,37 +67,68 @@ class BolKeIMEService : InputMethodService() {
     private val alphabeticKeys = ArrayList<TextView>()
     private var isShifted = false
     private var isSymbolsActive = false
-    private var isEmojiActive = false
     private var isNumericInput = false
+    private var isSecureField = false
     private var currentState = KeyboardState.KEYBOARD
     private var currentInputText = ""
     private var lastSpaceTime: Long = 0
     private var isToolbarExpanded = false
     private var lastVoiceText = ""
     private var lastVoiceSource = ""
+    private var lastVoiceAlternatives = emptyList<String>()
+    private var lastVoiceAlternativeIndex = 0
+    private var lastVoiceNeedsReview = false
     private val mainHandler = Handler(Looper.getMainLooper())
     private val hideVoiceAction = Runnable { hideVoiceAction() }
     private var backspaceRepeat: Runnable? = null
+    private val languageService = LanguageServiceClient()
+    private var translationSource = ""
+    private var translationText = ""
+    private var translationAlternatives = emptyList<String>()
+    private var translationAlternativeIndex = 0
+    private var lastClipboardHash: Int? = null
+    private var lastClipboardAt = 0L
+    private var pendingClipboardText: String? = null
+    private var clipboardListenerRegistered = false
+    private val clipboardListener = ClipboardManager.OnPrimaryClipChangedListener {
+        captureWhatsAppClipboard()
+    }
 
-    override fun onCreateInputView(): View {
-        keyboardView = layoutInflater.inflate(R.layout.keyboard_layout, null)
-
+    override fun onCreate() {
+        super.onCreate()
         prefsManager = PreferencesManager(this)
         speechManager = SpeechManager(this).apply {
             setCallback(createSpeechCallback())
         }
         translationManager = TranslationManager()
+    }
+
+    override fun onCreateInputView(): View {
+        val themedContext = android.view.ContextThemeWrapper(this, R.style.Theme_BolKe)
+        keyboardView = LayoutInflater.from(themedContext).inflate(R.layout.keyboard_layout, null)
 
         // Adjust keyboard row heights programmatically based on user setting
-        scaleKeyboardRows(prefsManager.keyboardSize)
+        try {
+            scaleKeyboardRows(prefsManager.keyboardSize)
+        } catch (e: Exception) {
+            android.util.Log.e("BolKeIMEService", "Error scaling keyboard rows", e)
+        }
 
         // Bind all the keyboard keys recursively
-        alphabeticKeys.clear()
-        setupKeys(keyboardView)
+        try {
+            alphabeticKeys.clear()
+            setupKeys(keyboardView)
+        } catch (e: Exception) {
+            android.util.Log.e("BolKeIMEService", "Error setting up keys", e)
+        }
 
         // Bind top bar buttons
         quickRepliesContainer = keyboardView.findViewById(R.id.quick_replies_container)
-        populateQuickReplies()
+        try {
+            populateQuickReplies()
+        } catch (e: Exception) {
+            android.util.Log.e("BolKeIMEService", "Error populating quick replies", e)
+        }
 
         val toolbarToggle = keyboardView.findViewById<ImageView>(R.id.toolbar_toggle)
         val utilityButtons = keyboardView.findViewById<View>(R.id.utility_buttons)
@@ -169,7 +210,10 @@ class BolKeIMEService : InputMethodService() {
             undoLastVoiceInput()
         }
         keyboardView.findViewById<TextView>(R.id.btn_save_voice_phrase).setOnClickListener {
-            saveLastVoicePhrase()
+            if (lastVoiceNeedsReview) editLastVoiceInput() else saveLastVoicePhrase()
+        }
+        keyboardView.findViewById<TextView>(R.id.btn_voice_alternative).setOnClickListener {
+            replaceLastVoiceWithAlternative()
         }
 
         val btnStopVoice = keyboardView.findViewById<TextView>(R.id.btn_stop_voice)
@@ -178,23 +222,39 @@ class BolKeIMEService : InputMethodService() {
             speechManager.stopListening()
         }
 
-        // Emoji drawer
-        populateEmojiGrid()
-        keyboardView.findViewById<TextView>(R.id.btn_emoji).setOnClickListener {
-            it.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-            isEmojiActive = !isEmojiActive
-            updateUIState()
+        keyboardView.findViewById<View>(R.id.btn_translation_back).setOnClickListener { clearTranslation() }
+        keyboardView.findViewById<View>(R.id.btn_translation_copy).setOnClickListener {
+            if (translationText.isNotBlank()) {
+                lastClipboardHash = translationText.hashCode()
+                lastClipboardAt = System.currentTimeMillis()
+                val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                clipboard.setPrimaryClip(
+                    ClipData.newPlainText(getString(R.string.punjabi_translation), translationText)
+                )
+                keyboardView.findViewById<TextView>(R.id.btn_translation_copy)
+                    .setText(R.string.copied_punjabi)
+            }
         }
-        keyboardView.findViewById<TextView>(R.id.btn_emoji_abc).setOnClickListener {
-            it.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-            isEmojiActive = false
-            updateUIState()
+        keyboardView.findViewById<View>(R.id.btn_translation_another).setOnClickListener {
+            if (translationAlternatives.isNotEmpty()) {
+                translationText = translationAlternatives[
+                    translationAlternativeIndex++ % translationAlternatives.size
+                ]
+                keyboardView.findViewById<TextView>(R.id.translation_text).text = translationText
+            }
         }
-        keyboardView.findViewById<TextView>(R.id.btn_emoji_space).setOnClickListener {
-            it.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-            currentInputConnection?.commitText(" ", 1)
+        keyboardView.findViewById<View>(R.id.btn_translation_original).setOnClickListener {
+            keyboardView.findViewById<TextView>(R.id.translation_original).apply {
+                text = translationSource
+                visibility = if (visibility == View.VISIBLE) View.GONE else View.VISIBLE
+            }
         }
-        bindBackspace(keyboardView.findViewById(R.id.btn_emoji_backspace))
+        keyboardView.findViewById<View>(R.id.btn_translation_retry).setOnClickListener {
+            translateClipboardText(translationSource)
+        }
+        keyboardView.findViewById<View>(R.id.btn_translation_speak).setOnClickListener {
+            if (!isSecureField && translationText.isNotBlank()) speaker().toggle(translationText)
+        }
 
         // Numeric keypad: 1-tap return to letters
         keyboardView.findViewById<TextView>(R.id.btn_numpad_abc).setOnClickListener {
@@ -218,32 +278,46 @@ class BolKeIMEService : InputMethodService() {
 
     override fun onFinishInputView(finishingInput: Boolean) {
         super.onFinishInputView(finishingInput)
+        punjabiSpeaker?.stop()
         if (currentState == KeyboardState.RECORDING) {
             speechManager.cancel()
         }
+        translationSource = ""
+        translationText = ""
+        translationAlternatives = emptyList()
         currentState = KeyboardState.KEYBOARD
         updateUIState()
     }
 
     override fun onFinishInput() {
         super.onFinishInput()
+        unregisterClipboardListener()
         if (currentState == KeyboardState.RECORDING) {
             speechManager.cancel()
         }
         currentState = KeyboardState.KEYBOARD
     }
 
+    override fun onStartInput(info: EditorInfo?, restarting: Boolean) {
+        super.onStartInput(info, restarting)
+        registerClipboardListener()
+    }
+
     override fun onDestroy() {
-        super.onDestroy()
+        unregisterClipboardListener()
         serviceJob.cancel()
         mainHandler.removeCallbacksAndMessages(null)
-        speechManager.destroy()
+        if (::speechManager.isInitialized) speechManager.destroy()
+        punjabiSpeaker?.close()
+        punjabiSpeaker = null
+        super.onDestroy()
     }
 
     /**
      * Start the Punjabi voice input process.
      */
     private fun startVoiceInput() {
+        if (isSecureField) return
         if (checkSelfPermission(android.Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
             hideVoiceAction()
             currentState = KeyboardState.RECORDING
@@ -279,7 +353,7 @@ class BolKeIMEService : InputMethodService() {
                 }
             }
 
-            override fun onFinalResult(text: String) {
+            override fun onFinalResult(text: String, alternatives: List<String>, confidence: Float?) {
                 val voiceStatus = keyboardView.findViewById<TextView>(R.id.voice_status)
                 voiceStatus.text = getString(R.string.voice_processing)
 
@@ -287,7 +361,6 @@ class BolKeIMEService : InputMethodService() {
                     val processed = translationManager.process(
                         gurmukhiText = text,
                         mode = prefsManager.outputMode,
-                        apiKey = prefsManager.apiKey,
                         isOfflineMode = prefsManager.isOfflineMode
                     )
                     
@@ -312,7 +385,13 @@ class BolKeIMEService : InputMethodService() {
                         connection.commitText(" ", 1)
                         lastVoiceText = finalOutput
                         lastVoiceSource = text
-                        showVoiceAction()
+                        lastVoiceNeedsReview = confidence != null && confidence < 0.65f
+                        lastVoiceAlternatives = alternatives.map {
+                            if (prefsManager.outputMode == OutputMode.PUNJABI) it
+                            else TransliterationHelper.transliterate(it)
+                        }
+                        lastVoiceAlternativeIndex = 0
+                        showVoiceAction(lastVoiceNeedsReview)
                         
                         currentState = KeyboardState.KEYBOARD
                         updateUIState()
@@ -392,12 +471,38 @@ class BolKeIMEService : InputMethodService() {
         hideVoiceAction()
     }
 
-    private fun showVoiceAction() {
+    private fun showVoiceAction(needsReview: Boolean) {
         val actionBar = keyboardView.findViewById<View>(R.id.voice_action_bar)
+        keyboardView.findViewById<TextView>(R.id.voice_action_status).setText(
+            if (needsReview) R.string.voice_low_confidence else R.string.voice_inserted
+        )
+        keyboardView.findViewById<TextView>(R.id.btn_save_voice_phrase).setText(
+            if (needsReview) R.string.edit_last_voice else R.string.save_phrase
+        )
+        keyboardView.findViewById<View>(R.id.btn_voice_alternative).visibility =
+            if (needsReview && lastVoiceAlternatives.isNotEmpty()) View.VISIBLE else View.GONE
         actionBar.visibility = View.VISIBLE
         // One shared handler: removeCallbacks only cancels posts made by the same instance
         mainHandler.removeCallbacks(hideVoiceAction)
         mainHandler.postDelayed(hideVoiceAction, 6_000)
+    }
+
+    private fun editLastVoiceInput() {
+        undoLastVoiceInput()
+        currentInputText = lastVoiceText
+        currentState = KeyboardState.PREVIEW
+        updateUIState()
+    }
+
+    private fun replaceLastVoiceWithAlternative() {
+        if (lastVoiceAlternatives.isEmpty()) return
+        val connection = currentInputConnection ?: return
+        val inserted = "$lastVoiceText "
+        if (connection.getTextBeforeCursor(inserted.length, 0)?.toString() != inserted) return
+        val replacement = lastVoiceAlternatives[lastVoiceAlternativeIndex++ % lastVoiceAlternatives.size]
+        connection.deleteSurroundingText(inserted.length, 0)
+        connection.commitText("$replacement ", 1)
+        lastVoiceText = replacement
     }
 
     private fun hideVoiceAction() {
@@ -646,7 +751,7 @@ class BolKeIMEService : InputMethodService() {
         val numbersRow3 = keyboardView.findViewById<View>(R.id.numbers_row3)
 
         val numpadRows = numpadRowIds.map { keyboardView.findViewById<View>(it) }
-        val emojiDrawer = keyboardView.findViewById<View>(R.id.emoji_drawer)
+        val translationPanel = keyboardView.findViewById<View>(R.id.translation_panel)
 
         // Hide all blocks initially
         previewArea.visibility = View.GONE
@@ -659,11 +764,12 @@ class BolKeIMEService : InputMethodService() {
         numbersRow2.visibility = View.GONE
         numbersRow3.visibility = View.GONE
         numpadRows.forEach { it.visibility = View.GONE }
-        emojiDrawer.visibility = View.GONE
-
-        // The emoji toggle is meaningless in a number/phone field
-        keyboardView.findViewById<View>(R.id.btn_emoji).visibility =
-            if (isNumericInput) View.GONE else View.VISIBLE
+        translationPanel.visibility = View.GONE
+        keyboardView.findViewById<View>(R.id.top_bar).visibility =
+            if (isSecureField || currentState == KeyboardState.TRANSLATION) View.GONE else View.VISIBLE
+        keyboardView.findViewById<View>(R.id.mic_button).visibility =
+            if (isSecureField || isNumericInput) View.GONE else View.VISIBLE
+        if (isSecureField) hideVoiceAction()
 
         // Update the symbols toggle key text
         val btnSymbols = keyboardView.findViewById<TextView>(R.id.key_symbols)
@@ -675,7 +781,6 @@ class BolKeIMEService : InputMethodService() {
             KeyboardState.KEYBOARD -> when {
                 // Number/phone/date fields get a bare keypad — no voice or symbol clutter
                 isNumericInput -> numpadRows.forEach { it.visibility = View.VISIBLE }
-                isEmojiActive -> emojiDrawer.visibility = View.VISIBLE
                 isSymbolsActive -> {
                     row4.visibility = View.VISIBLE
                     numbersRow1.visibility = View.VISIBLE
@@ -702,6 +807,7 @@ class BolKeIMEService : InputMethodService() {
                 previewText.text = currentInputText
                 // In preview mode we only show the preview bar (Option A) to keep UI clean and simple.
             }
+            KeyboardState.TRANSLATION -> translationPanel.visibility = View.VISIBLE
         }
     }
 
@@ -709,16 +815,7 @@ class BolKeIMEService : InputMethodService() {
         if (!::quickRepliesContainer.isInitialized) return
         quickRepliesContainer.removeAllViews()
 
-        // Clipboard paste chip first — most useful right when an OTP or address was copied
-        clipboardSuggestion()?.let { clip ->
-            val label = if (clip.length > 24) clip.take(24) + "…" else clip
-            quickRepliesContainer.addView(makeChip("📋 $label") {
-                currentInputConnection?.commitText(clip, 1)
-            })
-        }
-
-        // A number field wants a clean keypad, not phrase chips
-        if (isNumericInput) return
+        if (isNumericInput || isSecureField) return
 
         val repliesStr = prefsManager.quickReplies
         val list = repliesStr.split("\n").map { it.trim() }.filter { it.isNotEmpty() }
@@ -784,18 +881,7 @@ class BolKeIMEService : InputMethodService() {
             val finalOutput = when (targetMode) {
                 OutputMode.PUNJABI -> punjabiText
                 OutputMode.PUNGLISH -> applySlangMappings(punglishText, prefsManager.slangMappings)
-                OutputMode.ENGLISH -> {
-                    if (prefsManager.isOfflineMode || prefsManager.apiKey.isBlank()) {
-                        applySlangMappings(punglishText, prefsManager.slangMappings)
-                    } else {
-                        translationManager.process(
-                            gurmukhiText = punjabiText,
-                            mode = OutputMode.ENGLISH,
-                            apiKey = prefsManager.apiKey,
-                            isOfflineMode = prefsManager.isOfflineMode
-                        )
-                    }
-                }
+                OutputMode.ENGLISH -> applySlangMappings(punglishText, prefsManager.slangMappings)
             }
             val connection = currentInputConnection
             if (connection != null && finalOutput.isNotEmpty()) {
@@ -840,21 +926,152 @@ class BolKeIMEService : InputMethodService() {
     override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
         super.onStartInputView(info, restarting)
 
+        isSecureField = isSecureInput(info?.inputType ?: 0, info?.imeOptions ?: 0)
+        if (isSecureField) currentState = KeyboardState.KEYBOARD
+
         // Number, phone and date fields open straight into the dedicated keypad
         isNumericInput = when (info?.inputType?.and(InputType.TYPE_MASK_CLASS)) {
             InputType.TYPE_CLASS_NUMBER, InputType.TYPE_CLASS_PHONE, InputType.TYPE_CLASS_DATETIME -> true
             else -> false
         }
-        if (isNumericInput) {
-            isEmojiActive = false
-            isSymbolsActive = false
-        }
+        if (isNumericInput || isSecureField) isSymbolsActive = false
 
-        // Refresh quick replies and size dynamically when keyboard shows up
-        populateQuickReplies()
-        scaleKeyboardRows(prefsManager.keyboardSize)
+        if (::keyboardView.isInitialized) {
+            try {
+                populateQuickReplies()
+                scaleKeyboardRows(prefsManager.keyboardSize)
+                updateUIState()
+            } catch (e: Exception) {
+                android.util.Log.e("BolKeIMEService", "Error in onStartInputView UI refresh", e)
+            }
+        }
+        pendingClipboardText?.let {
+            pendingClipboardText = null
+            translateClipboardText(it)
+        }
+    }
+
+    private fun registerClipboardListener() {
+        if (clipboardListenerRegistered) return
+        try {
+            (getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager)
+                ?.addPrimaryClipChangedListener(clipboardListener)
+            clipboardListenerRegistered = true
+        } catch (e: Exception) {
+            android.util.Log.w("BolKeIMEService", "Could not register clipboard listener", e)
+        }
+    }
+
+    private fun unregisterClipboardListener() {
+        if (!clipboardListenerRegistered) return
+        try {
+            (getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager)
+                ?.removePrimaryClipChangedListener(clipboardListener)
+        } catch (e: Exception) {
+            android.util.Log.w("BolKeIMEService", "Could not unregister clipboard listener", e)
+        }
+        clipboardListenerRegistered = false
+    }
+
+    private fun captureWhatsAppClipboard() {
+        try {
+            if (!::prefsManager.isInitialized) prefsManager = PreferencesManager(this)
+            val editor = currentInputEditorInfo
+            if (!prefsManager.translateCopiedMessages ||
+                isSecureInput(editor?.inputType ?: 0, editor?.imeOptions ?: 0) ||
+                !isWhatsAppEditor()
+            ) return
+            val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager ?: return
+            val clip = clipboard.primaryClip ?: return
+            if (!clip.description.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN) || clip.itemCount != 1) return
+            val text = clip.getItemAt(0).text?.toString()?.trim().orEmpty()
+            val now = System.currentTimeMillis()
+            if (!isSafeClipboardText(text) ||
+                text.hashCode() == lastClipboardHash && now - lastClipboardAt < 1_500
+            ) return
+            lastClipboardHash = text.hashCode()
+            lastClipboardAt = now
+            if (isInputViewShown) translateClipboardText(text) else pendingClipboardText = text
+        } catch (e: Exception) {
+            android.util.Log.w("BolKeIMEService", "Error capturing clipboard", e)
+        }
+    }
+
+    private fun translateClipboardText(text: String) {
+        if (!::keyboardView.isInitialized) return
+        hideVoiceAction()
+        translationSource = text
+        translationText = ""
+        translationAlternatives = emptyList()
+        translationAlternativeIndex = 0
+        currentState = KeyboardState.TRANSLATION
+        keyboardView.findViewById<TextView>(R.id.translation_status)?.setText(R.string.translate_loading)
+        keyboardView.findViewById<TextView>(R.id.translation_text)?.text = ""
+        keyboardView.findViewById<View>(R.id.translation_original).visibility = View.GONE
+        keyboardView.findViewById<View>(R.id.btn_translation_copy).visibility = View.GONE
+        keyboardView.findViewById<View>(R.id.btn_translation_speak).visibility = View.GONE
+        keyboardView.findViewById<View>(R.id.btn_translation_another).visibility = View.GONE
+        keyboardView.findViewById<View>(R.id.btn_translation_retry).visibility = View.GONE
+        updateUIState()
+
+        serviceScope.launch {
+            when (val response = languageService.translate(text)) {
+                is LanguageResponse.Ok -> {
+                    translationText = response.result.text
+                    translationAlternatives = response.result.alternatives
+                    keyboardView.findViewById<TextView>(R.id.translation_status).text = ""
+                    keyboardView.findViewById<TextView>(R.id.translation_text).text = translationText
+                    keyboardView.findViewById<TextView>(R.id.btn_translation_copy).apply {
+                        setText(R.string.copy_punjabi)
+                        visibility = View.VISIBLE
+                    }
+                    keyboardView.findViewById<TextView>(R.id.btn_translation_speak).apply {
+                        setText(R.string.speak_punjabi)
+                        visibility = View.VISIBLE
+                    }
+                    keyboardView.findViewById<View>(R.id.btn_translation_another).visibility =
+                        if (translationAlternatives.isEmpty()) View.GONE else View.VISIBLE
+                }
+                is LanguageResponse.Failed -> {
+                    keyboardView.findViewById<TextView>(R.id.translation_status).setText(
+                        when (response.error) {
+                            LanguageError.NOT_CONFIGURED -> R.string.translate_unavailable
+                            LanguageError.OFFLINE -> R.string.translate_offline
+                            LanguageError.TIMEOUT -> R.string.translate_timeout
+                            LanguageError.UNSAFE, LanguageError.UNSUPPORTED -> R.string.translate_unsupported
+                            LanguageError.SERVICE -> R.string.translate_failed
+                        }
+                    )
+                    keyboardView.findViewById<View>(R.id.btn_translation_retry).visibility = View.VISIBLE
+                }
+            }
+        }
+    }
+
+    private fun clearTranslation() {
+        punjabiSpeaker?.stop()
+        translationSource = ""
+        translationText = ""
+        translationAlternatives = emptyList()
+        currentState = KeyboardState.KEYBOARD
         updateUIState()
     }
+
+    private fun speaker(): PunjabiSpeaker = punjabiSpeaker ?: PunjabiSpeaker(
+        this,
+        onStateChanged = { speaking ->
+            if (::keyboardView.isInitialized) {
+                keyboardView.findViewById<TextView>(R.id.btn_translation_speak)?.setText(
+                    if (speaking) R.string.stop_speaking else R.string.speak_punjabi
+                )
+            }
+        },
+        onUnavailable = {
+            Toast.makeText(this, R.string.punjabi_voice_unavailable, Toast.LENGTH_LONG).show()
+        }
+    ).also { punjabiSpeaker = it }
+
+    private fun isWhatsAppEditor(): Boolean = currentInputEditorInfo?.packageName in WHATSAPP_PACKAGES
 
     private fun adjustKeyboardSize(delta: Float) {
         val currentSize = prefsManager.keyboardSize
@@ -882,61 +1099,29 @@ class BolKeIMEService : InputMethodService() {
         keyboardView.requestLayout()
     }
 
-    /**
-     * Fill the emoji drawer: the ten emojis Punjabi families actually text with come
-     * first, then the usual categories.
-     */
-    private fun populateEmojiGrid() {
-        val grid = keyboardView.findViewById<LinearLayout>(R.id.emoji_grid)
-        if (grid.childCount > 0) return
-
-        val density = resources.displayMetrics.density
-        val rowHeight = (46 * density).toInt()
-
-        EMOJIS.chunked(8).forEach { chunk ->
-            val row = LinearLayout(this).apply {
-                orientation = LinearLayout.HORIZONTAL
-                layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, rowHeight
-                )
-            }
-            for (emoji in chunk) {
-                val cell = TextView(this).apply {
-                    text = emoji
-                    textSize = 26f
-                    gravity = android.view.Gravity.CENTER
-                    layoutParams = LinearLayout.LayoutParams(0, rowHeight, 1f)
-                    setBackgroundResource(android.R.color.transparent)
-                    isClickable = true
-                    isFocusable = true
-                    setOnClickListener {
-                        it.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-                        currentInputConnection?.commitText(emoji, 1)
-                    }
-                }
-                row.addView(cell)
-            }
-            grid.addView(row)
-        }
-    }
-
-    /** Recent clipboard text, unless this is a password field. */
-    private fun clipboardSuggestion(): String? {
-        val inputType = currentInputEditorInfo?.inputType ?: 0
-        val variation = inputType and InputType.TYPE_MASK_VARIATION
-        val isPassword = variation == InputType.TYPE_TEXT_VARIATION_PASSWORD ||
-            variation == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD ||
-            variation == InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD ||
-            variation == InputType.TYPE_NUMBER_VARIATION_PASSWORD
-        if (isPassword) return null
-
-        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager ?: return null
-        val clip = clipboard.primaryClip ?: return null
-        if (clip.itemCount == 0) return null
-        return clip.getItemAt(0).coerceToText(this).toString().trim().takeIf { it.isNotEmpty() }
-    }
-
     companion object {
+        private val WHATSAPP_PACKAGES = setOf("com.whatsapp", "com.whatsapp.w4b")
+
+        internal fun isSecureInput(inputType: Int, imeOptions: Int = 0): Boolean {
+            val inputClass = inputType and InputType.TYPE_MASK_CLASS
+            val variation = inputType and InputType.TYPE_MASK_VARIATION
+            val isPassword = inputClass == InputType.TYPE_CLASS_TEXT && (
+                variation == InputType.TYPE_TEXT_VARIATION_PASSWORD ||
+                    variation == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD ||
+                    variation == InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD
+                ) || inputClass == InputType.TYPE_CLASS_NUMBER &&
+                variation == InputType.TYPE_NUMBER_VARIATION_PASSWORD
+            return isPassword || (imeOptions and EditorInfo.IME_FLAG_NO_PERSONALIZED_LEARNING != 0)
+        }
+
+        internal fun isSafeClipboardText(text: String): Boolean {
+            if (text.isBlank() || text.length > 4_000 || text.any { it == '\u0000' }) return false
+            // Standalone short digit strings are commonly OTPs or PINs. A surrounding
+            // message can still be translated while preserving its numbers exactly.
+            if (text.matches(Regex("[0-9\\s-]{4,12}"))) return false
+            return true
+        }
+
         /** Characters to drop so a word-delete removes the trailing gap plus the word before it. */
         fun wordDeleteLength(before: String): Int {
             val withoutTrailingSpace = before.trimEnd()
@@ -949,20 +1134,5 @@ class BolKeIMEService : InputMethodService() {
             R.id.numpad_row1, R.id.numpad_row2, R.id.numpad_row3, R.id.numpad_row4
         )
 
-        private val EMOJIS = listOf(
-            // Top 10 Punjabi texting reactions
-            "🙏", "❤️", "😂", "👍", "🎉", "🎂", "☕", "🚜", "👳", "🔥",
-            // Smileys
-            "😀", "😃", "😄", "😅", "😊", "🙂", "😉", "😍", "🥰", "😘",
-            "😎", "🤩", "🥳", "🤗", "🤔", "🙄", "😴", "😭", "😢", "😡",
-            "😳", "🥺", "😱", "🤣", "😜", "😇",
-            // Hearts and sparkles
-            "🧡", "💛", "💚", "💙", "💜", "🖤", "💔", "💯", "✨", "🌟",
-            // Hands
-            "👎", "👏", "🙌", "🤝", "✌️", "🤞", "💪", "👌", "🫶", "🤲",
-            // Life, food, travel
-            "🌹", "💐", "🪔", "🎊", "🎁", "🍵", "🍛", "🫓", "🥘", "🍽️",
-            "🚗", "✈️", "🏠", "🌙", "☀️", "🌧️", "⚽", "🏏", "🇮🇳", "🇨🇦"
-        )
     }
 }

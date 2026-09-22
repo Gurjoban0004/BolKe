@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -10,6 +11,7 @@
 
     <!-- Top bar -->
     <LinearLayout
+        android:id="@+id/top_bar"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:orientation="horizontal"
@@ -25,7 +27,7 @@
             android:padding="8dp"
             android:clickable="true"
             android:focusable="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:background="@android:color/transparent"
             android:contentDescription="Toggle Toolbar" />
 
         <!-- Collapsible Utility Buttons -->
@@ -45,7 +47,7 @@
                 android:padding="8dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="?attr/selectableItemBackgroundBorderless"
+                android:background="@android:color/transparent"
                 android:contentDescription="Decrease Size" />
 
             <ImageView
@@ -56,7 +58,7 @@
                 android:padding="8dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="?attr/selectableItemBackgroundBorderless"
+                android:background="@android:color/transparent"
                 android:contentDescription="Increase Size" />
 
             <ImageView
@@ -67,7 +69,7 @@
                 android:padding="8dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="?attr/selectableItemBackgroundBorderless"
+                android:background="@android:color/transparent"
                 android:contentDescription="Settings" />
         </LinearLayout>
 
@@ -88,20 +90,6 @@
                 android:paddingHorizontal="8dp" />
         </HorizontalScrollView>
 
-        <!-- Emoji drawer toggle -->
-        <TextView
-            android:id="@+id/btn_emoji"
-            android:layout_width="32dp"
-            android:layout_height="28dp"
-            android:layout_marginEnd="4dp"
-            android:text="😊"
-            android:textSize="17sp"
-            android:gravity="center"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Emoji" />
-
         <!-- Mode selector pill (now visible in top bar as well) -->
         <TextView
             android:id="@+id/mode_selector"
@@ -120,6 +108,94 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/translation_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:background="@drawable/voice_surface_bg"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/translation_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/key_text_secondary"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/translation_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:lineSpacingExtra="6dp"
+            android:textColor="@color/key_text"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/translation_original"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/key_text_secondary"
+            android:textSize="14sp"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/btn_translation_copy"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_send_bg"
+                android:gravity="center"
+                android:text="@string/copy_punjabi"
+                android:textColor="@color/btn_send_text"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/btn_translation_back"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_rerecord_bg"
+                android:gravity="center"
+                android:text="@string/back_to_keyboard"
+                android:textColor="@color/btn_rerecord_text"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/btn_translation_speak"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/btn_rerecord_bg"
+            android:gravity="center"
+            android:text="@string/speak_punjabi"
+            android:textColor="@color/btn_rerecord_text"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal">
+            <TextView android:id="@+id/btn_translation_another" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="@string/try_another" android:textColor="@color/accent_blue" />
+            <TextView android:id="@+id/btn_translation_original" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="@string/show_original" android:textColor="@color/accent_blue" />
+            <TextView android:id="@+id/btn_translation_retry" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="@string/translate_retry" android:textColor="@color/accent_blue" android:visibility="gone" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/voice_action_bar"
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -132,12 +208,25 @@
         android:visibility="gone">
 
         <TextView
+            android:id="@+id/voice_action_status"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Voice text inserted"
             android:textColor="@color/text_secondary"
             android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/btn_voice_alternative"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingHorizontal="10dp"
+            android:text="@string/voice_alternative"
+            android:textColor="@color/accent_blue"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/btn_save_voice_phrase"
@@ -556,56 +645,6 @@
             style="@style/KeyStyleSpecial"
             android:text="Done"
             android:textSize="12sp" />
-    </LinearLayout>
-
-    <!-- Emoji drawer -->
-    <LinearLayout
-        android:id="@+id/emoji_drawer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="4dp"
-        android:visibility="gone">
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="196dp"
-            android:scrollbars="none">
-
-            <LinearLayout
-                android:id="@+id/emoji_grid"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
-        </ScrollView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:layout_marginTop="4dp">
-
-            <TextView
-                android:id="@+id/btn_emoji_abc"
-                style="@style/KeyStyleSpecial"
-                android:text="ABC"
-                android:textSize="13sp"
-                android:layout_weight="1.4" />
-
-            <TextView
-                android:id="@+id/btn_emoji_space"
-                style="@style/KeyStyle"
-                android:text="Space"
-                android:textSize="14sp"
-                android:layout_weight="3" />
-
-            <TextView
-                android:id="@+id/btn_emoji_backspace"
-                style="@style/KeyStyleSpecial"
-                android:text="Delete"
-                android:textSize="11sp"
-                android:layout_weight="1.4" />
-        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

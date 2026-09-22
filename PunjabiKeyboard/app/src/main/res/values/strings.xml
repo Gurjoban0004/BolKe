@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">ਬੋਲ ਕੇ — BolKe</string>
-    <string name="subtype_punjabi_voice">Punjabi Voice</string>
+    <string name="subtype_punjabi_voice">Punjabi and Punglish</string>
     <string name="settings_title">ਸੈਟਿੰਗਜ਼ — Settings</string>
     <string name="personalization_title">ਮੇਰੇ ਸ਼ਬਦ — Family Phrases</string>
 
@@ -17,6 +17,11 @@
     <string name="voice_stop">ਰੋਕੋ</string>
     <string name="btn_send">ਭੇਜੋ</string>
     <string name="btn_rerecord">ਦੁਬਾਰਾ ਬੋਲੋ</string>
+    <string name="voice_inserted">Voice text inserted</string>
+    <string name="voice_low_confidence">Please check this voice result</string>
+    <string name="edit_last_voice">Edit last voice message</string>
+    <string name="voice_alternative">Alternative</string>
+    <string name="save_phrase">Save phrase</string>
 
     <!-- Setup wizard -->
     <string name="setup_welcome_title">ਪੰਜਾਬੀ ਬੋਲੋ, ਅੰਗਰੇਜ਼ੀ ਅੱਖਰਾਂ ਵਿੱਚ ਲਿਖੋ</string>
@@ -27,9 +32,12 @@
     <string name="setup_step2_title">Step 2: Select Keyboard</string>
     <string name="setup_step2_desc">ਹੁਣ BolKe ਨੂੰ ਆਪਣਾ ਕੀਬੋਰਡ ਬਣਾਓ</string>
     <string name="setup_step2_btn">Select BolKe</string>
-    <string name="setup_step3_title">Step 3: Ready to use</string>
-    <string name="setup_step3_desc">ਹੁਣ ਕਿਸੇ ਵੀ ਮੈਸੇਜ ਐਪ ਵਿੱਚ ਮਾਈਕ ਬਟਨ ਦਬਾਓ। ਤੁਹਾਡੇ ਮੈਸੇਜ ਸੇਵ ਨਹੀਂ ਹੁੰਦੇ।</string>
+    <string name="setup_step3_title">Step 3: Choose private tools</string>
+    <string name="setup_step3_desc">Allow the microphone when you are ready to try voice typing. BolKe asks only in this step.</string>
+    <string name="setup_microphone_btn">Allow microphone for voice</string>
+    <string name="setup_copy_privacy">Copy translation works only while BolKe is open in WhatsApp. It does not read your screen or clipboard history.</string>
     <string name="setup_done_btn">ਸ਼ੁਰੂ ਕਰੋ!</string>
+    <string name="setup_done_label">ਹੋ ਗਿਆ</string>
 
     <!-- Settings Main -->
     <string name="settings_section_typing">ਲਿਖਣ ਦਾ ਤਰੀਕਾ — Typing Style</string>
@@ -46,37 +54,68 @@
     <string name="settings_manage_shortcuts">Family Phrases</string>
     <string name="settings_manage_shortcuts_desc">Save the names, phrases, and spellings your family uses</string>
 
-    <string name="settings_advanced">Advanced (Google API)</string>
+    <string name="settings_size_small">Small</string>
+    <string name="settings_size_medium">Mid</string>
+    <string name="settings_size_large">Large</string>
     <string name="settings_save">ਸੇਵ ਕਰੋ — Save</string>
     <string name="settings_saved">ਸੈਟਿੰਗਾਂ ਸੇਵ ਹੋ ਗਈਆਂ</string>
+    <string name="test_keyboard_title">Test BolKe now</string>
+    <string name="test_keyboard_hint">Tap here and type or speak Punjabi</string>
+    <string name="test_keyboard_button">Open BolKe keyboard</string>
+    <string name="select_bolke_first">Select BolKe in the keyboard list, then tap the test box.</string>
 
-    <!-- Samjho translator -->
-    <string name="samjho_section">ਸਮਝੋ — Understand English</string>
-    <string name="samjho_desc">ਬਬਲ ਦਬਾਓ, ਫਿਰ ਕਿਸੇ ਵੀ ਅੰਗਰੇਜ਼ੀ ਮੈਸੇਜ ਤੇ ਟੈਪ ਕਰੋ। ਉਹ ਪੰਜਾਬੀ ਵਿੱਚ ਦਿਖੇਗਾ।</string>
-    <string name="samjho_status_on">ਚਾਲੂ ਹੈ — Accessibility permission granted</string>
-    <string name="samjho_status_off">ਬੰਦ ਹੈ — Accessibility permission needed</string>
-    <string name="samjho_open_settings">ਸੈਟਿੰਗਾਂ ਖੋਲ੍ਹੋ — Open Accessibility Settings</string>
-    <string name="samjho_show_bubble">ਬਬਲ ਦਿਖਾਓ — Show the bubble</string>
-    <string name="samjho_api_key_hint">Gemini API Key</string>
-    <string name="samjho_privacy">ਜਦੋਂ ਤੁਸੀਂ ਮੈਸੇਜ ਤੇ ਟੈਪ ਕਰਦੇ ਹੋ, ਸਿਰਫ਼ ਉਹੀ ਮੈਸੇਜ ਅਨੁਵਾਦ ਲਈ ਭੇਜਿਆ ਜਾਂਦਾ ਹੈ। ਹੋਰ ਕੁਝ ਨਹੀਂ।</string>
-    <string name="samjho_service_description">ਸਮਝੋ reads the text on your screen only when you tap the bubble and then tap a message, so it can show you that message in Punjabi.</string>
-    <string name="samjho_bubble_letter">ਬ</string>
-    <string name="samjho_bubble_desc">ਸਮਝੋ</string>
-    <string name="samjho_hint">ਮੈਸੇਜ ਤੇ ਟੈਪ ਕਰੋ</string>
-    <string name="samjho_no_text">ਇਸ ਸਕਰੀਨ ਤੇ ਪੜ੍ਹਨ ਲਈ ਕੁਝ ਨਹੀਂ ਮਿਲਿਆ</string>
-    <string name="samjho_translating">ਅਨੁਵਾਦ ਹੋ ਰਿਹਾ ਹੈ…</string>
-    <string name="samjho_error_no_key">ਸੈਟਿੰਗਾਂ ਵਿੱਚ Gemini API key ਪਾਓ</string>
-    <string name="samjho_error_network">ਇੰਟਰਨੈਟ ਚੈੱਕ ਕਰੋ</string>
-    <string name="samjho_error_api">ਅਨੁਵਾਦ ਨਹੀਂ ਹੋ ਸਕਿਆ — ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ</string>
-    <string name="samjho_test">ਟੈਸਟ ਕਰੋ — Test translation</string>
-    <string name="samjho_cache_clear">ਸੇਵ ਕੀਤੇ ਅਨੁਵਾਦ ਮਿਟਾਓ — Clear cache</string>
-    <string name="samjho_cache_cleared">ਮਿਟਾ ਦਿੱਤੇ ਗਏ</string>
+    <!-- Copy to understand -->
+    <string name="copy_translate_title">Copy to understand</string>
+    <string name="copy_translate_desc">In WhatsApp, copy one message and open BolKe. Only that copied text is sent for a natural Gurmukhi translation.</string>
+    <string name="copy_translate_opt_in">Translate copied WhatsApp messages</string>
+    <string name="translate_with_bolke">Translate with BolKe</string>
+    <string name="translate_title">ਪੰਜਾਬੀ ਵਿੱਚ ਸਮਝੋ</string>
+    <string name="translate_loading">ਪੰਜਾਬੀ ਵਿੱਚ ਸਮਝਾ ਰਿਹਾ ਹੈ…</string>
+    <string name="translate_offline">ਇੰਟਰਨੈਟ ਨਹੀਂ ਮਿਲਿਆ। ਕਨੈਕਸ਼ਨ ਚੈੱਕ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।</string>
+    <string name="translate_timeout">ਅਨੁਵਾਦ ਵਿੱਚ ਬਹੁਤ ਸਮਾਂ ਲੱਗ ਰਿਹਾ ਹੈ। ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।</string>
+    <string name="translate_unsupported">ਇਹ ਟੈਕਸਟ ਸੁਰੱਖਿਅਤ ਤਰੀਕੇ ਨਾਲ ਅਨੁਵਾਦ ਨਹੀਂ ਹੋ ਸਕਦਾ।</string>
+    <string name="translate_unavailable">ਅਨੁਵਾਦ ਸੇਵਾ ਅਜੇ ਤਿਆਰ ਨਹੀਂ ਹੈ।</string>
+    <string name="translate_failed">ਅਨੁਵਾਦ ਨਹੀਂ ਹੋ ਸਕਿਆ। ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।</string>
+    <string name="translate_retry">ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ</string>
+    <string name="copy_punjabi">ਪੰਜਾਬੀ ਕਾਪੀ ਕਰੋ</string>
+    <string name="copied_punjabi">ਪੰਜਾਬੀ ਕਾਪੀ ਹੋ ਗਈ</string>
+    <string name="punjabi_translation">Punjabi translation</string>
+    <string name="try_another">ਹੋਰ ਸ਼ਬਦਾਂ ਵਿੱਚ</string>
+    <string name="show_original">ਅਸਲ ਮੈਸੇਜ ਦਿਖਾਓ</string>
+    <string name="back_to_keyboard">ਕੀਬੋਰਡ ਤੇ ਵਾਪਸ</string>
+    <string name="back">ਵਾਪਸ</string>
+    <string name="speak_punjabi">ਸੁਣੋ — Speak</string>
+    <string name="stop_speaking">ਰੋਕੋ — Stop</string>
+    <string name="punjabi_voice_unavailable">Punjabi voice is not available on this phone. Install Punjabi voice data in Android text-to-speech settings.</string>
+
+    <!-- Privacy and support -->
+    <string name="privacy_title">Privacy</string>
+    <string name="privacy_audio">When you use voice typing, Android speech recognition receives the current audio. BolKe then sends only the recognized Punjabi text to the private language service when online wording is enabled.</string>
+    <string name="privacy_clipboard">When copied-message translation is enabled, BolKe sends only a newly copied plain-text WhatsApp message. It does not read the screen or clipboard history.</string>
+    <string name="privacy_retention">BolKe does not retain audio, copied messages, or translations. Your approved spellings stay on this phone unless you export them.</string>
+    <string name="secure_field_explanation">BolKe turns off voice and clipboard tools in password and payment fields.</string>
+    <string name="support_title">Advanced support</string>
+    <string name="service_ready">Private language service is configured.</string>
+    <string name="service_not_configured">Private language service is not configured in this build. Voice uses the on-device fallback and copied-message translation is unavailable.</string>
+    <string name="my_spellings_title">My spellings</string>
+    <string name="my_spellings_desc">Edit, export, or delete approved Roman Punjabi spellings saved on this phone.</string>
+    <string name="save_spellings">Save spellings</string>
+    <string name="export_spellings">Export</string>
+    <string name="delete_spellings">Delete all</string>
+    <string name="no_saved_spellings">No approved spellings yet. Save one after voice typing and it will appear here.</string>
+    <string name="spellings_saved">Spellings saved on this phone</string>
 
     <!-- Personalization Screen -->
     <string name="ps_quick_replies">ਤੁਰੰਤ ਜਵਾਬ — Quick Replies</string>
     <string name="ps_word_shortcuts">ਸ਼ਬਦ ਬਦਲਾਵ — Word Shortcuts</string>
     <string name="ps_add_new">Add New Item</string>
-    <string name="ps_reset">Reset Defaults</string>
+    <string name="ps_reset">Reset</string>
+    <string name="ps_add">ਜੋੜੋ — Add</string>
+    <string name="ps_back">ਵਾਪਸ</string>
+    <string name="ps_hint_gurmukhi">Gurmukhi (e.g. ਕੀ ਹਾਲ ਹੈ?)</string>
+    <string name="ps_hint_punglish">Punglish (e.g. ki haal hai?)</string>
+    <string name="ps_hint_word">Word</string>
+    <string name="ps_hint_short">Short</string>
 
     <!-- Errors -->
     <string name="error_no_speech">ਕੁਝ ਸੁਣਿਆ ਨਹੀਂ — ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ</string>
@@ -84,5 +123,4 @@
     <string name="error_network">ਇੰਟਰਨੈਟ ਚੈੱਕ ਕਰੋ</string>
     <string name="error_permission">ਮਾਈਕ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ</string>
     <string name="error_translation">Translation failed</string>
-    <string name="error_no_api_key">API key ਸੈਟਿੰਗਜ਼ ਵਿੱਚ ਪਾਓ</string>
 </resources>

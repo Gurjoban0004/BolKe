@@ -9,14 +9,18 @@
         <intent>
             <action android:name="android.speech.RecognitionService" />
         </intent>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
     </queries>
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="false"
         android:theme="@style/Theme.BolKe">
 
         <!-- IME Service -->
@@ -30,20 +34,6 @@
             <meta-data
                 android:name="android.view.im"
                 android:resource="@xml/method" />
-        </service>
-
-        <!-- Samjho translator (accessibility service) -->
-        <service
-            android:name=".samjho.SamjhoService"
-            android:exported="true"
-            android:label="@string/samjho_section"
-            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
-            <intent-filter>
-                <action android:name="android.accessibilityservice.AccessibilityService" />
-            </intent-filter>
-            <meta-data
-                android:name="android.accessibilityservice"
-                android:resource="@xml/samjho_service" />
         </service>
 
         <!-- Setup Activity (Launcher) -->
@@ -70,6 +60,27 @@
             android:exported="false"
             android:theme="@style/Theme.BolKe"
             android:label="@string/personalization_title" />
+
+        <activity
+            android:name=".PrivacyActivity"
+            android:exported="false"
+            android:label="@string/privacy_title" />
+
+        <activity
+            android:name=".TranslateActivity"
+            android:exported="true"
+            android:label="@string/translate_with_bolke">
+            <intent-filter>
+                <action android:name="android.intent.action.PROCESS_TEXT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
 
     </application>
 

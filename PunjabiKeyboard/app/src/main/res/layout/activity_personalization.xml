@@ -2,223 +2,174 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/activity_bg"
+    android:background="@color/app_bg"
+    android:scrollbars="none"
     android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:paddingHorizontal="16dp"
+        android:paddingTop="28dp"
+        android:paddingBottom="32dp">
 
         <!-- Header -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/personalization_title"
-            android:textColor="@color/text_primary"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="24dp" />
-
-        <!-- Quick replies -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/surface_bg"
-            android:padding="16dp"
-            android:layout_marginBottom="16dp">
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="20dp"
+            android:paddingHorizontal="6dp">
 
-            <RelativeLayout
+            <TextView
+                style="@style/Bento.Headline"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textSize="28sp"
+                android:text="@string/personalization_title" />
+
+            <TextView
+                android:id="@+id/btn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="@drawable/pill_ghost"
+                android:gravity="center"
+                android:paddingHorizontal="20dp"
+                android:text="@string/ps_back"
+                android:textColor="@color/app_primary"
+                android:textSize="14sp"
+                android:clickable="true"
+                android:focusable="true" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/Bento" android:background="@drawable/bento_amber">
+            <TextView style="@style/Bento.CardTitle" android:text="@string/my_spellings_title" android:textColor="@color/app_on_amber_soft" />
+            <TextView style="@style/Bento.Body" android:text="@string/my_spellings_desc" android:textColor="@color/app_on_amber_soft" />
+            <LinearLayout android:id="@+id/spellings_list_container" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:orientation="vertical" />
+            <TextView android:id="@+id/btn_save_spellings" style="@style/Bento.PillGhost" android:layout_marginTop="10dp" android:text="@string/save_spellings" />
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:orientation="horizontal">
+                <TextView android:id="@+id/btn_export_spellings" style="@style/Bento.PillGhost" android:layout_width="0dp" android:layout_weight="1" android:layout_marginEnd="8dp" android:text="@string/export_spellings" />
+                <TextView android:id="@+id/btn_clear_spellings" style="@style/Bento.PillGhost" android:layout_width="0dp" android:layout_weight="1" android:text="@string/delete_spellings" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Quick replies -->
+        <LinearLayout style="@style/Bento">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp">
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/ps_quick_replies"
-                    android:textColor="@color/accent_blue"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    style="@style/Bento.CardTitle"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/ps_quick_replies" />
 
                 <TextView
                     android:id="@+id/btn_reset_qr"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:text="@string/ps_reset"
-                    android:textColor="@color/accent_orange"
-                    android:textSize="12sp"
+                    style="@style/Bento.Label"
+                    android:textColor="@color/app_primary"
+                    android:padding="6dp"
                     android:clickable="true"
-                    android:focusable="true" />
-            </RelativeLayout>
+                    android:focusable="true"
+                    android:text="@string/ps_reset" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/qr_list_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" />
+                android:orientation="vertical"
+                android:layout_marginTop="10dp" />
 
-            <!-- Add QR Form -->
+            <EditText
+                android:id="@+id/new_qr_punjabi"
+                style="@style/Bento.Field"
+                android:layout_marginTop="12dp"
+                android:hint="@string/ps_hint_gurmukhi"
+                android:importantForAutofill="no" />
+
+            <EditText
+                android:id="@+id/new_qr_punglish"
+                style="@style/Bento.Field"
+                android:layout_marginTop="8dp"
+                android:hint="@string/ps_hint_punglish"
+                android:importantForAutofill="no" />
+
+            <TextView
+                android:id="@+id/btn_add_qr"
+                style="@style/Bento.PillGhost"
+                android:layout_marginTop="10dp"
+                android:text="@string/ps_add" />
+        </LinearLayout>
+
+        <!-- Word shortcuts -->
+        <LinearLayout style="@style/Bento">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="12dp"
                 android:gravity="center_vertical">
 
-                <LinearLayout
+                <TextView
+                    style="@style/Bento.CardTitle"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <EditText
-                        android:id="@+id/new_qr_punjabi"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:hint="Gurmukhi (e.g. ਕੀ ਹਾਲ ਹੈ?)"
-                        android:textColor="@color/text_primary"
-                        android:textColorHint="@color/text_secondary"
-                        android:textSize="13sp"
-                        android:background="@drawable/mode_pill_bg"
-                        android:paddingHorizontal="12dp"
-                        android:singleLine="true" />
-
-                    <EditText
-                        android:id="@+id/new_qr_punglish"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="4dp"
-                        android:hint="Punglish (e.g. ki haal hai?)"
-                        android:textColor="@color/text_primary"
-                        android:textColorHint="@color/text_secondary"
-                        android:textSize="13sp"
-                        android:background="@drawable/mode_pill_bg"
-                        android:paddingHorizontal="12dp"
-                        android:singleLine="true" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/btn_add_qr"
-                    android:layout_width="48dp"
-                    android:layout_height="84dp"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/btn_send_bg"
-                    android:text="+"
-                    android:textColor="@color/btn_send_text"
-                    android:textSize="20sp"
-                    android:gravity="center"
-                    android:clickable="true"
-                    android:focusable="true" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <!-- Word shortcuts -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/surface_bg"
-            android:padding="16dp"
-            android:layout_marginBottom="24dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/ps_word_shortcuts"
-                    android:textColor="@color/accent_blue"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:text="@string/ps_word_shortcuts" />
 
                 <TextView
                     android:id="@+id/btn_reset_slang"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:text="@string/ps_reset"
-                    android:textColor="@color/accent_orange"
-                    android:textSize="12sp"
+                    style="@style/Bento.Label"
+                    android:textColor="@color/app_primary"
+                    android:padding="6dp"
                     android:clickable="true"
-                    android:focusable="true" />
-            </RelativeLayout>
+                    android:focusable="true"
+                    android:text="@string/ps_reset" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/slang_list_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" />
+                android:orientation="vertical"
+                android:layout_marginTop="10dp" />
 
-            <!-- Add Slang Form -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="12dp"
-                android:gravity="center_vertical">
+                android:layout_marginTop="12dp">
 
                 <EditText
                     android:id="@+id/new_slang_target"
+                    style="@style/Bento.Field"
                     android:layout_width="0dp"
-                    android:layout_height="40dp"
                     android:layout_weight="1"
-                    android:hint="Word"
-                    android:textColor="@color/text_primary"
-                    android:textColorHint="@color/text_secondary"
-                    android:textSize="13sp"
-                    android:background="@drawable/mode_pill_bg"
-                    android:paddingHorizontal="12dp"
-                    android:singleLine="true" />
+                    android:layout_marginEnd="8dp"
+                    android:hint="@string/ps_hint_word"
+                    android:importantForAutofill="no" />
 
                 <EditText
                     android:id="@+id/new_slang_replacement"
+                    style="@style/Bento.Field"
                     android:layout_width="0dp"
-                    android:layout_height="40dp"
                     android:layout_weight="1"
-                    android:layout_marginStart="4dp"
-                    android:hint="Short"
-                    android:textColor="@color/text_primary"
-                    android:textColorHint="@color/text_secondary"
-                    android:textSize="13sp"
-                    android:background="@drawable/mode_pill_bg"
-                    android:paddingHorizontal="12dp"
-                    android:singleLine="true" />
-
-                <TextView
-                    android:id="@+id/btn_add_slang"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/btn_send_bg"
-                    android:text="+"
-                    android:textColor="@color/btn_send_text"
-                    android:textSize="20sp"
-                    android:gravity="center"
-                    android:clickable="true"
-                    android:focusable="true" />
+                    android:hint="@string/ps_hint_short"
+                    android:importantForAutofill="no" />
             </LinearLayout>
-        </LinearLayout>
 
-        <!-- Back Button -->
-        <TextView
-            android:id="@+id/btn_back"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:text="Back to Settings"
-            android:textColor="@color/key_text"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:background="@drawable/btn_rerecord_bg"
-            android:clickable="true"
-            android:focusable="true" />
+            <TextView
+                android:id="@+id/btn_add_slang"
+                style="@style/Bento.PillGhost"
+                android:layout_marginTop="10dp"
+                android:text="@string/ps_add" />
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>

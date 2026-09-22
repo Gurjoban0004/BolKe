@@ -1,6 +1,8 @@
 package com.bolke.keyboard
 
 import android.content.Context
+import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
@@ -26,11 +28,12 @@ class PersonalizationActivity : AppCompatActivity() {
     private lateinit var editNewQRPunglish: EditText
     private lateinit var editNewSlangTarget: EditText
     private lateinit var editNewSlangReplacement: EditText
+    private lateinit var spellingsListContainer: LinearLayout
 
     override fun attachBaseContext(newBase: Context) {
         val prefs = PreferencesManager(newBase)
         val scale = prefs.appScale
-        val config = newBase.resources.configuration
+        val config = Configuration(newBase.resources.configuration)
         config.fontScale = scale
         val metrics = newBase.resources.displayMetrics
         config.densityDpi = (metrics.densityDpi * scale).toInt()
@@ -50,12 +53,19 @@ class PersonalizationActivity : AppCompatActivity() {
         editNewQRPunglish = findViewById(R.id.new_qr_punglish)
         editNewSlangTarget = findViewById(R.id.new_slang_target)
         editNewSlangReplacement = findViewById(R.id.new_slang_replacement)
+        spellingsListContainer = findViewById(R.id.spellings_list_container)
 
         findViewById<View>(R.id.btn_add_qr).setOnClickListener { addQuickReply() }
         findViewById<View>(R.id.btn_add_slang).setOnClickListener { addSlangMapping() }
         findViewById<View>(R.id.btn_reset_qr).setOnClickListener { resetQuickReplyDefaults() }
         findViewById<View>(R.id.btn_reset_slang).setOnClickListener { resetSlangDefaults() }
         findViewById<View>(R.id.btn_back).setOnClickListener { finish() }
+        findViewById<View>(R.id.btn_save_spellings).setOnClickListener { saveSpellings() }
+        findViewById<View>(R.id.btn_export_spellings).setOnClickListener { exportSpellings() }
+        findViewById<View>(R.id.btn_clear_spellings).setOnClickListener {
+            prefsManager.savedPhrases = ""
+            refreshSpellingsUI()
+        }
 
         loadData()
     }
@@ -76,6 +86,69 @@ class PersonalizationActivity : AppCompatActivity() {
             if (parts.size == 2) slangMappingsList.add(Pair(parts[0], parts[1]))
         }
         refreshSlangUI()
+        refreshSpellingsUI()
+    }
+
+    private fun refreshSpellingsUI() {
+        spellingsListContainer.removeAllViews()
+        val entries = prefsManager.savedPhrases.lineSequence()
+            .map { it.split("\t", limit = 2) }
+            .filter { it.size == 2 }
+            .toList()
+        if (entries.isEmpty()) {
+            spellingsListContainer.addView(TextView(this).apply {
+                setText(R.string.no_saved_spellings)
+                setTextColor(ContextCompat.getColor(context, R.color.app_on_amber_soft))
+                textSize = 14f
+                setPadding(0, 8.toPx(), 0, 8.toPx())
+            })
+            return
+        }
+        entries.forEach { (source, spelling) ->
+            spellingsListContainer.addView(LinearLayout(this).apply {
+                orientation = LinearLayout.VERTICAL
+                setPadding(0, 8.toPx(), 0, 8.toPx())
+                addView(TextView(context).apply {
+                    text = source
+                    setTextColor(ContextCompat.getColor(context, R.color.app_on_amber_soft))
+                    textSize = 13f
+                })
+                addView(EditText(context).apply {
+                    tag = source
+                    setText(spelling)
+                    setTextColor(ContextCompat.getColor(context, R.color.app_text))
+                    setBackgroundResource(R.drawable.field_bg)
+                    minHeight = 52.toPx()
+                    setPadding(14.toPx(), 0, 14.toPx(), 0)
+                    importantForAutofill = View.IMPORTANT_FOR_AUTOFILL_NO
+                })
+            })
+        }
+    }
+
+    private fun saveSpellings() {
+        val lines = buildList {
+            for (i in 0 until spellingsListContainer.childCount) {
+                val row = spellingsListContainer.getChildAt(i) as? LinearLayout ?: continue
+                val field = row.getChildAt(1) as? EditText ?: continue
+                val source = field.tag?.toString().orEmpty()
+                val spelling = field.text.toString().trim()
+                if (source.isNotBlank() && spelling.isNotBlank()) add("$source\t$spelling")
+            }
+        }
+        prefsManager.savedPhrases = lines.joinToString("\n")
+        Toast.makeText(this, getString(R.string.spellings_saved), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun exportSpellings() {
+        saveSpellings()
+        val text = prefsManager.savedPhrases
+        if (text.isBlank()) return
+        startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_SUBJECT, getString(R.string.my_spellings_title))
+            putExtra(Intent.EXTRA_TEXT, text)
+        }, getString(R.string.export_spellings)))
     }
 
     private fun saveData() {
@@ -126,7 +199,7 @@ class PersonalizationActivity : AppCompatActivity() {
             orientation = LinearLayout.HORIZONTAL
             gravity = android.view.Gravity.CENTER_VERTICAL
             setPadding(8.toPx(), 8.toPx(), 8.toPx(), 8.toPx())
-            setBackgroundResource(R.drawable.mode_pill_bg)
+            setBackgroundResource(R.drawable.bento_soft)
             val params = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
@@ -142,21 +215,21 @@ class PersonalizationActivity : AppCompatActivity() {
 
         textLayout.addView(TextView(this).apply {
             text = punjabi
-            setTextColor(ContextCompat.getColor(context, R.color.text_primary))
+            setTextColor(ContextCompat.getColor(context, R.color.app_text))
             textSize = 15f
             setTypeface(null, android.graphics.Typeface.BOLD)
         })
 
         textLayout.addView(TextView(this).apply {
             text = punglish
-            setTextColor(ContextCompat.getColor(context, R.color.text_secondary))
+            setTextColor(ContextCompat.getColor(context, R.color.app_text_soft))
             textSize = 13f
         })
 
         val deleteBtn = TextView(this).apply {
             text = "Remove"
             textSize = 13f
-            setTextColor(ContextCompat.getColor(context, R.color.accent_orange))
+            setTextColor(ContextCompat.getColor(context, R.color.app_primary))
             contentDescription = "Remove quick reply"
             setPadding(12.toPx(), 8.toPx(), 12.toPx(), 8.toPx())
             setOnClickListener { removeQuickReply(punjabi, punglish) }
@@ -215,20 +288,20 @@ class PersonalizationActivity : AppCompatActivity() {
 
         row.addView(TextView(this).apply {
             text = target
-            setTextColor(ContextCompat.getColor(context, R.color.text_primary))
+            setTextColor(ContextCompat.getColor(context, R.color.app_text))
             textSize = 14f
             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
         })
 
         row.addView(TextView(this).apply {
             text = " to "
-            setTextColor(ContextCompat.getColor(context, R.color.accent_blue))
+            setTextColor(ContextCompat.getColor(context, R.color.app_primary))
             textSize = 12f
         })
 
         row.addView(TextView(this).apply {
             text = replacement
-            setTextColor(ContextCompat.getColor(context, R.color.text_primary))
+            setTextColor(ContextCompat.getColor(context, R.color.app_text))
             textSize = 14f
             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
         })
@@ -236,7 +309,7 @@ class PersonalizationActivity : AppCompatActivity() {
         val deleteBtn = TextView(this).apply {
             text = "Remove"
             textSize = 13f
-            setTextColor(ContextCompat.getColor(context, R.color.accent_orange))
+            setTextColor(ContextCompat.getColor(context, R.color.app_primary))
             contentDescription = "Remove shortcut"
             setPadding(12.toPx(), 8.toPx(), 12.toPx(), 8.toPx())
             setOnClickListener { removeSlangMapping(target) }

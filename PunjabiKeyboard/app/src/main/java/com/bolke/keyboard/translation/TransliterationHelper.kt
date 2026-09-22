@@ -1,6 +1,7 @@
 package com.bolke.keyboard.translation
 
 import android.icu.text.Transliterator
+import android.os.Build
 import java.text.Normalizer
 
 /**
@@ -45,16 +46,14 @@ object TransliterationHelper {
         "milana" to "milna", "bolana" to "bolna"
     )
 
-    private val transliterator: Transliterator by lazy {
-        Transliterator.getInstance("Gurmukhi-Latin")
-    }
-
     fun transliterate(gurmukhiText: String): String {
         if (gurmukhiText.isBlank()) return gurmukhiText
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) return gurmukhiText
 
         return try {
             // Step 1: ICU transliteration → produces academic romanization with diacritics
-            val withDiacritics = transliterator.transliterate(gurmukhiText)
+            val withDiacritics = Transliterator.getInstance("Gurmukhi-Latin")
+                .transliterate(gurmukhiText)
 
             // Step 2: Convert diacritics to natural spelling before stripping
             val natural = convertToNaturalSpelling(withDiacritics)

@@ -3,11 +3,13 @@ package com.bolke.keyboard
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import android.widget.CheckBox
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -30,7 +32,7 @@ class SetupActivity : AppCompatActivity() {
     override fun attachBaseContext(newBase: Context) {
         val prefs = PreferencesManager(newBase)
         val scale = prefs.appScale
-        val config = newBase.resources.configuration
+        val config = Configuration(newBase.resources.configuration)
         config.fontScale = scale
         val metrics = newBase.resources.displayMetrics
         config.densityDpi = (metrics.densityDpi * scale).toInt()
@@ -44,9 +46,6 @@ class SetupActivity : AppCompatActivity() {
 
         prefsManager = PreferencesManager(this)
 
-        // Request microphone permission if not granted
-        checkMicrophonePermission()
-
         // If setup is already complete and IME is enabled/selected, go directly to Settings
         if (prefsManager.isSetupComplete && isKeyboardEnabled() && isKeyboardSelected()) {
             startSettingsActivity()
@@ -57,6 +56,12 @@ class SetupActivity : AppCompatActivity() {
         btnEnableKeyboard = findViewById(R.id.btn_enable_keyboard)
         btnSelectKeyboard = findViewById(R.id.btn_select_keyboard)
         btnDone = findViewById(R.id.btn_done)
+
+        findViewById<View>(R.id.btn_microphone_permission).setOnClickListener {
+            checkMicrophonePermission()
+        }
+        findViewById<CheckBox>(R.id.setup_translate_copied).isChecked =
+            prefsManager.translateCopiedMessages
 
         btnEnableKeyboard.setOnClickListener {
             // Open Android Keyboard Settings
@@ -80,6 +85,8 @@ class SetupActivity : AppCompatActivity() {
             val selected = isKeyboardSelected()
 
             if (enabled && selected) {
+                prefsManager.translateCopiedMessages =
+                    findViewById<CheckBox>(R.id.setup_translate_copied).isChecked
                 prefsManager.isSetupComplete = true
                 Toast.makeText(this, "ਸੈਟਅੱਪ ਪੂਰਾ ਹੋ ਗਿਆ", Toast.LENGTH_SHORT).show()
                 startSettingsActivity()

@@ -2,215 +2,188 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/activity_bg"
+    android:background="@color/app_bg"
+    android:scrollbars="none"
     android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:padding="24dp">
+        android:paddingHorizontal="16dp"
+        android:paddingTop="48dp"
+        android:paddingBottom="32dp">
 
-        <!-- App Icon -->
-        <ImageView
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:src="@drawable/ic_mic"
-            android:background="@drawable/mic_button_bg"
-            android:padding="12dp"
-            android:layout_marginTop="32dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/setup_welcome_title"
-            android:textColor="@color/text_primary"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/setup_welcome_subtitle"
-            android:textColor="@color/text_secondary"
-            android:textSize="13sp"
-            android:gravity="center"
-            android:layout_marginTop="4dp" />
-
-        <!-- Progress Steps -->
+        <!-- Welcome -->
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="40dp">
+            style="@style/Bento"
+            android:background="@drawable/bento_primary"
+            android:paddingVertical="32dp">
 
-            <!-- Step 1 -->
+            <TextView
+                style="@style/Bento.Headline"
+                android:textColor="@color/app_on_primary_soft"
+                android:text="@string/setup_welcome_title" />
+
+            <TextView
+                style="@style/Bento.Body"
+                android:layout_marginTop="8dp"
+                android:textSize="15sp"
+                android:textColor="@color/app_on_primary_soft"
+                android:text="@string/setup_welcome_subtitle" />
+        </LinearLayout>
+
+        <!-- Step 1 -->
+        <LinearLayout
+            android:id="@+id/step1_container"
+            style="@style/Bento">
+
             <LinearLayout
-                android:id="@+id/step1_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:paddingVertical="12dp">
+                android:gravity="center_vertical">
 
                 <TextView
                     android:id="@+id/step1_indicator"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:text="1"
-                    android:textColor="@color/key_text"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/bento_soft"
                     android:gravity="center"
-                    android:background="@drawable/mic_button_bg" />
+                    android:text="1"
+                    android:textColor="@color/app_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
 
-                <LinearLayout
+                <TextView
+                    style="@style/Bento.CardTitle"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginStart="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/setup_step1_title"
-                        android:textColor="@color/text_primary"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/btn_enable_keyboard"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/setup_step1_btn"
-                        android:textColor="@color/accent_blue"
-                        android:textSize="13sp"
-                        android:paddingVertical="4dp"
-                        android:clickable="true"
-                        android:focusable="true" />
-                </LinearLayout>
+                    android:layout_marginStart="14dp"
+                    android:text="@string/setup_step1_title" />
 
                 <TextView
                     android:id="@+id/step1_check"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Done"
-                    android:textColor="@color/accent_green"
-                    android:textSize="20sp"
-                    android:visibility="gone" />
+                    style="@style/Bento.Label"
+                    android:textColor="@color/app_primary"
+                    android:visibility="gone"
+                    android:text="@string/setup_done_label" />
             </LinearLayout>
 
-            <!-- Step 2 -->
+            <TextView
+                android:id="@+id/btn_enable_keyboard"
+                style="@style/Bento.PillGhost"
+                android:layout_marginTop="14dp"
+                android:text="@string/setup_step1_btn" />
+        </LinearLayout>
+
+        <!-- Step 2 -->
+        <LinearLayout
+            android:id="@+id/step2_container"
+            style="@style/Bento">
+
             <LinearLayout
-                android:id="@+id/step2_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:paddingVertical="12dp"
-                android:alpha="0.5">
+                android:gravity="center_vertical">
 
                 <TextView
                     android:id="@+id/step2_indicator"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:text="2"
-                    android:textColor="@color/key_text"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/bento_soft"
                     android:gravity="center"
-                    android:background="@drawable/mic_button_bg" />
+                    android:text="2"
+                    android:textColor="@color/app_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
 
-                <LinearLayout
+                <TextView
+                    style="@style/Bento.CardTitle"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginStart="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/setup_step2_title"
-                        android:textColor="@color/text_primary"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/btn_select_keyboard"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/setup_step2_btn"
-                        android:textColor="@color/accent_blue"
-                        android:textSize="13sp"
-                        android:paddingVertical="4dp"
-                        android:clickable="true"
-                        android:focusable="true" />
-                </LinearLayout>
+                    android:layout_marginStart="14dp"
+                    android:text="@string/setup_step2_title" />
 
                 <TextView
                     android:id="@+id/step2_check"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Done"
-                    android:textColor="@color/accent_green"
-                    android:textSize="20sp"
-                    android:visibility="gone" />
+                    style="@style/Bento.Label"
+                    android:textColor="@color/app_primary"
+                    android:visibility="gone"
+                    android:text="@string/setup_done_label" />
             </LinearLayout>
 
-            <!-- Step 3 -->
+            <TextView
+                android:id="@+id/btn_select_keyboard"
+                style="@style/Bento.PillGhost"
+                android:layout_marginTop="14dp"
+                android:text="@string/setup_step2_btn" />
+        </LinearLayout>
+
+        <!-- Step 3 -->
+        <LinearLayout
+            android:id="@+id/step3_container"
+            style="@style/Bento"
+            android:background="@drawable/bento_green">
+
             <LinearLayout
-                android:id="@+id/step3_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:paddingVertical="12dp"
-                android:alpha="0.5">
+                android:gravity="center_vertical">
 
                 <TextView
                     android:id="@+id/step3_indicator"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:text="3"
-                    android:textColor="@color/key_text"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/bento_card"
                     android:gravity="center"
-                    android:background="@drawable/mic_button_bg" />
+                    android:text="3"
+                    android:textColor="@color/app_on_green_soft"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
 
-                <LinearLayout
+                <TextView
+                    style="@style/Bento.CardTitle"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginStart="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/setup_step3_title"
-                        android:textColor="@color/text_primary"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/btn_done"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/setup_done_btn"
-                        android:textColor="@color/accent_green"
-                        android:textSize="13sp"
-                        android:paddingVertical="4dp"
-                        android:clickable="true"
-                        android:focusable="true" />
-                </LinearLayout>
+                    android:layout_marginStart="14dp"
+                    android:textColor="@color/app_on_green_soft"
+                    android:text="@string/setup_step3_title" />
             </LinearLayout>
 
+            <TextView
+                style="@style/Bento.Body"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/app_on_green_soft"
+                android:text="@string/setup_step3_desc" />
+
+            <TextView
+                android:id="@+id/btn_microphone_permission"
+                style="@style/Bento.PillGhost"
+                android:layout_marginTop="14dp"
+                android:text="@string/setup_microphone_btn" />
+
+            <CheckBox
+                android:id="@+id/setup_translate_copied"
+                style="@style/Bento.Choice"
+                android:layout_marginTop="12dp"
+                android:minHeight="48dp"
+                android:text="@string/copy_translate_opt_in"
+                android:textColor="@color/app_on_green_soft" />
+
+            <TextView
+                style="@style/Bento.Body"
+                android:text="@string/setup_copy_privacy"
+                android:textColor="@color/app_on_green_soft" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/btn_done"
+            style="@style/Bento.PillPrimary"
+            android:layout_marginTop="8dp"
+            android:text="@string/setup_done_btn" />
 
     </LinearLayout>
 </ScrollView>

@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.BolKe" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:statusBarColor">@color/status_bar</item>
-        <item name="android:navigationBarColor">@color/activity_bg</item>
-        <item name="android:windowBackground">@color/activity_bg</item>
-        <item name="colorPrimary">@color/accent_blue</item>
-        <item name="colorPrimaryDark">@color/status_bar</item>
-        <item name="colorAccent">@color/accent_blue</item>
+        <item name="android:statusBarColor">@color/app_bg</item>
+        <item name="android:navigationBarColor">@color/app_bg</item>
+        <item name="android:windowBackground">@color/app_bg</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="colorPrimary">@color/app_primary</item>
+        <item name="colorPrimaryDark">@color/app_bg</item>
+        <item name="colorAccent">@color/app_primary</item>
+        <item name="android:textColorPrimary">@color/app_text</item>
+        <item name="android:textColorSecondary">@color/app_text_soft</item>
     </style>
 </resources>

@@ -43,4 +43,27 @@
 
     <!-- Status bar -->
     <color name="status_bar">#10131A</color>
+
+    <!--
+      App shell palette. Deliberately separate from the keyboard tokens above: the
+      keyboard stays dark because it sits over other apps, while the app itself is
+      off-white. Changing the shared tokens would have dragged the keyboard along.
+    -->
+    <color name="app_bg">#F4F6F8</color>
+    <color name="app_surface">#FFFFFF</color>
+    <color name="app_surface_soft">#EBEFF4</color>
+    <color name="app_outline">#E3E5E9</color>
+    <color name="app_text">#1B1C1E</color>
+    <color name="app_text_soft">#5F6368</color>
+
+    <color name="app_primary">#0B57D0</color>
+    <color name="app_primary_soft">#D8E6FE</color>
+    <color name="app_on_primary_soft">#06306E</color>
+
+    <color name="app_green_soft">#C7EED4</color>
+    <color name="app_on_green_soft">#08351A</color>
+    <color name="app_amber_soft">#FFE3B3</color>
+    <color name="app_on_amber_soft">#4A3200</color>
+    <color name="app_lilac_soft">#E5DEFF</color>
+    <color name="app_on_lilac_soft">#251A5C</color>
 </resources>
