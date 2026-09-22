@@ -3,6 +3,17 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
+val releaseStorePath = providers.gradleProperty("bolkeReleaseStoreFile").orNull
+val releaseStorePassword = providers.gradleProperty("bolkeReleaseStorePassword").orNull
+val releaseKeyAlias = providers.gradleProperty("bolkeReleaseKeyAlias").orNull
+val releaseKeyPassword = providers.gradleProperty("bolkeReleaseKeyPassword").orNull
+val hasReleaseSigning = listOf(
+    releaseStorePath,
+    releaseStorePassword,
+    releaseKeyAlias,
+    releaseKeyPassword
+).all { !it.isNullOrBlank() }
+
 android {
     namespace = "com.bolke.keyboard"
     compileSdk = 35
@@ -11,8 +22,8 @@ android {
         applicationId = "com.bolke.keyboard"
         minSdk = 26
         targetSdk = 35
-        versionCode = 2
-        versionName = "2.0"
+        versionCode = 5
+        versionName = "2.3"
         buildConfigField("String", "LANGUAGE_SERVICE_URL", "\"${providers.gradleProperty("languageServiceUrl").orElse("").get()}\"")
     }
 
@@ -20,10 +31,21 @@ android {
         buildConfig = true
     }
 
+    signingConfigs {
+        if (hasReleaseSigning) {
+            create("release") {
+                storeFile = file(releaseStorePath!!)
+                storePassword = releaseStorePassword
+                keyAlias = releaseKeyAlias
+                keyPassword = releaseKeyPassword
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
-            signingConfig = signingConfigs.getByName("debug")
+            if (hasReleaseSigning) signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -32,8 +54,8 @@ android {
     }
 
     lint {
-        checkReleaseBuilds = false
-        abortOnError = false
+        checkReleaseBuilds = true
+        abortOnError = true
     }
 
     compileOptions {
